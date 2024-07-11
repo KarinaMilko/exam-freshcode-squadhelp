@@ -16,7 +16,9 @@ const Layout = (props) => {
     <div className={styles.container}>
       {isAuthPathname && <AuthHeader />}
       {!isAuthPathname && <Header />}
-      <Outlet />
+      <div className={styles.content}>
+        <Outlet />
+      </div>
       {!isAuthPathname && <Footer />}
       {isRegisterPathname && <RegistrationFooter />}
     </div>

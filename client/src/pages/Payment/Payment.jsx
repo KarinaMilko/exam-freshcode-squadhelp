@@ -47,37 +47,29 @@ const Payment = (props) => {
     navigate('/startContest', { replace: true });
   }
   return (
-    <div>
-      <div className={styles.header}>
-        <img
-          src={`${CONSTANTS.STATIC_IMAGES_PATH}blue-logo.png`}
-          alt="blue-logo"
-        />
+    <div className={styles.mainContainer}>
+      <div className={styles.paymentContainer}>
+        <span className={styles.headerLabel}>Checkout</span>
+        {error && (
+          <Error
+            data={error.data}
+            status={error.status}
+            clearError={clearPaymentStore}
+          />
+        )}
+        <PayForm sendRequest={pay} back={goBack} isPayForOrder />
       </div>
-      <div className={styles.mainContainer}>
-        <div className={styles.paymentContainer}>
-          <span className={styles.headerLabel}>Checkout</span>
-          {error && (
-            <Error
-              data={error.data}
-              status={error.status}
-              clearError={clearPaymentStore}
-            />
-          )}
-          <PayForm sendRequest={pay} back={goBack} isPayForOrder />
+      <div className={styles.orderInfoContainer}>
+        <span className={styles.orderHeader}>Order Summary</span>
+        <div className={styles.packageInfoContainer}>
+          <span className={styles.packageName}>Package Name: Standard</span>
+          <span className={styles.packagePrice}>$100 USD</span>
         </div>
-        <div className={styles.orderInfoContainer}>
-          <span className={styles.orderHeader}>Order Summary</span>
-          <div className={styles.packageInfoContainer}>
-            <span className={styles.packageName}>Package Name: Standard</span>
-            <span className={styles.packagePrice}>$100 USD</span>
-          </div>
-          <div className={styles.resultPriceContainer}>
-            <span>Total:</span>
-            <span>$100.00 USD</span>
-          </div>
-          <a href="http://www.google.com">Have a promo code?</a>
+        <div className={styles.resultPriceContainer}>
+          <span>Total:</span>
+          <span>$100.00 USD</span>
         </div>
+        <a href="http://www.google.com">Have a promo code?</a>
       </div>
     </div>
   );
