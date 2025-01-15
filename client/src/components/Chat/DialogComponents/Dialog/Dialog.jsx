@@ -11,7 +11,7 @@ import styles from './Dialog.module.sass';
 import ChatInput from '../../ChatComponents/ChatInut/ChatInput';
 
 class Dialog extends React.Component {
-  componentDidMount() {
+  componentDidMount () {
     this.props.getDialog({ interlocutorId: this.props.interlocutor.id });
     this.scrollToBottom();
   }
@@ -22,16 +22,16 @@ class Dialog extends React.Component {
     this.messagesEnd.current.scrollIntoView({ behavior: 'smooth' });
   };
 
-  componentWillReceiveProps(nextProps, nextContext) {
+  componentWillReceiveProps (nextProps, nextContext) {
     if (nextProps.interlocutor.id !== this.props.interlocutor.id)
       this.props.getDialog({ interlocutorId: nextProps.interlocutor.id });
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.props.clearMessageList();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate () {
     if (this.messagesEnd.current) this.scrollToBottom();
   }
 
@@ -79,7 +79,7 @@ class Dialog extends React.Component {
     return <span className={styles.messageBlock}>{message}</span>;
   };
 
-  render() {
+  render () {
     const { chatData, userId } = this.props;
     return (
       <>
@@ -96,10 +96,10 @@ class Dialog extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => state.chatStore;
+const mapStateToProps = state => state.chatStore;
 
-const mapDispatchToProps = (dispatch) => ({
-  getDialog: (data) => dispatch(getDialogMessages(data)),
+const mapDispatchToProps = dispatch => ({
+  getDialog: data => dispatch(getDialogMessages(data)),
   clearMessageList: () => dispatch(clearMessageList()),
 });
 

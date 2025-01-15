@@ -7,7 +7,7 @@ import Spinner from '../../Spinner/Spinner';
 const OnlyNotAuthorizedUserRoute = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { data, isFetching } = useSelector((state) => state.userStore);
+  const { data, isFetching } = useSelector(state => state.userStore);
 
   useEffect(() => {
     dispatch(getUser(navigate));

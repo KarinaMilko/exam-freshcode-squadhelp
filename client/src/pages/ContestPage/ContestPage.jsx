@@ -26,11 +26,11 @@ import 'react-18-image-lightbox/style.css';
 import Error from '../../components/Error/Error';
 
 class ContestPage extends React.Component {
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.props.changeEditContest(false);
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.getData();
   }
 
@@ -62,7 +62,7 @@ class ContestPage extends React.Component {
     );
   };
 
-  needButtons = (offerStatus) => {
+  needButtons = offerStatus => {
     const contestCreatorId = this.props.contestByIdStore.contestData.User.id;
     const userId = this.props.userStore.data.id;
     const contestStatus = this.props.contestByIdStore.contestData.status;
@@ -87,7 +87,7 @@ class ContestPage extends React.Component {
     this.props.setOfferStatus(obj);
   };
 
-  findConversationInfo = (interlocutorId) => {
+  findConversationInfo = interlocutorId => {
     const { messagesPreview } = this.props.chatStore;
     const { id } = this.props.userStore.data;
     const participants = [id, interlocutorId];
@@ -115,7 +115,7 @@ class ContestPage extends React.Component {
     });
   };
 
-  render() {
+  render () {
     const { role } = this.props.userStore.data;
     const {
       contestByIdStore,
@@ -212,19 +212,22 @@ class ContestPage extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const { contestByIdStore, userStore, chatStore } = state;
   return { contestByIdStore, userStore, chatStore };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  getData: (data) => dispatch(getContestById(data)),
-  setOfferStatus: (data) => dispatch(setOfferStatus(data)),
+const mapDispatchToProps = dispatch => ({
+  getData: data => dispatch(getContestById(data)),
+  setOfferStatus: data => dispatch(setOfferStatus(data)),
   clearSetOfferStatusError: () => dispatch(clearSetOfferStatusError()),
-  goToExpandedDialog: (data) => dispatch(goToExpandedDialog(data)),
-  changeEditContest: (data) => dispatch(changeEditContest(data)),
-  changeContestViewMode: (data) => dispatch(changeContestViewMode(data)),
-  changeShowImage: (data) => dispatch(changeShowImage(data)),
+  goToExpandedDialog: data => dispatch(goToExpandedDialog(data)),
+  changeEditContest: data => dispatch(changeEditContest(data)),
+  changeContestViewMode: data => dispatch(changeContestViewMode(data)),
+  changeShowImage: data => dispatch(changeShowImage(data)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ContestPage));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(ContestPage));

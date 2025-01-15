@@ -9,7 +9,7 @@ import {
 import styles from './ChatHeader.module.sass';
 import CONSTANTS from '../../../../constants';
 
-const ChatHeader = (props) => {
+const ChatHeader = props => {
   const changeFavorite = (data, event) => {
     props.changeChatFavorite(data);
     event.stopPropagation();
@@ -40,7 +40,7 @@ const ChatHeader = (props) => {
       >
         <img
           src={`${CONSTANTS.STATIC_IMAGES_PATH}arrow-left-thick.png`}
-          alt="back"
+          alt='back'
         />
       </div>
       <div className={styles.infoContainer}>
@@ -51,14 +51,14 @@ const ChatHeader = (props) => {
                 ? CONSTANTS.ANONYM_IMAGE_PATH
                 : `${CONSTANTS.publicURL}${avatar}`
             }
-            alt="user"
+            alt='user'
           />
           <span>{firstName}</span>
         </div>
         {chatData && (
           <div>
             <i
-              onClick={(event) =>
+              onClick={event =>
                 changeFavorite(
                   {
                     participants: chatData.participants,
@@ -73,7 +73,7 @@ const ChatHeader = (props) => {
               })}
             />
             <i
-              onClick={(event) =>
+              onClick={event =>
                 changeBlackList(
                   {
                     participants: chatData.participants,
@@ -94,15 +94,15 @@ const ChatHeader = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const { interlocutor, chatData } = state.chatStore;
   return { interlocutor, chatData };
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   backToDialogList: () => dispatch(backToDialogList()),
-  changeChatFavorite: (data) => dispatch(changeChatFavorite(data)),
-  changeChatBlock: (data) => dispatch(changeChatBlock(data)),
+  changeChatFavorite: data => dispatch(changeChatFavorite(data)),
+  changeChatBlock: data => dispatch(changeChatBlock(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatHeader);

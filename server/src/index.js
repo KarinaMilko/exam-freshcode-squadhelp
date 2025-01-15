@@ -18,5 +18,7 @@ app.use(router);
 app.use(handlerError);
 
 const server = http.createServer(app);
-server.listen(PORT, () =>  console.log(`Example app listening on port ${PORT}!`));
+server.listen(PORT, () =>
+  console.log(`Example app listening on port ${PORT}!`)
+);
 controller.createConnection(server);

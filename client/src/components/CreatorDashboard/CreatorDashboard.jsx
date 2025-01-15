@@ -88,13 +88,13 @@ class CreatorDashboard extends React.Component {
     );
   };
 
-  componentWillReceiveProps(nextProps, nextContext) {
+  componentWillReceiveProps (nextProps, nextContext) {
     if (nextProps.location.search !== this.props.location.search) {
       this.parseUrlForParams(nextProps.location.search);
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.props.getDataForContest();
     if (
       this.parseUrlForParams(this.props.location.search) &&
@@ -103,7 +103,7 @@ class CreatorDashboard extends React.Component {
       this.getContests(this.props.creatorFilter);
   }
 
-  getContests = (filter) => {
+  getContests = filter => {
     this.props.getContests({
       limit: 8,
       offset: 0,
@@ -122,15 +122,15 @@ class CreatorDashboard extends React.Component {
     });
   };
 
-  parseParamsToUrl = (creatorFilter) => {
+  parseParamsToUrl = creatorFilter => {
     const obj = {};
-    Object.keys(creatorFilter).forEach((el) => {
+    Object.keys(creatorFilter).forEach(el => {
       if (creatorFilter[el]) obj[el] = creatorFilter[el];
     });
     this.props.navigate(`/Dashboard?${queryString.stringify(obj)}`);
   };
 
-  parseUrlForParams = (search) => {
+  parseUrlForParams = search => {
     const obj = queryString.parse(search);
     const filter = {
       typeIndex: obj.typeIndex || 1,
@@ -152,7 +152,7 @@ class CreatorDashboard extends React.Component {
   getPredicateOfRequest = () => {
     const obj = {};
     const { creatorFilter } = this.props;
-    Object.keys(creatorFilter).forEach((el) => {
+    Object.keys(creatorFilter).forEach(el => {
       if (creatorFilter[el]) {
         obj[el] = creatorFilter[el];
       }
@@ -161,7 +161,7 @@ class CreatorDashboard extends React.Component {
     return obj;
   };
 
-  loadMore = (startFrom) => {
+  loadMore = startFrom => {
     this.props.getContests({
       limit: 8,
       offset: startFrom,
@@ -184,7 +184,7 @@ class CreatorDashboard extends React.Component {
     return array;
   };
 
-  goToExtended = (contestId) => {
+  goToExtended = contestId => {
     this.props.navigate(`/contest/${contestId}`);
   };
 
@@ -197,7 +197,7 @@ class CreatorDashboard extends React.Component {
     });
   };
 
-  render() {
+  render () {
     const { error, haveMore, creatorFilter } = this.props;
     const { isFetching } = this.props.dataForContest;
     return (
@@ -225,14 +225,14 @@ class CreatorDashboard extends React.Component {
             <div className={styles.inputContainer}>
               <span>By contest ID</span>
               <input
-                type="text"
+                type='text'
                 onChange={({ target }) =>
                   this.changePredicate({
                     name: 'contestId',
                     value: target.value,
                   })
                 }
-                name="contestId"
+                name='contestId'
                 value={creatorFilter.contestId}
                 className={styles.input}
               />
@@ -255,8 +255,8 @@ class CreatorDashboard extends React.Component {
                 value={creatorFilter.awardSort}
                 className={styles.input}
               >
-                <option value="desc">Descending</option>
-                <option value="asc">Ascending</option>
+                <option value='desc'>Descending</option>
+                <option value='asc'>Ascending</option>
               </select>
             </div>
           </div>
@@ -280,16 +280,16 @@ class CreatorDashboard extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const { contestsList, dataForContest } = state;
   return { ...contestsList, dataForContest };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  getContests: (data) =>
+const mapDispatchToProps = dispatch => ({
+  getContests: data =>
     dispatch(getContests({ requestData: data, role: CONSTANTS.CREATOR })),
   clearContestsList: () => dispatch(clearContestsList()),
-  newFilter: (filter) => dispatch(setNewCreatorFilter(filter)),
+  newFilter: filter => dispatch(setNewCreatorFilter(filter)),
   getDataForContest: () => dispatch(getDataForContest()),
 });
 

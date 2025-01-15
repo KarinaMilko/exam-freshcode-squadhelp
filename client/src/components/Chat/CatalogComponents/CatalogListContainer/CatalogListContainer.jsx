@@ -8,7 +8,7 @@ import CatalogList from '../CatalogList/CatalogList';
 import DialogList from '../../DialogComponents/DialogList/DialogList';
 
 class CatalogListContainer extends React.Component {
-  componentDidMount() {
+  componentDidMount () {
     this.props.getCatalogList();
   }
 
@@ -32,7 +32,7 @@ class CatalogListContainer extends React.Component {
     return dialogsInCatalog;
   };
 
-  render() {
+  render () {
     const { catalogList, isShowChatsInCatalog } = this.props.chatStore;
     const { id } = this.props.userStore.data;
     return (
@@ -51,14 +51,14 @@ class CatalogListContainer extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const { chatStore, userStore } = state;
   return { chatStore, userStore };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  getCatalogList: (data) => dispatch(getCatalogList(data)),
-  removeChatFromCatalog: (data) => dispatch(removeChatFromCatalog(data)),
+const mapDispatchToProps = dispatch => ({
+  getCatalogList: data => dispatch(getCatalogList(data)),
+  removeChatFromCatalog: data => dispatch(removeChatFromCatalog(data)),
 });
 
 export default connect(

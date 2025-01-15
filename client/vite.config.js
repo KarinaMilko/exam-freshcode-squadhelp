@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [
     {
       name: 'transform-js-to-jsx',
-      async transform(code, id) {
+      async transform (code, id) {
         if (!id.match(/src\/.*\.js$/)) {
           return null;
         }

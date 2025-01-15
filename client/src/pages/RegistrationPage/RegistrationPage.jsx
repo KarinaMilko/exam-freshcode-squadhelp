@@ -10,7 +10,6 @@ const RegistrationPage = props => {
   const navigate = useNavigate();
   dispatch(clearAuthError());
 
-
   return (
     <div className={styles.signUpPage}>
       <div className={styles.signUpContainer}>
@@ -19,7 +18,5 @@ const RegistrationPage = props => {
     </div>
   );
 };
-
-
 
 export default RegistrationPage;

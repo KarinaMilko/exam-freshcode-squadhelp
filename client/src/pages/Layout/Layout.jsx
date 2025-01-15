@@ -6,7 +6,7 @@ import RegistrationFooter from '../../components/Layout/RegistrationFooter';
 import AuthHeader from '../../components/Layout/AuthHeader';
 import styles from './Layout.module.sass';
 
-const Layout = (props) => {
+const Layout = props => {
   const { pathname } = useLocation();
 
   const isRegisterPathname = pathname === '/registration';

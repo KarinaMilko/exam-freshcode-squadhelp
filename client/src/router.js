@@ -8,7 +8,7 @@ const HistoryRouter = ({ history, ...props }) => {
   });
 
   useLayoutEffect(() => history.listen(setState), [history]);
-  
+
   return (
     <Router
       {...props}

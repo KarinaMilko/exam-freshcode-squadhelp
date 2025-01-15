@@ -8,12 +8,12 @@ import { changeFocusOnCard } from '../../store/slices/paymentSlice';
 import PayInput from '../InputComponents/PayInput/PayInput';
 import Schems from '../../utils/validators/validationSchems';
 
-const PayForm = (props) => {
-  const changeFocusOnCard = (name) => {
+const PayForm = props => {
+  const changeFocusOnCard = name => {
     props.changeFocusOnCard(name);
   };
 
-  const pay = (values) => {
+  const pay = values => {
     props.sendRequest(values);
   };
 
@@ -46,19 +46,19 @@ const PayForm = (props) => {
                   focused={focusOnElement}
                 />
               </div>
-              <Form id="myForm" className={styles.formContainer}>
+              <Form id='myForm' className={styles.formContainer}>
                 <div className={styles.bigInput}>
                   <span>Name</span>
                   <PayInput
-                    name="name"
+                    name='name'
                     classes={{
                       container: styles.inputContainer,
                       input: styles.input,
                       notValid: styles.notValid,
                       error: styles.error,
                     }}
-                    type="text"
-                    label="name"
+                    type='text'
+                    label='name'
                     changeFocus={changeFocusOnCard}
                   />
                 </div>
@@ -66,15 +66,15 @@ const PayForm = (props) => {
                   <div className={styles.bigInput}>
                     <span>Sum</span>
                     <PayInput
-                      name="sum"
+                      name='sum'
                       classes={{
                         container: styles.inputContainer,
                         input: styles.input,
                         notValid: styles.notValid,
                         error: styles.error,
                       }}
-                      type="text"
-                      label="sum"
+                      type='text'
+                      label='sum'
                     />
                   </div>
                 )}
@@ -82,16 +82,16 @@ const PayForm = (props) => {
                   <span>Card Number</span>
                   <PayInput
                     isInputMask
-                    mask="9999 9999 9999 9999 999"
-                    name="number"
+                    mask='9999 9999 9999 9999 999'
+                    name='number'
                     classes={{
                       container: styles.inputContainer,
                       input: styles.input,
                       notValid: styles.notValid,
                       error: styles.error,
                     }}
-                    type="text"
-                    label="card number"
+                    type='text'
+                    label='card number'
                     changeFocus={changeFocusOnCard}
                   />
                 </div>
@@ -100,16 +100,16 @@ const PayForm = (props) => {
                     <span>* Expires</span>
                     <PayInput
                       isInputMask
-                      mask="99/99"
-                      name="expiry"
+                      mask='99/99'
+                      name='expiry'
                       classes={{
                         container: styles.inputContainer,
                         input: styles.input,
                         notValid: styles.notValid,
                         error: styles.error,
                       }}
-                      type="text"
-                      label="expiry"
+                      type='text'
+                      label='expiry'
                       changeFocus={changeFocusOnCard}
                     />
                   </div>
@@ -117,16 +117,16 @@ const PayForm = (props) => {
                     <span>* Security Code</span>
                     <PayInput
                       isInputMask
-                      mask="9999"
-                      name="cvc"
+                      mask='9999'
+                      name='cvc'
                       classes={{
                         container: styles.inputContainer,
                         input: styles.input,
                         notValid: styles.notValid,
                         error: styles.error,
                       }}
-                      type="text"
-                      label="cvc"
+                      type='text'
+                      label='cvc'
                       changeFocus={changeFocusOnCard}
                     />
                   </div>
@@ -142,7 +142,7 @@ const PayForm = (props) => {
         </div>
       )}
       <div className={styles.buttonsContainer}>
-        <button form="myForm" className={styles.payButton} type="submit">
+        <button form='myForm' className={styles.payButton} type='submit'>
           <span>{isPayForOrder ? 'Pay Now' : 'CashOut'}</span>
         </button>
         {isPayForOrder && (
@@ -155,8 +155,8 @@ const PayForm = (props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  changeFocusOnCard: (data) => dispatch(changeFocusOnCard(data)),
+const mapDispatchToProps = dispatch => ({
+  changeFocusOnCard: data => dispatch(changeFocusOnCard(data)),
 });
 
 export default connect(null, mapDispatchToProps)(PayForm);

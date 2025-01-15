@@ -19,12 +19,12 @@ import CatalogListHeader from '../../CatalogComponents/CatalogListHeader/Catalog
 import ChatError from '../../../ChatError/ChatError';
 
 class Chat extends React.Component {
-  componentDidMount() {
+  componentDidMount () {
     chatController.subscribeChat(this.props.userStore.data.id);
     this.props.getPreviewChat();
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     chatController.unsubscribeChat(this.props.userStore.data.id);
   }
 
@@ -43,7 +43,7 @@ class Chat extends React.Component {
         {isShowChatsInCatalog && <CatalogListHeader />}
         {!isShowChatsInCatalog && (
           <div className={styles.chatHeader}>
-            <img src={`${CONSTANTS.STATIC_IMAGES_PATH}logo.png`} alt="logo" />
+            <img src={`${CONSTANTS.STATIC_IMAGES_PATH}logo.png`} alt='logo' />
           </div>
         )}
         {!isShowChatsInCatalog && (
@@ -91,9 +91,13 @@ class Chat extends React.Component {
     );
   };
 
-  render() {
-    const { isExpanded, isShow, isShowCatalogCreation, error } =
-      this.props.chatStore;
+  render () {
+    const {
+      isExpanded,
+      isShow,
+      isShowCatalogCreation,
+      error,
+    } = this.props.chatStore;
     const { id } = this.props.userStore.data;
     const { changeShow, getPreviewChat } = this.props;
     return (
@@ -113,14 +117,14 @@ class Chat extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const { chatStore, userStore } = state;
   return { chatStore, userStore };
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   changeShow: () => dispatch(changeChatShow()),
-  setChatPreviewMode: (mode) => dispatch(setPreviewChatMode(mode)),
+  setChatPreviewMode: mode => dispatch(setPreviewChatMode(mode)),
   changeShowModeCatalog: () => dispatch(changeShowModeCatalog()),
   clearChatError: () => dispatch(clearChatError()),
   getPreviewChat: () => dispatch(getPreviewChat()),

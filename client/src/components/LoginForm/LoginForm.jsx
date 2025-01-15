@@ -9,15 +9,15 @@ import Error from '../Error/Error';
 import CONSTANTS from '../../constants';
 
 class LoginForm extends React.Component {
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.props.authClear();
   }
 
-  clicked = (values) => {
+  clicked = values => {
     this.props.loginRequest({ data: values, navigate: this.props.navigate });
   };
 
-  render() {
+  render () {
     const { error, isFetching } = this.props.auth;
     const { submitting, authClear } = this.props;
 
@@ -50,18 +50,18 @@ class LoginForm extends React.Component {
           <Form>
             <FormInput
               classes={formInputClasses}
-              name="email"
-              type="text"
-              label="Email Address"
+              name='email'
+              type='text'
+              label='Email Address'
             />
             <FormInput
               classes={formInputClasses}
-              name="password"
-              type="password"
-              label="Password"
+              name='password'
+              type='password'
+              label='Password'
             />
             <button
-              type="submit"
+              type='submit'
               disabled={submitting}
               className={styles.submitContainer}
             >
@@ -76,14 +76,16 @@ class LoginForm extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const { auth } = state;
   return { auth };
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   loginRequest: ({ data, navigate }) =>
-    dispatch(checkAuth({ data, navigate, authMode: CONSTANTS.AUTH_MODE.LOGIN })),
+    dispatch(
+      checkAuth({ data, navigate, authMode: CONSTANTS.AUTH_MODE.LOGIN })
+    ),
   authClear: () => dispatch(clearAuth()),
 });
 

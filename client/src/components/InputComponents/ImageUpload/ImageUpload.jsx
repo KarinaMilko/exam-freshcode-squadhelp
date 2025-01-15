@@ -26,17 +26,17 @@ const ImageUpload = props => {
         <span>Support only images (*.png, *.gif, *.jpeg)</span>
         <input
           {...field}
-          id="fileInput"
-          type="file"
-          accept=".jpg, .png, .jpeg"
+          id='fileInput'
+          type='file'
+          accept='.jpg, .png, .jpeg'
           onClick={onChange}
         />
-        <label htmlFor="fileInput">Chose file</label>
+        <label htmlFor='fileInput'>Chose file</label>
       </div>
       <img
-        id="imagePreview"
+        id='imagePreview'
         className={classNames({ [imgStyle]: !!field.value })}
-        alt="user"
+        alt='user'
       />
     </div>
   );
