@@ -28,12 +28,6 @@ router.post(
 );
 
 router.post(
-  '/getCustomersContests',
-  checkToken.checkToken,
-  contestController.getCustomersContests
-);
-
-router.post(
   '/getAllContests',
   checkToken.checkToken,
   basicMiddlewares.onlyForCreative,

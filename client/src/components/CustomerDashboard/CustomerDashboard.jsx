@@ -21,7 +21,7 @@ class CustomerDashboard extends React.Component {
     });
   };
 
-  componentDidMount () {
+  componentDidMount() {
     this.getContests();
   }
 
@@ -32,7 +32,7 @@ class CustomerDashboard extends React.Component {
     });
   };
 
-  componentDidUpdate (prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props.customerFilter !== prevProps.customerFilter) {
       this.getContests();
     }
@@ -57,7 +57,7 @@ class CustomerDashboard extends React.Component {
     return array;
   };
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.props.clearContestsList();
   }
 
@@ -66,7 +66,7 @@ class CustomerDashboard extends React.Component {
     this.getContests();
   };
 
-  render () {
+  render() {
     const { error, haveMore } = this.props;
     const { customerFilter } = this.props;
     return (
@@ -114,7 +114,7 @@ class CustomerDashboard extends React.Component {
         </div>
         <div className={styles.contestsContainer}>
           {error ? (
-            <TryAgain getData={this.tryToGetContest()} />
+            <TryAgain getData={this.tryToGetContest} />
           ) : (
             <ContestsContainer
               isFetching={this.props.isFetching}
