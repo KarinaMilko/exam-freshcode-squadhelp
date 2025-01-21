@@ -16,6 +16,12 @@ contestsRouter.post(
   userController.payment
 );
 
+contestsRouter.get(
+  '/',
+  basicMiddlewares.onlyForCreative,
+  contestController.getContests
+);
+
 contestsRouter.get('/byCustomer', contestController.getCustomersContests);
 
 contestsRouter.get(
