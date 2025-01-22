@@ -6,7 +6,6 @@ export const loginRequest = data => http.post('login', data);
 export const getUser = () => http.post('getUser');
 export const updateContest = data =>
   http.patch(`contests/${data.get('contestId')}`, data);
-
 export const setNewOffer = data => http.post('setNewOffer', data);
 export const setOfferStatus = data => http.post('setOfferStatus', data);
 export const downloadContestFile = data =>
@@ -18,7 +17,7 @@ export const getDialog = data => http.post('getChat', data);
 export const dataForContest = data => http.post('dataForContest', data);
 export const cashOut = data => http.post('cashout', data);
 export const updateUser = data => http.post('updateUser', data);
-export const newMessage = data => http.post('newMessage', data);
+export const newMessage = data => http.post('catalog/message', data);
 export const changeChatFavorite = data => http.post('favorite', data);
 export const changeChatBlock = data => http.post('blackList', data);
 export const getCatalogList = data => http.post('getCatalogs', data);

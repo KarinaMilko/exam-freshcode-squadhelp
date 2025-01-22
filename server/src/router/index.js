@@ -8,6 +8,7 @@ const validators = require('../middlewares/validators');
 const chatController = require('../controllers/chatController');
 const upload = require('../utils/fileUpload');
 const contestsRouter = require('./contestsRouter');
+const chatRouter = require('./chatRouter');
 const router = express.Router();
 
 router.post(
@@ -55,8 +56,7 @@ router.post(
   basicMiddlewares.onlyForCreative,
   userController.cashout
 );
-
-router.post('/newMessage', chatController.addMessage);
+router.use('/catalog', chatRouter);
 
 router.post('/getChat', chatController.getChat);
 

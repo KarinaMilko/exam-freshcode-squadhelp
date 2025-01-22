@@ -6,10 +6,15 @@ const controller = require('../socketInit');
 const _ = require('lodash');
 
 module.exports.addMessage = async (req, res, next) => {
-  const participants = [req.tokenData.userId, req.body.recipient];
-  participants.sort(
+  const {
+    tokenData: { userId, firstName, lastName, displayName, avatar, email },
+    body: { recipient, messageBody, interlocutor },
+  } = req;
+
+  const participants = [userId, recipient].sort(
     (participant1, participant2) => participant1 - participant2
   );
+
   try {
     const newConversation = await Conversation.findOneAndUpdate(
       {
@@ -23,48 +28,46 @@ module.exports.addMessage = async (req, res, next) => {
         useFindAndModify: false,
       }
     );
-    const message = new Message({
-      sender: req.tokenData.userId,
-      body: req.body.messageBody,
+
+    const message = await new Message({
+      sender: userId,
+      body: messageBody,
       conversation: newConversation._id,
-    });
-    await message.save();
+    }).save();
+
     message._doc.participants = participants;
-    const interlocutorId = participants.filter(
-      participant => participant !== req.tokenData.userId
-    )[0];
+
+    const interlocutorId = participants.find(
+      participant => participant !== userId
+    );
+
     const preview = {
       _id: newConversation._id,
-      sender: req.tokenData.userId,
-      text: req.body.messageBody,
+      sender: userId,
+      text: messageBody,
       createAt: message.createdAt,
       participants,
       blackList: newConversation.blackList,
       favoriteList: newConversation.favoriteList,
+      preview: {
+        interlocutor: {
+          id: userId,
+          firstName: firstName,
+          lastName: lastName,
+          displayName: displayName,
+          avatar: avatar,
+          email: email,
+        },
+      },
     };
     controller.getChatController().emitNewMessage(interlocutorId, {
       message,
-      preview: {
-        _id: newConversation._id,
-        sender: req.tokenData.userId,
-        text: req.body.messageBody,
-        createAt: message.createdAt,
-        participants,
-        blackList: newConversation.blackList,
-        favoriteList: newConversation.favoriteList,
-        interlocutor: {
-          id: req.tokenData.userId,
-          firstName: req.tokenData.firstName,
-          lastName: req.tokenData.lastName,
-          displayName: req.tokenData.displayName,
-          avatar: req.tokenData.avatar,
-          email: req.tokenData.email,
-        },
-      },
+      preview,
     });
+
     res.send({
       message,
-      preview: Object.assign(preview, { interlocutor: req.body.interlocutor }),
+      preview: { ...preview, interlocutor },
     });
   } catch (err) {
     next(err);
