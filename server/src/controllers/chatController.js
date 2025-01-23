@@ -289,10 +289,15 @@ module.exports.removeChatFromCatalog = async (req, res, next) => {
 };
 
 module.exports.deleteCatalog = async (req, res, next) => {
+  const {
+    params: { id: catalogId },
+    tokenData: { userId },
+  } = req;
+
   try {
-    await Catalog.remove({
-      _id: req.body.catalogId,
-      userId: req.tokenData.userId,
+    await Catalog.deleteOne({
+      _id: catalogId,
+      userId,
     });
     res.end();
   } catch (err) {
