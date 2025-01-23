@@ -29,11 +29,12 @@ module.exports.addMessage = async (req, res, next) => {
       }
     );
 
-    const message = await new Message({
+    const message = new Message({
       sender: userId,
       body: messageBody,
       conversation: newConversation._id,
-    }).save();
+    });
+    await message.save();
 
     message._doc.participants = participants;
 
