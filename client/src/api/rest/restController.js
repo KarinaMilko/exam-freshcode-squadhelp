@@ -27,7 +27,9 @@ export const deleteCatalog = ({ catalogId }) =>
   http.delete(`catalog/${catalogId}`);
 export const removeChatFromCatalog = data =>
   http.post('removeChatFromCatalog', data);
-export const changeCatalogName = data => http.post('updateNameCatalog', data);
+export const changeCatalogName = ({ catalogId, catalogName }) =>
+  http.patch(`catalog/${catalogId}`, { catalogName });
+
 export const getCustomersContests = data =>
   http.get(`contests/byCustomer?${stringify(data)}`);
 
