@@ -66,8 +66,6 @@ router.post('/blackList', chatController.blackList);
 
 router.post('/favorite', chatController.favoriteChat);
 
-router.post('/createCatalog', chatController.createCatalog);
-
 router.post('/updateNameCatalog', chatController.updateNameCatalog);
 
 router.post('/addNewChatToCatalog', chatController.addNewChatToCatalog);

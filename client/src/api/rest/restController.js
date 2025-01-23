@@ -22,7 +22,7 @@ export const changeChatFavorite = data => http.post('favorite', data);
 export const changeChatBlock = data => http.post('blackList', data);
 export const getCatalogList = data => http.post('getCatalogs', data);
 export const addChatToCatalog = data => http.post('addNewChatToCatalog', data);
-export const createCatalog = data => http.post('createCatalog', data);
+export const createCatalog = data => http.post('/catalog', data);
 export const deleteCatalog = ({ catalogId }) =>
   http.delete(`catalog/${catalogId}`);
 export const removeChatFromCatalog = data =>

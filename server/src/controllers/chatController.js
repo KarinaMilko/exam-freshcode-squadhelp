@@ -226,11 +226,15 @@ module.exports.favoriteChat = async (req, res, next) => {
 };
 
 module.exports.createCatalog = async (req, res, next) => {
-  console.log(req.body);
+  const {
+    body: { catalogName, chatId },
+    tokenData: { userId },
+  } = req;
+
   const catalog = new Catalog({
-    userId: req.tokenData.userId,
-    catalogName: req.body.catalogName,
-    chats: [req.body.chatId],
+    userId,
+    catalogName,
+    chats: [chatId],
   });
   try {
     await catalog.save();
