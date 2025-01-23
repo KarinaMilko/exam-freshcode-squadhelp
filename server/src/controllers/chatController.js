@@ -313,9 +313,13 @@ module.exports.deleteCatalog = async (req, res, next) => {
 };
 
 module.exports.getCatalogs = async (req, res, next) => {
+  const {
+    tokenData: { userId },
+  } = req;
+
   try {
     const catalogs = await Catalog.aggregate([
-      { $match: { userId: req.tokenData.userId } },
+      { $match: { userId } },
       {
         $project: {
           _id: 1,

@@ -20,7 +20,7 @@ export const updateUser = data => http.post('updateUser', data);
 export const newMessage = data => http.post('catalog/message', data);
 export const changeChatFavorite = data => http.post('favorite', data);
 export const changeChatBlock = data => http.post('blackList', data);
-export const getCatalogList = data => http.post('getCatalogs', data);
+export const getCatalogList = data => http.get('catalog/', data);
 export const addChatToCatalog = data => http.post('addNewChatToCatalog', data);
 export const createCatalog = data => http.post('/catalog', data);
 export const deleteCatalog = ({ catalogId }) =>

@@ -7,6 +7,8 @@ chatRouter.post('/', chatController.createCatalog);
 
 chatRouter.post('/message', chatController.addMessage);
 
+chatRouter.get('/', chatController.getCatalogs);
+
 chatRouter.patch('/:id', chatController.updateNameCatalog);
 
 chatRouter.delete('/:id', chatController.deleteCatalog);
