@@ -22,11 +22,15 @@ export const changeChatFavorite = data => http.post('favorite', data);
 export const changeChatBlock = data => http.post('blackList', data);
 export const getCatalogList = data => http.get('catalog/', data);
 export const addChatToCatalog = data => http.post('addNewChatToCatalog', data);
+
 export const createCatalog = data => http.post('/catalog', data);
+
 export const deleteCatalog = ({ catalogId }) =>
   http.delete(`catalog/${catalogId}`);
-export const removeChatFromCatalog = data =>
-  http.post('removeChatFromCatalog', data);
+
+export const removeChatFromCatalog = ({ catalogId, chatId }) =>
+  http.delete(`catalog/chat/${catalogId}/${chatId}`);
+
 export const changeCatalogName = ({ catalogId, catalogName }) =>
   http.patch(`catalog/${catalogId}`, { catalogName });
 

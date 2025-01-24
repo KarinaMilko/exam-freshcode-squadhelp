@@ -68,6 +68,4 @@ router.post('/favorite', chatController.favoriteChat);
 
 router.post('/addNewChatToCatalog', chatController.addNewChatToCatalog);
 
-router.post('/removeChatFromCatalog', chatController.removeChatFromCatalog);
-
 module.exports = router;
