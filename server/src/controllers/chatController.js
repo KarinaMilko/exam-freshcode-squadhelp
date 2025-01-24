@@ -264,13 +264,15 @@ module.exports.updateNameCatalog = async (req, res, next) => {
 };
 
 module.exports.addNewChatToCatalog = async (req, res, next) => {
+  const {
+    body: { catalogId, chatId },
+    tokenData: { userId },
+  } = req;
+
   try {
     const catalog = await Catalog.findOneAndUpdate(
-      {
-        _id: req.body.catalogId,
-        userId: req.tokenData.userId,
-      },
-      { $addToSet: { chats: req.body.chatId } },
+      { _id: catalogId, userId },
+      { $addToSet: { chats: chatId } },
       { new: true }
     );
     res.send(catalog);

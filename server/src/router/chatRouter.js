@@ -5,6 +5,7 @@ const chatRouter = Router();
 
 chatRouter.post('/', chatController.createCatalog);
 chatRouter.post('/message', chatController.addMessage);
+chatRouter.post('/chat', chatController.addNewChatToCatalog);
 
 chatRouter.get('/', chatController.getCatalogs);
 
