@@ -51,11 +51,6 @@ router.post(
 
 router.post('/updateUser', upload.uploadAvatar, userController.updateUser);
 
-router.post(
-  '/cashout',
-  basicMiddlewares.onlyForCreative,
-  userController.cashout
-);
 router.use('/catalog', chatRouter);
 
 router.post('/getChat', chatController.getChat);
