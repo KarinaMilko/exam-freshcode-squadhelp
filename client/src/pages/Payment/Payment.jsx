@@ -44,7 +44,7 @@ const Payment = props => {
   const { error } = props.payment;
   const { clearPaymentStore } = props;
   if (isEmpty(contests)) {
-    navigate('/startContest', { replace: true });
+    navigate('/dashboard', { replace: true });
   }
   return (
     <div className={styles.mainContainer}>
@@ -69,7 +69,7 @@ const Payment = props => {
           <span>Total:</span>
           <span>$100.00 USD</span>
         </div>
-        <a href='http://www.google.com'>Have a promo code?</a>
+        <a href="http://www.google.com">Have a promo code?</a>
       </div>
     </div>
   );
