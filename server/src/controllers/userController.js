@@ -178,6 +178,20 @@ module.exports.payment = async (req, res, next) => {
   }
 };
 
+module.exports.getUser = async (req, res, next) => {
+  try {
+    const {
+      tokenData: { userId },
+    } = req;
+
+    const user = await User.findOne({ where: { id: userId } });
+
+    res.send(user);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports.updateUser = async (req, res, next) => {
   try {
     if (req.file) {

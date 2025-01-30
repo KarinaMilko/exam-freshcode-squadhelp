@@ -9,6 +9,7 @@ const chatController = require('../controllers/chatController');
 const upload = require('../utils/fileUpload');
 const contestsRouter = require('./contestsRouter');
 const chatRouter = require('./chatRouter');
+const usersRouter = require('./usersRouter');
 const router = express.Router();
 
 router.post(
@@ -20,7 +21,7 @@ router.post(
 
 router.post('/login', validators.validateLogin, userController.login);
 
-router.post('/getUser', checkToken.checkAuth);
+router.use('/users', usersRouter);
 
 router.use(checkToken.checkToken);
 
