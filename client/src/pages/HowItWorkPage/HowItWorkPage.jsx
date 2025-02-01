@@ -53,7 +53,7 @@ function HowItWorkPage() {
                   Launch a Contest
                   <img
                     className={styles.serviceArrow}
-                    src={`${STATIC_IMAGES_PATH}arrow-long-right.svg`}
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/arrow-long-right.svg`}
                     alt="Arrow Icon"
                   />
                 </a>
@@ -77,7 +77,7 @@ function HowItWorkPage() {
                   Explore Names For Sale
                   <img
                     className={styles.serviceArrow}
-                    src={`${STATIC_IMAGES_PATH}arrow-long-right.svg`}
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/arrow-long-right.svg`}
                     alt="Arrow Icon"
                   />
                 </a>
@@ -100,10 +100,70 @@ function HowItWorkPage() {
                   Learn More
                   <img
                     className={styles.serviceArrow}
-                    src={`${STATIC_IMAGES_PATH}arrow-long-right.svg`}
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/arrow-long-right.svg`}
                     alt="Arrow Icon"
                   />
                 </a>
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+      <div className={styles.namingContestContainer}>
+        <section className={styles.namingContestSection}>
+          <div className={styles.namingContestHeader}>
+            <img
+              className={styles.namingContestIcon}
+              src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-27.svg`}
+              alt="icon"
+            />
+            <h3 className={styles.namingContestTitle}>
+              How Do Naming Contests Work?
+            </h3>
+          </div>
+          <div className={styles.namingContestSteps}>
+            <ul className={styles.namingContestList}>
+              <li className={styles.namingContestStep}>
+                <span className={styles.namingContestStepNumber}>Step 1</span>
+                <p className={styles.namingContestStepDescription}>
+                  Fill out your Naming Brief and begin receiving name ideas in
+                  minutes
+                </p>
+                <img
+                  className={styles.namingContestArrow}
+                  src={`${STATIC_IMAGES_PATH}how_it_work_icon/arrow-long-right-blue.svg`}
+                  alt="Arrow Icon"
+                />
+              </li>
+              <li className={styles.namingContestStep}>
+                <span className={styles.namingContestStepNumber}>Step 2</span>
+                <p className={styles.namingContestStepDescription}>
+                  Rate the submissions and provide feedback to creatives.
+                  Creatives submit even more names based on your feedback.
+                </p>
+                <img
+                  className={styles.namingContestArrow}
+                  src={`${STATIC_IMAGES_PATH}how_it_work_icon/arrow-long-right-blue.svg`}
+                  alt="Arrow Icon"
+                />
+              </li>
+              <li className={styles.namingContestStep}>
+                <span className={styles.namingContestStepNumber}>Step 3</span>
+                <p className={styles.namingContestStepDescription}>
+                  Our team helps you test your favorite names with your target
+                  audience. We also assist with Trademark screening.
+                </p>
+                <img
+                  className={styles.namingContestArrow}
+                  src={`${STATIC_IMAGES_PATH}how_it_work_icon/arrow-long-right-blue.svg`}
+                  alt="Arrow Icon"
+                />
+              </li>
+              <li className={styles.namingContestStep}>
+                <span className={styles.namingContestStepNumber}>Step 4</span>
+                <p className={styles.namingContestStepDescription}>
+                  Pick a Winner. The winner gets paid for their submission.
+                </p>
               </li>
             </ul>
           </div>
