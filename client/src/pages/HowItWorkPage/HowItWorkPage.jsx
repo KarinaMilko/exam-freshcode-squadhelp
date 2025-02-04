@@ -1,8 +1,8 @@
-import React from 'react';
 import styles from './../HowItWorkPage/HowItWorkPage.module.sass';
 import CONSTANTS from './../../constants';
 
 const { STATIC_IMAGES_PATH } = CONSTANTS;
+
 function HowItWorkPage() {
   return (
     <div className={styles.atomContainer}>
@@ -169,8 +169,237 @@ function HowItWorkPage() {
           </div>
         </section>
       </div>
+      <div className={styles.faqContainer}>
+        <section className={styles.faqSection}>
+          <div className={styles.faqHeader}>
+            <h3 className={styles.faqTitle}>Frequently Asked Questions</h3>
+            <ul className={styles.faqCategories}>
+              <li className={styles.faqCategory}>
+                <a className={styles.faqLink} href="#launching-a-contest">
+                  Launching A Contest
+                </a>
+              </li>
+              <li className={styles.faqCategory}>
+                <a className={styles.faqLink} href="#buying-from-marketplace">
+                  Buying From Marketplace
+                </a>
+              </li>
+              <li className={styles.faqCategory}>
+                <a className={styles.faqLink} href="#managed-contests">
+                  Managed Contests
+                </a>
+              </li>
+              <li className={styles.faqCategory}>
+                <a className={styles.faqLink} href="#for-creatives">
+                  For Creatives
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div className={styles.faqContent}>
+            <h4 className={styles.faqSubtitle} id="launching-a-contest">
+              Buying From Marketplace
+            </h4>
+            <ul className={styles.faqList}>
+              <li className={styles.faqItem}>
+                <div className={styles.faqQuestion}>
+                  How long does it take to start receiving submissions?
+                  <img
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-plus.svg`}
+                    alt="icon"
+                  />
+                </div>
+              </li>
+              <li className={styles.faqItem}>
+                <div className={styles.faqQuestion}>
+                  How long do Naming Contests last?
+                  <img
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-plus.svg`}
+                    alt="icon"
+                  />
+                </div>
+              </li>
+              <li className={styles.faqItem}>
+                <div className={styles.faqQuestion}>
+                  Where are the creatives located?
+                  <img
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-plus.svg`}
+                    alt="icon"
+                  />
+                </div>
+              </li>
+              <li className={styles.faqItem}>
+                <div className={styles.faqQuestion}>
+                  What if I do not like any submissions?
+                  <img
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-plus.svg`}
+                    alt="icon"
+                  />
+                </div>
+              </li>
+              <li className={styles.faqItem}>
+                <div className={styles.faqQuestion}>
+                  How much does it cost?
+                  <img
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-plus.svg`}
+                    alt="icon"
+                  />
+                </div>
+              </li>
+              <li className={styles.faqItem}>
+                <div className={styles.faqQuestion}>
+                  I need both a Name and a Logo. Do you offer any discount for
+                  multiple contests?
+                  <img
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-plus.svg`}
+                    alt="icon"
+                  />
+                </div>
+              </li>
+              <li className={styles.faqItem}>
+                <div className={styles.faqQuestion}>
+                  What if I want to keep my business idea private?
+                  <img
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-plus.svg`}
+                    alt="icon"
+                  />
+                </div>
+              </li>
+              <li className={styles.faqItem}>
+                <div className={styles.faqQuestion}>
+                  Can you serve customers outside the US?
+                  <img
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-plus.svg`}
+                    alt="icon"
+                  />
+                </div>
+              </li>
+              <li className={styles.faqItem}>
+                <div className={styles.faqQuestion}>
+                  Can I see any examples?
+                  <img
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-plus.svg`}
+                    alt="icon"
+                  />
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div className={styles.faqContent}>
+            <h4 className={styles.faqSubtitle} id="buying-from-marketplace">
+              Buying From Marketplace
+            </h4>
+            <ul className={styles.faqList}>
+              <li className={styles.faqItem}>
+                <div className={styles.faqQuestion}>
+                  What's included with a Domain Purchase?
+                  <img
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-plus.svg`}
+                    alt="icon"
+                  />
+                </div>
+              </li>
+              <li className={styles.faqItem}>
+                <div className={styles.faqQuestion}>
+                  How does the Domain transfer process work?
+                  <img
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-plus.svg`}
+                    alt="icon"
+                  />
+                </div>
+              </li>
+              <li className={styles.faqItem}>
+                <div className={styles.faqQuestion}>
+                  If I purchase a Domain on installments, can I start using it
+                  to setup my website?
+                  <img
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-plus.svg`}
+                    alt="icon"
+                  />
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div className={styles.faqContent}>
+            <h4 className={styles.faqSubtitle} id="managed-contests">
+              Managed Contests
+            </h4>
+            <ul className={styles.faqList}>
+              <li className={styles.faqItem}>
+                <div className={styles.faqQuestion}>
+                  What are Managed Contests?
+                  <img
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-plus.svg`}
+                    alt="icon"
+                  />
+                </div>
+              </li>
+              <li className={styles.faqItem}>
+                <div className={styles.faqQuestion}>
+                  What's a typical timeline for a Managed Contest?
+                  <img
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-plus.svg`}
+                    alt="icon"
+                  />
+                </div>
+              </li>
+              <li className={styles.faqItem}>
+                <div className={styles.faqQuestion}>
+                  How much do Managed Contests cost?
+                  <img
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-plus.svg`}
+                    alt="icon"
+                  />
+                </div>
+              </li>
+              <li className={styles.faqItem}>
+                <div className={styles.faqQuestion}>
+                  Where are the Branding Consultants located?
+                  <img
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-plus.svg`}
+                    alt="icon"
+                  />
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div className={styles.faqContent}>
+            <h4 className={styles.faqSubtitle} id="for-creatives">
+              For Creatives
+            </h4>
+            <ul className={styles.faqList}>
+              <li className={styles.faqItem}>
+                <div className={styles.faqQuestion}>
+                  Can anyone join your platform?
+                  <img
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-plus.svg`}
+                    alt="icon"
+                  />
+                </div>
+              </li>
+              <li className={styles.faqItem}>
+                <div className={styles.faqQuestion}>
+                  Can I start participating immediately upon signing up?
+                  <img
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-plus.svg`}
+                    alt="icon"
+                  />
+                </div>
+              </li>
+              <li className={styles.faqItem}>
+                <div className={styles.faqQuestion}>
+                  How Do I Get Paid?
+                  <img
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-plus.svg`}
+                    alt="icon"
+                  />
+                </div>
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }
-
 export default HowItWorkPage;
