@@ -399,6 +399,53 @@ function HowItWorkPage() {
           </div>
         </section>
       </div>
+      <div className={styles.faqSearchContainer}>
+        <section className={styles.faqSearchSection}>
+          <div className={styles.faqSearchWrapper}>
+            <img
+              src={`${STATIC_IMAGES_PATH}how_it_work_icon/search.svg`}
+              alt="icon"
+              className={styles.faqSearchIcon}
+            />
+            <input
+              type="text"
+              className={styles.faqSearchInput}
+              placeholder="Search Over 200,000+ Premium Names"
+            />
+
+            <button className={styles.faqSearchButton}>
+              <img
+                src={`${STATIC_IMAGES_PATH}how_it_work_icon/search_white.svg`}
+                alt="icon"
+                className={styles.faqSearchButtonIcon}
+              />
+            </button>
+          </div>
+          <div className={styles.faqCategoryWrapper}>
+            <a className={styles.faqCategoryLink} href="#">
+              Tech
+            </a>
+            <a className={styles.faqCategoryLink} href="#">
+              Clothing
+            </a>
+            <a className={styles.faqCategoryLink} href="#">
+              Finance
+            </a>
+            <a className={styles.faqCategoryLink} href="#">
+              Real Estate
+            </a>
+            <a className={styles.faqCategoryLink} href="#">
+              Crypto
+            </a>
+            <a className={styles.faqCategoryLink} href="#">
+              Short
+            </a>
+            <a className={styles.faqCategoryLink} href="#">
+              One Word
+            </a>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }
