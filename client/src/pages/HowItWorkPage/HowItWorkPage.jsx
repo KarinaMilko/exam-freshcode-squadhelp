@@ -446,6 +446,15 @@ function HowItWorkPage() {
           </div>
         </section>
       </div>
+      <button className={styles.buttonIcon}>
+        <div className={styles.icon}>
+          <img
+            src={`${STATIC_IMAGES_PATH}how_it_work_icon/symbol.svg`}
+            alt="icon"
+            className={styles.iconSymbol}
+          />
+        </div>
+      </button>
     </div>
   );
 }
