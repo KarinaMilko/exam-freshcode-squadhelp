@@ -51,13 +51,12 @@
 
 .servicesContainer
     padding: 80px 0
+
+.servicesSection
     max-width: 1480px
     width: 100%
     margin: 0 auto
-
-.servicesSection
     padding: 0 12px
-    margin: 0 52px
 
 .servicesHeader
     margin: 0 auto
@@ -65,11 +64,10 @@
     display: flex
     flex-direction: column
     align-items: center
-    gap: 10px
 
 .servicesSubtitle
     padding: 7px 15px
-    margin: 0 0 10px
+    margin: 0 0 15px
     font-size: 12px
     font-weight: 400
     color: #377dff
@@ -81,11 +79,9 @@
     font-weight: 700
 
 .servicesDescription
-    color: #828282
+    color: #19184A
     font-weight: 400
-
-.servicesOptions
-    margin: 40px 0 0
+    margin: 10px 0 40px
 
 .servicesList
     display: flex
@@ -93,10 +89,11 @@
     justify-content: space-between
     gap: 24px
     width: 100%
-    padding: 25px
+    margin: 0 0 24px
 
 .serviceCard
-    padding: 25px
+    padding: 25px 25px 16px
+    max-height: 100%
     width: 30%
     display: flex
     flex-direction: column
@@ -119,6 +116,11 @@
     color: #828282
     margin: 0 0 48px
 
+.serviceBtn
+    display: flex
+    justify-content: center
+    align-items: center
+
 .serviceLink
     padding: 16px
     background: linear-gradient(-45deg, #5a73ed 0, #3d57d5 100%)
@@ -127,12 +129,15 @@
     font-weight: 700
     text-decoration: none
     display: flex
-    align-items: flex-start
+    align-items: center
     gap: 10px
 
+    &:hover .serviceArrow
+        transform: translateX(10px)
+        transition: transform 0.3s ease
+
 .serviceArrow
-    height: 25px
-    width: 35px
+    transition: transform 0.3s ease
 
 .namingContestContainer
     padding: 80px 0

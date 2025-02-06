@@ -35,78 +35,78 @@ function HowItWorkPage() {
               Atom offers 3 ways to get you a perfect name for your business.
             </p>
           </div>
-          <div className={styles.servicesOptions}>
-            <ul className={styles.servicesList}>
-              <li className={styles.serviceCard}>
-                <img
-                  className={styles.serviceIconWrapper}
-                  src={`${STATIC_IMAGES_PATH}how_it_work_icon/g1.svg`}
-                  alt="icon"
-                />
-                <h3 className={styles.serviceTitle}>Launch a Contest</h3>
-                <p className={styles.serviceDescription}>
-                  Work with hundreds of creative experts to get custom name
-                  suggestions for your business or brand. All names are
-                  auto-checked for URL availability.
-                </p>
+          <ul className={styles.servicesList}>
+            <li className={styles.serviceCard}>
+              <img
+                className={styles.serviceIconWrapper}
+                src={`${STATIC_IMAGES_PATH}how_it_work_icon/g1.svg`}
+                alt="icon"
+              />
+              <h3 className={styles.serviceTitle}>Launch a Contest</h3>
+              <p className={styles.serviceDescription}>
+                Work with hundreds of creative experts to get custom name
+                suggestions for your business or brand. All names are
+                auto-checked for URL availability.
+              </p>
+              <div className={styles.serviceBtn}>
                 <a className={styles.serviceLink} href="/start-contest">
                   Launch a Contest
                   <img
                     className={styles.serviceArrow}
-                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/arrow-long-right.svg`}
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-arrow-long-right.svg`}
                     alt="Arrow Icon"
                   />
                 </a>
-              </li>
-              <li className={styles.serviceCard}>
+              </div>
+            </li>
+            <li className={styles.serviceCard}>
+              <img
+                className={styles.serviceIconWrapper}
+                src={`${STATIC_IMAGES_PATH}how_it_work_icon/g2.svg`}
+                alt="icon"
+              />
+              <h3 className={styles.serviceTitle}>Explore Names For Sale</h3>
+              <p className={styles.serviceDescription}>
+                Our branding team has curated thousands of pre-made names that
+                you can purchase instantly. All names include a matching URL and
+                a complimentary Logo Design
+              </p>
+              <a
+                className={styles.serviceLink}
+                href="/premium-domains-for-sale/all"
+              >
+                Explore Names For Sale
                 <img
-                  className={styles.serviceIconWrapper}
-                  src={`${STATIC_IMAGES_PATH}how_it_work_icon/g2.svg`}
-                  alt="icon"
+                  className={styles.serviceArrow}
+                  src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-arrow-long-right.svg`}
+                  alt="Arrow Icon"
                 />
-                <h3 className={styles.serviceTitle}>Explore Names For Sale</h3>
-                <p className={styles.serviceDescription}>
-                  Our branding team has curated thousands of pre-made names that
-                  you can purchase instantly. All names include a matching URL
-                  and a complimentary Logo Design
-                </p>
-                <a
-                  className={styles.serviceLink}
-                  href="/premium-domains-for-sale/all"
-                >
-                  Explore Names For Sale
-                  <img
-                    className={styles.serviceArrow}
-                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/arrow-long-right.svg`}
-                    alt="Arrow Icon"
-                  />
-                </a>
-              </li>
-              <li className={styles.serviceCard}>
+              </a>
+            </li>
+            <li className={styles.serviceCard}>
+              <img
+                className={styles.serviceIconWrapper}
+                src={`${STATIC_IMAGES_PATH}how_it_work_icon/g3.svg`}
+                alt="icon"
+              />
+              <h3 className={styles.serviceTitle}>
+                Agency-level Managed Contests
+              </h3>
+              <p className={styles.serviceDescription}>
+                Our Managed contests combine the power of crowdsourcing with the
+                rich experience of our branding consultants. Get a complete
+                agency-level experience at a fraction of Agency costs
+              </p>
+              <a className={styles.serviceLink} href="/managed-contests">
+                Learn More
                 <img
-                  className={styles.serviceIconWrapper}
-                  src={`${STATIC_IMAGES_PATH}how_it_work_icon/g3.svg`}
-                  alt="icon"
+                  className={styles.serviceArrow}
+                  src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-arrow-long-right.svg`}
+                  alt="Arrow Icon"
                 />
-                <h3 className={styles.serviceTitle}>
-                  Agency-level Managed Contests
-                </h3>
-                <p className={styles.serviceDescription}>
-                  Our Managed contests combine the power of crowdsourcing with
-                  the rich experience of our branding consultants. Get a
-                  complete agency-level experience at a fraction of Agency costs
-                </p>
-                <a className={styles.serviceLink} href="/managed-contests">
-                  Learn More
-                  <img
-                    className={styles.serviceArrow}
-                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/arrow-long-right.svg`}
-                    alt="Arrow Icon"
-                  />
-                </a>
-              </li>
-            </ul>
-          </div>
+              </a>
+            </li>
+          </ul>
         </section>
       </div>
       <div className={styles.namingContestContainer}>
