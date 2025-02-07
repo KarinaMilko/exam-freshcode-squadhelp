@@ -71,17 +71,19 @@ function HowItWorkPage() {
                 you can purchase instantly. All names include a matching URL and
                 a complimentary Logo Design
               </p>
-              <a
-                className={styles.serviceLink}
-                href="/premium-domains-for-sale/all"
-              >
-                Explore Names For Sale
-                <img
-                  className={styles.serviceArrow}
-                  src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-arrow-long-right.svg`}
-                  alt="Arrow Icon"
-                />
-              </a>
+              <div className={styles.serviceBtn}>
+                <a
+                  className={styles.serviceLink}
+                  href="/premium-domains-for-sale/all"
+                >
+                  Explore Names For Sale
+                  <img
+                    className={styles.serviceArrow}
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-arrow-long-right.svg`}
+                    alt="Arrow Icon"
+                  />
+                </a>
+              </div>
             </li>
             <li className={styles.serviceCard}>
               <img
@@ -97,14 +99,16 @@ function HowItWorkPage() {
                 rich experience of our branding consultants. Get a complete
                 agency-level experience at a fraction of Agency costs
               </p>
-              <a className={styles.serviceLink} href="/managed-contests">
-                Learn More
-                <img
-                  className={styles.serviceArrow}
-                  src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-arrow-long-right.svg`}
-                  alt="Arrow Icon"
-                />
-              </a>
+              <div className={styles.serviceBtn}>
+                <a className={styles.serviceLink} href="/managed-contests">
+                  Learn More
+                  <img
+                    className={styles.serviceArrow}
+                    src={`${STATIC_IMAGES_PATH}how_it_work_icon/icon-arrow-long-right.svg`}
+                    alt="Arrow Icon"
+                  />
+                </a>
+              </div>
             </li>
           </ul>
         </section>

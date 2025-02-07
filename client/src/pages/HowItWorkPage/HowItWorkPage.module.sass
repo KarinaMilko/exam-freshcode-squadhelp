@@ -8,21 +8,41 @@
 .introContainer
     padding: 30px 12px
     margin: 0 52px
+    @media screen and (max-width: 991px)
+        padding: 0 12px
 
 .introSection
     max-width: 1040px
     display: flex
     flex-direction: row
-    justifyi-content: space-between
     align-items: center
     margin: 0 auto
     gap: 40px
+    @media screen and (max-width: 1199px)
+        gap: 0px
+        padding: 20px 0 30px
+        justify-content: center
+    @media screen and (max-width: 991px)
+        flex-direction: column-reverse
+        padding: 10px 0 20px
+    @media screen and (max-width: 575px)
+        flex-shrink: 1
 
 .introTextBlock
     width: 50%
     text-align: left
     display: flex
     flex-direction: column
+    @media screen and (max-width: 991px)
+        text-align: center
+        max-width: 696px
+        width: 100%
+    @media screen and (max-width: 767px)
+        max-width: 516px
+    @media screen and (max-width: 575px)
+        max-width: 536px
+        width: 100%
+        min-width: 306px
 
 .introSubtitle
     padding: 7px 15px
@@ -33,30 +53,59 @@
     background-color: #377DFF1A
     border-radius: 20px
     align-self: start
+    @media screen and (max-width: 991px)
+        margin: 30px 0 8px
+        align-self: center
 
 .introTitle
     font-size: 40px
     font-weight: 700
     margin: 0 0 10px
+    @media screen and (max-width: 991px)
+        font-size: 24px
 
 .introDescription
     margin: 0 0 40px
     color: #828282
-    margin: 0 0 40px
+    @media screen and (max-width: 991px)
+        margin: 0 0 20px
 
 .introVideo
     width: 520px
-    height: 293px
+    aspect-ratio: 16 / 9
     border-radius: 20px
+    @media screen and (max-width: 1199px)
+        width: 446px
+    @media screen and (max-width: 991px)
+        width: 696px
+    @media screen and (max-width: 767px)
+        max-width: 516px
+    @media screen and (max-width: 575px)
+        max-width: 536px
+        width: 100%
+        min-width: 306px
 
 .servicesContainer
     padding: 80px 0
+    @media screen and (max-width: 991px)
+        padding: 60px 0
+    @media screen and (max-width: 575px)
+        padding: 0 12px
 
 .servicesSection
     max-width: 1480px
     width: 100%
     margin: 0 auto
-    padding: 0 12px
+    @media screen and (max-width: 1560px)
+        max-width: 1190px
+    @media screen and (max-width: 1399px)
+        max-width: 1140px
+    @media screen and (max-width: 1199px)
+        max-width: 960px
+    @media screen and (max-width: 991px)
+        max-width: 720px
+    @media screen and (max-width: 767px)
+        max-width: 540px
 
 .servicesHeader
     margin: 0 auto
@@ -64,6 +113,7 @@
     display: flex
     flex-direction: column
     align-items: center
+    text-align: center
 
 .servicesSubtitle
     padding: 7px 15px
@@ -73,6 +123,8 @@
     color: #377dff
     background-color: #377DFF1A
     border-radius: 20px
+    @media screen and (max-width: 991px)
+        font-size: 11px
 
 .servicesTitle
     font-size: 32px
@@ -82,6 +134,8 @@
     color: #19184A
     font-weight: 400
     margin: 10px 0 40px
+    @media screen and (max-width: 991px)
+        font-size: 14px
 
 .servicesList
     display: flex
@@ -90,6 +144,11 @@
     gap: 24px
     width: 100%
     margin: 0 0 24px
+    @media screen and (max-width: 991px)
+        flex-wrap: wrap
+    @media screen and (max-width: 767px)
+        max-width: 536px
+        gap: 8px
 
 .serviceCard
     padding: 25px 25px 16px
@@ -103,6 +162,16 @@
     gap: 10px
     border-radius: 24px
     box-shadow: rgba(0, 0, 0, 0.04) 0px 16px 32px 0px
+    @media screen and (max-width: 991px)
+        width: 40%
+    @media screen and (max-width: 767px)
+        width: 45%
+        text-align: center
+        align-items: center
+        padding: 10px 10px 16px
+    @media screen and (max-width: 575px)
+        width: 100%
+        min-width: 307px
 
 .serviceIconWrapper
     height: 48px
@@ -115,11 +184,15 @@
 .serviceDescription
     color: #828282
     margin: 0 0 48px
+    @media screen and (max-width: 991px)
+        font-size: 14px
 
 .serviceBtn
     display: flex
     justify-content: center
     align-items: center
+    @media screen and (max-width: 575px)
+        margin: 0 0 16px
 
 .serviceLink
     padding: 16px
@@ -147,6 +220,16 @@
     padding: 0 12px
     max-width: 1480px
     margin: 0 auto
+    @media screen and (max-width: 1560px)
+        max-width: 1190px
+    @media screen and (max-width: 1399px)
+        max-width: 1140px
+    @media screen and (max-width: 1199px)
+        max-width: 960px
+    @media screen and (max-width: 991px)
+        max-width: 720px
+    @media screen and (max-width: 767px)
+        max-width: 540px
 
 .namingContestHeader
     display: flex
@@ -173,6 +256,9 @@
     gap: 24px
     width: 100%
     max-width: 1480px
+    @media screen and (max-width: 991px)
+        flex-wrap: wrap
+        max-width: 720px
 
 .namingContestStep
     display: flex
@@ -186,6 +272,16 @@
     margin: 0 0 30px
     width: 25%
     position: relative
+    @media screen and (max-width: 991px)
+        width: 40%
+        flex-grow: 1
+    @media screen and (max-width: 767px)
+        width: 35%
+        flex-grow: 1
+    @media screen and (max-width: 575px)
+        width: 100%
+        min-width: 307px
+        margin: 0
 
 .namingContestStepNumber
     padding: 10px 15px
@@ -200,6 +296,8 @@
 .namingContestStepDescription
     color: #828282
     font-weight: 400
+    @media screen and (max-width: 767px)
+        font-size: 14px
 
 .namingContestArrow
     height: 28px
@@ -235,7 +333,7 @@
     align-items: center
     margin: 0 auto
     width: 100%
-    width: 830px
+    max-width: 830px
     border-radius: 16px
     height: 50px
     background-color: #f5f5f5
@@ -247,7 +345,6 @@
     width: 25%
     padding: 13px 0
     cursor: pointer
-    width: 100%
 
 .faqLink
     text-decoration: none
@@ -267,6 +364,8 @@
 .faqContent
     padding: 50px 0 0 10px
     max-width: 830px
+    @media screen and (max-width: 767px)
+        padding: 50px 10px 0
 
 .faqSubtitle
     margin: 0 0 30px
@@ -296,6 +395,9 @@
     padding: 24px 70px 24px 24px
     font-size: 20px
     font-weight: 700
+    @media screen and (max-width: 767px)
+        font-size: 18px
+        padding: 18px 30px 18px 20px
 
 .faqSearchContainer
     padding: 80px 0
@@ -309,8 +411,7 @@
     padding: 40px 12px 60px
     margin: 0 auto
     border-bottom: 1px solid #edeff3
-    max-width: 1480px
-    width: 100%
+    max-width: 1456px
 
 .faqSearchWrapper
     position: relative
@@ -361,6 +462,7 @@
     margin: 35px 0 0
     display: flex
     justify-content: center
+    flex-wrap: wrap
 
 .faqCategoryLink
     text-decoration: none
