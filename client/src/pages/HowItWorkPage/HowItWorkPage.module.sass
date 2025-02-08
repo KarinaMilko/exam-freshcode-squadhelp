@@ -1,0 +1,504 @@
+.atomContainer
+    box-sizing: border-box
+    padding: 40px 0 0 0
+    font-family: "Product Sans",sans-serif
+    line-height: 1.5
+    background-color: #f4f9fe
+
+.introContainer
+    padding: 30px 12px
+    margin: 0 52px
+    @media screen and (max-width: 991px)
+        padding: 0 12px
+
+.introSection
+    max-width: 1040px
+    display: flex
+    flex-direction: row
+    align-items: center
+    margin: 0 auto
+    gap: 40px
+    @media screen and (max-width: 1199px)
+        gap: 0px
+        padding: 20px 0 30px
+        justify-content: center
+    @media screen and (max-width: 991px)
+        flex-direction: column-reverse
+        padding: 10px 0 20px
+    @media screen and (max-width: 575px)
+        flex-shrink: 1
+
+.introTextBlock
+    width: 50%
+    text-align: left
+    display: flex
+    flex-direction: column
+    @media screen and (max-width: 991px)
+        text-align: center
+        max-width: 696px
+        width: 100%
+    @media screen and (max-width: 767px)
+        max-width: 516px
+    @media screen and (max-width: 575px)
+        max-width: 536px
+        width: 100%
+        min-width: 306px
+
+.introSubtitle
+    padding: 7px 15px
+    margin: 0 0 10px
+    font-size: 12px
+    font-weight: 400
+    color: #377dff
+    background-color: #377DFF1A
+    border-radius: 20px
+    align-self: start
+    @media screen and (max-width: 991px)
+        margin: 30px 0 8px
+        align-self: center
+
+.introTitle
+    font-size: 40px
+    font-weight: 700
+    margin: 0 0 10px
+    @media screen and (max-width: 991px)
+        font-size: 24px
+
+.introDescription
+    margin: 0 0 40px
+    color: #828282
+    @media screen and (max-width: 991px)
+        margin: 0 0 20px
+
+.introVideo
+    width: 520px
+    aspect-ratio: 16 / 9
+    border-radius: 20px
+    @media screen and (max-width: 1199px)
+        width: 446px
+    @media screen and (max-width: 991px)
+        width: 696px
+    @media screen and (max-width: 767px)
+        max-width: 516px
+    @media screen and (max-width: 575px)
+        max-width: 536px
+        width: 100%
+        min-width: 306px
+
+.servicesContainer
+    padding: 80px 0
+    @media screen and (max-width: 991px)
+        padding: 60px 0
+    @media screen and (max-width: 575px)
+        padding: 0 12px
+
+.servicesSection
+    max-width: 1480px
+    width: 100%
+    margin: 0 auto
+    @media screen and (max-width: 1560px)
+        max-width: 1190px
+    @media screen and (max-width: 1399px)
+        max-width: 1140px
+    @media screen and (max-width: 1199px)
+        max-width: 960px
+    @media screen and (max-width: 991px)
+        max-width: 720px
+    @media screen and (max-width: 767px)
+        max-width: 540px
+
+.servicesHeader
+    margin: 0 auto
+    max-width: 800px
+    display: flex
+    flex-direction: column
+    align-items: center
+    text-align: center
+
+.servicesSubtitle
+    padding: 7px 15px
+    margin: 0 0 15px
+    font-size: 12px
+    font-weight: 400
+    color: #377dff
+    background-color: #377DFF1A
+    border-radius: 20px
+    @media screen and (max-width: 991px)
+        font-size: 11px
+
+.servicesTitle
+    font-size: 32px
+    font-weight: 700
+
+.servicesDescription
+    color: #19184A
+    font-weight: 400
+    margin: 10px 0 40px
+    @media screen and (max-width: 991px)
+        font-size: 14px
+
+.servicesList
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    gap: 24px
+    width: 100%
+    margin: 0 0 24px
+    @media screen and (max-width: 991px)
+        flex-wrap: wrap
+    @media screen and (max-width: 767px)
+        max-width: 536px
+        gap: 8px
+
+.serviceCard
+    padding: 25px 25px 16px
+    max-height: 100%
+    width: 30%
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    align-items: flex-start
+    background-color: #fff
+    gap: 10px
+    border-radius: 24px
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 16px 32px 0px
+    @media screen and (max-width: 991px)
+        width: 40%
+    @media screen and (max-width: 767px)
+        width: 45%
+        text-align: center
+        align-items: center
+        padding: 10px 10px 16px
+    @media screen and (max-width: 575px)
+        width: 100%
+        min-width: 307px
+
+.serviceIconWrapper
+    height: 48px
+    width: 48px
+
+.serviceTitle
+    font-size: 20px
+    font-weight: 700
+
+.serviceDescription
+    color: #828282
+    margin: 0 0 48px
+    @media screen and (max-width: 991px)
+        font-size: 14px
+
+.serviceBtn
+    display: flex
+    justify-content: center
+    align-items: center
+    @media screen and (max-width: 575px)
+        margin: 0 0 16px
+
+.serviceLink
+    padding: 16px
+    background: linear-gradient(-45deg, #5a73ed 0, #3d57d5 100%)
+    border-radius: 8px
+    color: #FFF
+    font-weight: 700
+    text-decoration: none
+    display: flex
+    align-items: center
+    gap: 10px
+
+    &:hover .serviceArrow
+        transform: translateX(10px)
+        transition: transform 0.3s ease
+
+.serviceArrow
+    transition: transform 0.3s ease
+
+.namingContestContainer
+    padding: 80px 0
+    width: 100%
+
+.namingContestSection
+    padding: 0 12px
+    max-width: 1480px
+    margin: 0 auto
+    @media screen and (max-width: 1560px)
+        max-width: 1190px
+    @media screen and (max-width: 1399px)
+        max-width: 1140px
+    @media screen and (max-width: 1199px)
+        max-width: 960px
+    @media screen and (max-width: 991px)
+        max-width: 720px
+    @media screen and (max-width: 767px)
+        max-width: 540px
+
+.namingContestHeader
+    display: flex
+    flex-direction: column
+    gap: 20px
+    margin: 0 0 40px
+    align-items: center
+
+.namingContestIcon
+    height: 70px
+    width: 70px
+
+.namingContestTitle
+    font-size: 28px
+    font-weight: 700
+
+.namingContestSteps
+    padding: 40px 0 0
+
+.namingContestList
+    display: flex
+    justify-content: center
+    text-align: left
+    gap: 24px
+    width: 100%
+    max-width: 1480px
+    @media screen and (max-width: 991px)
+        flex-wrap: wrap
+        max-width: 720px
+
+.namingContestStep
+    display: flex
+    flex-direction: column
+    align-items: flex-start
+    gap: 15px
+    background-color: #fff
+    border-radius: 24px
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 16px 32px 0px
+    padding: 25px
+    margin: 0 0 30px
+    width: 25%
+    position: relative
+    @media screen and (max-width: 991px)
+        width: 40%
+        flex-grow: 1
+    @media screen and (max-width: 767px)
+        width: 35%
+        flex-grow: 1
+    @media screen and (max-width: 575px)
+        width: 100%
+        min-width: 307px
+        margin: 0
+
+.namingContestStepNumber
+    padding: 10px 15px
+    margin: 0 0 10px
+    font-size: 14px
+    font-weight: 700
+    border-radius: 20px
+    background-color: #4942F3
+    color: #fff
+    text-align: center
+
+.namingContestStepDescription
+    color: #828282
+    font-weight: 400
+    @media screen and (max-width: 767px)
+        font-size: 14px
+
+.namingContestArrow
+    height: 28px
+    width: 46px
+    position: absolute
+    top: 50%
+    left: 94%
+    z-index: 2
+
+.faqContainer
+    background-color: #fff
+    padding: 80px 0
+
+.faqSection
+    max-width: 830px
+    display: flex
+    flex-direction: column
+    margin: 0 auto
+
+.faqHeader
+    display: flex
+    flex-direction: column
+
+.faqTitle
+    font-size: 28px
+    font-weight: 700
+    margin: 0 0 35px
+    text-align: center
+
+.faqCategories
+    display: flex
+    justify-content: space-between
+    align-items: center
+    margin: 0 auto
+    width: 100%
+    max-width: 830px
+    border-radius: 16px
+    height: 50px
+    background-color: #f5f5f5
+
+.faqCategory
+    text-align: center
+    font-weight: 400
+    border-radius: 16px
+    width: 25%
+    padding: 13px 0
+    cursor: pointer
+
+.faqLink
+    text-decoration: none
+    color: inherit
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 100%
+    height: 100%
+    padding: 13px 0
+
+    &:hover,  &:active
+        color: #fff
+        background-color: #ec7446
+        border-radius: 16px
+
+.faqContent
+    padding: 50px 0 0 10px
+    max-width: 830px
+    @media screen and (max-width: 767px)
+        padding: 50px 10px 0
+
+.faqSubtitle
+    margin: 0 0 30px
+    font-size: 28px
+    color: #377DFF
+    font-weight: 700
+
+.faqList
+    display: flex
+    flex-direction: column
+    gap: 15px
+    max-width: 830px
+    width: 100%
+
+.faqItem
+    border-radius: 16px
+    border: 1px solid #f5f5f5
+    transition: background-color 0.3s ease, border 0.3s ease
+
+    &:hover
+        background-color: rgba(48, 125, 246, .1)
+        border: 1px solid #307df6
+
+.faqQuestion
+    display: flex
+    justify-content: space-between
+    padding: 24px 70px 24px 24px
+    font-size: 20px
+    font-weight: 700
+    @media screen and (max-width: 767px)
+        font-size: 18px
+        padding: 18px 30px 18px 20px
+
+.faqSearchContainer
+    padding: 80px 0
+    background-color: #fff
+
+.faqSearchSection
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    padding: 40px 12px 60px
+    margin: 0 auto
+    border-bottom: 1px solid #edeff3
+    max-width: 1456px
+
+.faqSearchWrapper
+    position: relative
+    max-width: 650px
+    width: 100%
+    padding: 2px
+    border-radius: 30px
+    background-image: linear-gradient(45deg, rgba(142, 97, 255, 0.8) 0%, rgb(51, 155, 247) 50%, rgba(43, 198, 215, 0.8) 100%)
+
+.faqSearchInput
+    width: 100%
+    max-width: 650px
+    height: 60px
+    font-size: 18px
+    font-weight: 400
+    color: #343434
+    padding: 0 50px 0 48px
+    border-radius: 30px
+    border-color: transparent
+    box-sizing: border-box
+
+.faqSearchIcon
+    width: 20px
+    height: 20px
+    position: absolute
+    left: 20px
+    top: 50%
+    transform: translateY(-50%)
+    z-index: 2
+
+.faqSearchButton
+    width: 68px
+    height: 54px
+    background-color: #ff6955
+    border-radius: 40px
+    border: none
+    box-shadow: 3px 3px 10px 0 rgb(255 104 85 / .3)
+    position: absolute
+    top: 50%
+    right: 7px
+    transform: translateY(-50%)
+
+.faqSearchButtonIcon
+    width: 21px
+    height: 21px
+
+.faqCategoryWrapper
+    margin: 35px 0 0
+    display: flex
+    justify-content: center
+    flex-wrap: wrap
+
+.faqCategoryLink
+    text-decoration: none
+    padding: 6px 12px
+    margin: 0 12px 12px 0
+    font-size: 14px
+    text-align: center
+    border-radius: 20px
+    background-color: #e9e9f6
+    box-shadow: rgba(17, 17, 17, 0.06) 0px 1px 6px 0px
+    color: #2B2AAA
+    cursor: default
+
+    &:hover
+        background-color: inherit
+
+.buttonIcon
+    background-color: #146ff8
+    width: 45px
+    height: 45px
+    border-radius: 50%
+    border: none
+    position: fixed
+    left: 20px
+    bottom: 20px
+
+    &:hover
+        transform: scale(1.1)
+
+.icon
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+
+.iconSymbol
+    width: 100%
+    height: 100%
+    object-fit: contain
