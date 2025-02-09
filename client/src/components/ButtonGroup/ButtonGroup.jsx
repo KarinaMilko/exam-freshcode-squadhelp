@@ -1,5 +1,6 @@
 import React from 'react';
 import CONSTANTS from './../../constants';
+import styles from './ButtonGroup.module.sass';
 
 const { STATIC_IMAGES_PATH } = CONSTANTS;
 function ButtonGroup() {
@@ -20,21 +21,33 @@ function ButtonGroup() {
 
   return (
     <>
-      <div>
-        <h3>Do you want a matching domain (.com URL) with your name?</h3>
-      </div>{' '}
-      <span>Recommended</span>
-      <img src={`${STATIC_IMAGES_PATH}icon-check.svg`} alt="icon" />
-      {btnSelect.map(id => (
-        <div key={id}>
-          <h4>{id.label}</h4>
-          <p>{id.description}</p>
+      <div className={styles.btnGroupContainer}>
+        <h3 className={styles.btnGroupTitle}>
+          Do you want a matching domain (.com URL) with your name?
+        </h3>
+        <div className={styles.btnGroupOptions}>
+          {btnSelect.map((item, index) => (
+            <div className={styles.btnGroupOption} key={index}>
+              {index === 0 && (
+                <span className={styles.btnGroupLabel}>Recommended</span>
+              )}
+              <img
+                className={styles.btnGroupIcon}
+                src={`${STATIC_IMAGES_PATH}icon-check.svg`}
+                alt="icon"
+              />
+              <h4 className={styles.btnGroupOptionLabel}>{item.label}</h4>
+              <p className={styles.btnGroupOptionDescription}>
+                {item.description}
+              </p>
+            </div>
+          ))}
         </div>
-      ))}
-      <p>
-        If you want a matching domain, our platform will only accept those name
-        suggestions where the domain is available.
-      </p>
+        <p className={styles.btnGroupNote}>
+          If you want a matching domain, our platform will only accept those
+          name suggestions where the domain is available.
+        </p>
+      </div>
     </>
   );
 }

@@ -54,8 +54,6 @@ const ContestCreationPage = props => {
             formRef={formRef}
             defaultData={contestData}
           />
-        </div>
-        <div>
           <ButtonGroup />
         </div>
       </div>
