@@ -54,6 +54,11 @@ class Header extends React.Component {
                 </Link>
               </li>
               <li>
+                <Link to="/events" style={{ textDecoration: 'none' }}>
+                  <span>My Events</span>
+                </Link>
+              </li>
+              <li>
                 <Link
                   to="http:/www.google.com"
                   style={{ textDecoration: 'none' }}
@@ -166,7 +171,6 @@ class Header extends React.Component {
                   />
                   <ul>
                     <li>
-                      {/* <a href='http://www.google.com'>HOW IT WORKS</a> */}
                       <Link to="/how-it-works">HOW IT WORKS</Link>
                     </li>
                     <li>
