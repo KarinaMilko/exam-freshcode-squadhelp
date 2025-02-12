@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import CONSTANTS from './../../constants';
 import styles from './ButtonGroup.module.sass';
 
-const { STATIC_IMAGES_PATH } = CONSTANTS;
+const { STATIC_IMAGES_PATH, ButtonGroupItems } = CONSTANTS;
 
 function ButtonGroup() {
   const [isActive, setIsActive] = useState(false);
@@ -11,21 +11,6 @@ function ButtonGroup() {
     setIsActive(index);
   };
 
-  const btnSelect = [
-    {
-      label: 'Yes',
-      description: 'But minor variations are allowed',
-    },
-    {
-      label: 'Yes',
-      description: 'The Domain should exactly match the name',
-    },
-    {
-      label: 'No',
-      description: 'I am only looking for a name, not a Domain',
-    },
-  ];
-
   return (
     <>
       <div className={styles.btnGroupContainer}>
@@ -33,7 +18,7 @@ function ButtonGroup() {
           Do you want a matching domain (.com URL) with your name?
         </h3>
         <div className={styles.btnGroupOptions}>
-          {btnSelect.map((item, index) => (
+          {ButtonGroupItems.map(({ label, description }, index) => (
             <div
               className={`${styles.btnGroupOption} ${
                 isActive === index ? styles.btnGroupOptionActive : ''
@@ -51,10 +36,8 @@ function ButtonGroup() {
                   alt="icon"
                 />
               )}
-              <h4 className={styles.btnGroupOptionLabel}>{item.label}</h4>
-              <p className={styles.btnGroupOptionDescription}>
-                {item.description}
-              </p>
+              <h4 className={styles.btnGroupOptionLabel}>{label}</h4>
+              <p className={styles.btnGroupOptionDescription}>{description}</p>
             </div>
           ))}
         </div>
