@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CONSTANTS from './../../constants';
 import styles from './ButtonGroup.module.sass';
 
 const { STATIC_IMAGES_PATH } = CONSTANTS;
+
 function ButtonGroup() {
+  const [isActive, setIsActive] = useState(false);
+
+  const btnGroupActive = index => {
+    setIsActive(index);
+  };
+
   const btnSelect = [
     {
       label: 'Yes',
@@ -27,15 +34,23 @@ function ButtonGroup() {
         </h3>
         <div className={styles.btnGroupOptions}>
           {btnSelect.map((item, index) => (
-            <div className={styles.btnGroupOption} key={index}>
+            <div
+              className={`${styles.btnGroupOption} ${
+                isActive === index ? styles.btnGroupOptionActive : ''
+              }`}
+              key={index}
+              onClick={() => btnGroupActive(index)}
+            >
               {index === 0 && (
                 <span className={styles.btnGroupLabel}>Recommended</span>
               )}
-              <img
-                className={styles.btnGroupIcon}
-                src={`${STATIC_IMAGES_PATH}icon-check.svg`}
-                alt="icon"
-              />
+              {isActive === index && (
+                <img
+                  className={styles.btnGroupIconActive}
+                  src={`${STATIC_IMAGES_PATH}icon-check.svg`}
+                  alt="icon"
+                />
+              )}
               <h4 className={styles.btnGroupOptionLabel}>{item.label}</h4>
               <p className={styles.btnGroupOptionDescription}>
                 {item.description}
