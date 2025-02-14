@@ -1,11 +1,14 @@
 import EventsForm from '../../components/EventsForm/EventsForm';
+import styles from './EventsPage.module.sass';
 
 function EventsPage() {
   return (
     <>
-      <h1>Form Of Events</h1>
-      <div>
-        <EventsForm />
+      <div className={styles.eventsPageContainer}>
+        <h1 className={styles.mainHeader}>Form Of Events</h1>
+        <div className={styles.formContainer}>
+          <EventsForm />
+        </div>
       </div>
     </>
   );
