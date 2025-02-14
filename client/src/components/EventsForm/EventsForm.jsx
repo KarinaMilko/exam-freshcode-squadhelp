@@ -1,5 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import styles from './EventsForm.module.sass';
+import Schems from './../../utils/validators/validationSchems';
 
 function EventsForm() {
   const initialValues = {
@@ -15,7 +16,11 @@ function EventsForm() {
 
   return (
     <div className={styles.eventFormContainer}>
-      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={handleSubmit}
+        validationSchema={Schems.EventsFormSchema}
+      >
         {formikProps => (
           <Form className={styles.formContainer}>
             <label className={styles.formLabel}>
@@ -27,17 +32,29 @@ function EventsForm() {
                 autoFocus
                 className={styles.formInput}
               />
-              <ErrorMessage name="eventName" className={styles.formError} />
+              <ErrorMessage
+                name="eventName"
+                component="span"
+                className={styles.formError}
+              />
             </label>
             <label className={styles.formLabel}>
               <span className={styles.formSpan}>Event's Date:</span>
               <Field name="date" type="date" className={styles.formInput} />
-              <ErrorMessage name="date" className={styles.formError} />
+              <ErrorMessage
+                name="date"
+                component="span"
+                className={styles.formError}
+              />
             </label>
             <label className={styles.formLabel}>
               <span className={styles.formSpan}>Event's Time:</span>
               <Field name="time" type="time" className={styles.formInput} />
-              <ErrorMessage name="time" className={styles.formError} />
+              <ErrorMessage
+                name="time"
+                component="span"
+                className={styles.formError}
+              />
             </label>
             <label className={styles.formLabel}>
               <span className={styles.formSpan}>Time Out Message:</span>
@@ -48,6 +65,7 @@ function EventsForm() {
               />
               <ErrorMessage
                 name="timeOutMessage"
+                component="span"
                 className={styles.formError}
               />
             </label>

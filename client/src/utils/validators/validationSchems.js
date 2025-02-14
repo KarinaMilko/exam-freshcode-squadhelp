@@ -214,4 +214,17 @@ export default {
       )
       .required('required'),
   }),
+  EventsFormSchema: yup.object().shape({
+    eventName: yup
+      .string()
+      .min(1, 'required atleast one symbol')
+      .trim()
+      .required('Event name is required'),
+    date: yup
+      .date()
+      .min(new Date(), 'Date cannot be in the past')
+      .required('Date is required'),
+    time: yup.string().required('Time is required'),
+    timeOutMessage: yup.string().required('Notification time is required'),
+  }),
 };
