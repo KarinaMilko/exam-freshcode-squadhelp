@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   events: [
     {
+      id: 1,
       eventName: '',
       date: '',
       time: '',
