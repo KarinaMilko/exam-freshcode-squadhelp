@@ -15,9 +15,18 @@ const initialState = {
 const eventListSlice = createSlice({
   initialState,
   name: 'events',
-  reducers: {},
+  reducers: {
+    removeEvent: (state, { payload }) => {
+      const foundEventIndex = state.events.findIndex(e => e.id === payload);
+      if (foundEventIndex !== 1) {
+        state.events.splice(foundEventIndex, 1);
+      }
+    },
+  },
 });
 
-const { reducer } = eventListSlice;
+const { reducer, actions } = eventListSlice;
+
+export const { removeEvent } = actions;
 
 export default reducer;
