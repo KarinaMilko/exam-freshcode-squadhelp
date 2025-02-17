@@ -10,6 +10,7 @@
     "browserslist-to-esbuild": "^2.1.1",
     "card-validator": "^8.1.1",
     "classnames": "^2.3.2",
+    "date-fns": "^4.1.0",
     "flickity": "^2.3.0",
     "formik": "^2.2.9",
     "history": "^5.3.0",
@@ -33,6 +34,7 @@
     "redux": "^4.2.0",
     "require-context": "^1.1.0",
     "socket.io-client": "^4.5.4",
+    "uuid": "^11.0.5",
     "vite": "^5.3.1",
     "vite-tsconfig-paths": "^4.3.2",
     "yup": "^0.32.11"

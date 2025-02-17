@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
   events: [
     {
-      id: 1,
+      id: uuidv4(),
       eventName: '',
       date: '',
       time: '',
@@ -22,11 +23,14 @@ const eventListSlice = createSlice({
         state.events.splice(foundEventIndex, 1);
       }
     },
+    createEvent: (state, { payload }) => {
+      state.events.push({ ...payload, id: uuidv4() });
+    },
   },
 });
 
 const { reducer, actions } = eventListSlice;
 
-export const { removeEvent } = actions;
+export const { removeEvent, createEvent } = actions;
 
 export default reducer;

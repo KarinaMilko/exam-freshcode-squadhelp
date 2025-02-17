@@ -1,8 +1,10 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { connect } from 'react-redux';
 import styles from './EventsForm.module.sass';
 import Schems from './../../utils/validators/validationSchems';
+import { createEvent } from '../../store/slices/eventListSlice';
 
-function EventsForm() {
+function EventsForm({ create }) {
   const initialValues = {
     eventName: '',
     date: '',
@@ -10,8 +12,9 @@ function EventsForm() {
     timeOutMessage: '',
   };
 
-  const handleSubmit = formikBag => {
-    formikBag.resetForm();
+  const handleSubmit = (values, { resetForm }) => {
+    create(values);
+    resetForm();
   };
 
   return (
@@ -84,4 +87,8 @@ function EventsForm() {
   );
 }
 
-export default EventsForm;
+const mapDispatchToProps = dispatch => ({
+  create: values => dispatch(createEvent(values)),
+});
+
+export default connect(null, mapDispatchToProps)(EventsForm);
