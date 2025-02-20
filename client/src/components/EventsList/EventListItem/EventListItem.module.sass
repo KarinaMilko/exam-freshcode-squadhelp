@@ -8,20 +8,36 @@
     align-items: center
     justify-content: space-between
     gap: 10px
+    position: relative
+
+.progressBarContainer
+    width: 100%
+    height: 100%
+    background-color: #f0f0f0
+    border-radius: 5px
+    overflow: hidden
+    position: absolute
+    top: 0
+    left: 0
+
+.progressBar
+    height: 100%
+    background-color: #d1e9cf
+    transition: width 1s linear
 
 .eventItem
-
-.eventName
+    z-index: 1
 
 .remainingTime
-
-.timeTitle
+    margin-left: auto
     color: #757575
     font-weight: 600
+    z-index: 1
 
 .trashItems
     border: none
     background-color: transparent
+    z-index: 1
 
 .imgItems
     width: 20px

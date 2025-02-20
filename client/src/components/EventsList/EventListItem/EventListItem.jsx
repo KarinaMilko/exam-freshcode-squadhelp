@@ -7,14 +7,19 @@ const { STATIC_IMAGES_PATH } = CONSTANTS;
 
 function EventListItem({ event: { id, eventName, date, time }, remove }) {
   const [leftTime, setLeftTime] = useState('');
+  const [progressBar, setProgressBar] = useState(100);
 
   useEffect(() => {
+    const eventDate = new Date(`${date}T${time}`);
+    const startDate = new Date();
+    const totalTime = eventDate - startDate;
+
     const showTimeDifference = () => {
-      const eventDate = new Date(`${date}T${time}`);
       const nowDate = new Date();
 
       if (eventDate < nowDate) {
         setLeftTime('Event has passed');
+        setProgressBar(0);
         return;
       }
 
@@ -22,6 +27,12 @@ function EventListItem({ event: { id, eventName, date, time }, remove }) {
         start: nowDate,
         end: eventDate,
       });
+
+      const percentProgress = Math.max(
+        ((eventDate - nowDate) / totalTime) * 100,
+        0
+      );
+      setProgressBar(percentProgress);
 
       const viewTime = [];
       if (timeDistance.years > 0) viewTime.push(`${timeDistance.years}y`);
@@ -40,12 +51,14 @@ function EventListItem({ event: { id, eventName, date, time }, remove }) {
 
   return (
     <li className={styles.eventItems}>
-      <p className={styles.eventItem}>
-        <span className={styles.eventName}>{eventName}</span>
-      </p>
-      <p className={styles.remainingTime}>
-        <span className={styles.timeTitle}>{leftTime}</span>
-      </p>
+      <div className={styles.progressBarContainer}>
+        <div
+          className={styles.progressBar}
+          style={{ width: `${progressBar}%` }}
+        ></div>
+      </div>
+      <p className={styles.eventItem}>{eventName}</p>
+      <p className={styles.remainingTime}>{leftTime}</p>
       <button
         className={styles.trashItems}
         onClick={() => {
