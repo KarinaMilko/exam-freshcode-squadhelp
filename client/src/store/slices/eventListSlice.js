@@ -2,15 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
-  events: [
-    {
-      id: uuidv4(),
-      eventName: '',
-      date: '',
-      time: '',
-      timeOutMessage: '',
-    },
-  ],
+  events: JSON.parse(localStorage.getItem('events')) || [],
 };
 
 const eventListSlice = createSlice({
@@ -19,12 +11,14 @@ const eventListSlice = createSlice({
   reducers: {
     removeEvent: (state, { payload }) => {
       const foundEventIndex = state.events.findIndex(e => e.id === payload);
-      if (foundEventIndex !== 1) {
+      if (foundEventIndex !== -1) {
         state.events.splice(foundEventIndex, 1);
+        localStorage.setItem('events', JSON.stringify(state.events));
       }
     },
     createEvent: (state, { payload }) => {
       state.events.push({ ...payload, id: uuidv4() });
+      localStorage.setItem('events', JSON.stringify(state.events));
     },
   },
 });
