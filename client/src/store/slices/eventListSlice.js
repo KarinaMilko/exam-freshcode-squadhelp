@@ -20,11 +20,17 @@ const eventListSlice = createSlice({
       state.events.push({ ...payload, id: uuidv4() });
       localStorage.setItem('events', JSON.stringify(state.events));
     },
+    hideMessage: (state, { payload }) => {
+      const event = state.events.find(e => e.id === payload);
+      if (event) {
+        event.isMessageVisible = false;
+      }
+    },
   },
 });
 
 const { reducer, actions } = eventListSlice;
 
-export const { removeEvent, createEvent } = actions;
+export const { removeEvent, createEvent, hideMessage } = actions;
 
 export default reducer;

@@ -6,10 +6,11 @@ import CONSTANTS from '../../constants';
 import { clearUserStore } from '../../store/slices/userSlice';
 import { getUser } from '../../store/slices/userSlice';
 import withRouter from '../../hocs/withRouter';
+import Message from './Message/Message';
 
 class Header extends React.Component {
   componentDidMount() {
-    if (!this.props.data) {
+    if (!this.props.userStore.data) {
       this.props.getUser();
     }
   }
@@ -25,19 +26,19 @@ class Header extends React.Component {
   };
 
   renderLoginButtons = () => {
-    if (this.props.data) {
+    if (this.props.userStore.data) {
       return (
         <>
           <div className={styles.userInfo}>
             <img
               src={
-                this.props.data.avatar === 'anon.png'
+                this.props.userStore.data.avatar === 'anon.png'
                   ? CONSTANTS.ANONYM_IMAGE_PATH
-                  : `${CONSTANTS.publicURL}${this.props.data.avatar}`
+                  : `${CONSTANTS.publicURL}${this.props.userStore.data.avatar}`
               }
               alt="user"
             />
-            <span>{`Hi, ${this.props.data.displayName}`}</span>
+            <span>{`Hi, ${this.props.userStore.data.displayName}`}</span>
             <img
               src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
               alt="menu"
@@ -84,6 +85,15 @@ class Header extends React.Component {
             className={styles.emailIcon}
             alt="email"
           />
+          {this.props.eventList.events.map(e => (
+            <Message
+              key={e.id}
+              eventId={e.id}
+              timeOutMessage={e.timeOutMessage}
+              time={e.time}
+              date={e.date}
+            />
+          ))}
         </>
       );
     }
@@ -266,14 +276,15 @@ class Header extends React.Component {
                 </li>
               </ul>
             </div>
-            {this.props.data && this.props.data.role !== CONSTANTS.CREATOR && (
-              <div
-                className={styles.startContestBtn}
-                onClick={this.startContests}
-              >
-                START CONTEST
-              </div>
-            )}
+            {this.props.userStore.data &&
+              this.props.userStore.data.role !== CONSTANTS.CREATOR && (
+                <div
+                  className={styles.startContestBtn}
+                  onClick={this.startContests}
+                >
+                  START CONTEST
+                </div>
+              )}
           </div>
         </div>
       </div>
@@ -281,7 +292,10 @@ class Header extends React.Component {
   }
 }
 
-const mapStateToProps = state => state.userStore;
+const mapStateToProps = state => ({
+  userStore: state.userStore,
+  eventList: state.eventList,
+});
 const mapDispatchToProps = dispatch => ({
   getUser: () => dispatch(getUser()),
   clearUserStore: () => dispatch(clearUserStore()),
