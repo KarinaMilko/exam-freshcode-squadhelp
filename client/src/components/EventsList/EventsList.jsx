@@ -8,6 +8,11 @@ const { STATIC_IMAGES_PATH } = CONSTANTS;
 
 function EventsList({ events, remove }) {
   const mapEvents = e => <EventListItem key={e.id} event={e} remove={remove} />;
+  const sortEvents = [...events].sort((a, b) => {
+    const aEvent = new Date(`${a.date}T${a.time}`).getTime();
+    const bEvent = new Date(`${b.date}T${b.time}`).getTime();
+    return aEvent - bEvent;
+  });
 
   return (
     <section className={styles.eventListContainer}>
@@ -22,7 +27,7 @@ function EventsList({ events, remove }) {
           />
         </div>
       </div>
-      <ul className={styles.eventListTimer}>{events.map(mapEvents)}</ul>
+      <ul className={styles.eventListTimer}>{sortEvents.map(mapEvents)}</ul>
     </section>
   );
 }
