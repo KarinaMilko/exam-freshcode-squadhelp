@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
   events: JSON.parse(localStorage.getItem('events')) || [],
+  completedEventsCount: 0,
 };
 
 const eventListSlice = createSlice({
@@ -26,11 +27,19 @@ const eventListSlice = createSlice({
         event.isMessageVisible = false;
       }
     },
+    updateCompletedEventsCount: (state, { payload }) => {
+      state.completedEventsCount = payload;
+    },
   },
 });
 
 const { reducer, actions } = eventListSlice;
 
-export const { removeEvent, createEvent, hideMessage } = actions;
+export const {
+  removeEvent,
+  createEvent,
+  hideMessage,
+  updateCompletedEventsCount,
+} = actions;
 
 export default reducer;

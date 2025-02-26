@@ -57,6 +57,13 @@ class Header extends React.Component {
               <li>
                 <Link to="/events" style={{ textDecoration: 'none' }}>
                   <span>My Events</span>
+                  <div className={styles.redBadgeContainer}>
+                    {this.props.eventList.completedEventsCount > 0 && (
+                      <span className={styles.redBadge}>
+                        {this.props.eventList.completedEventsCount}
+                      </span>
+                    )}
+                  </div>
                 </Link>
               </li>
               <li>

@@ -1,12 +1,26 @@
 import { connect } from 'react-redux';
+import { useEffect } from 'react';
 import EventListItem from './EventListItem/EventListItem';
 import CONSTANTS from './../../constants';
 import styles from './EventsList.module.sass';
-import { removeEvent } from '../../store/slices/eventListSlice';
+import {
+  removeEvent,
+  updateCompletedEventsCount,
+} from '../../store/slices/eventListSlice';
 
 const { STATIC_IMAGES_PATH } = CONSTANTS;
 
-function EventsList({ events, remove }) {
+function EventsList({ events, remove, updateCompletedEventsCount }) {
+  useEffect(() => {
+    const countEvents = events.filter(e => {
+      const eventDate = new Date(`${e.date}T${e.time}`);
+      const startDate = new Date();
+      return eventDate < startDate;
+    }).length;
+
+    updateCompletedEventsCount(countEvents);
+  }, [events, updateCompletedEventsCount]);
+
   const mapEvents = e => <EventListItem key={e.id} event={e} remove={remove} />;
   const sortEvents = [...events].sort((a, b) => {
     const aEvent = new Date(`${a.date}T${a.time}`).getTime();
@@ -32,10 +46,14 @@ function EventsList({ events, remove }) {
   );
 }
 
-const mapStateToProps = ({ eventList }) => eventList;
+const mapStateToProps = ({ eventList }) => ({
+  events: eventList.events,
+});
 
 const mapDispatchToProps = dispatch => ({
   remove: id => dispatch(removeEvent(id)),
+  updateCompletedEventsCount: count =>
+    dispatch(updateCompletedEventsCount(count)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventsList);
