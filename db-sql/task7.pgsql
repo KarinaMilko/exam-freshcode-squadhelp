@@ -16,4 +16,6 @@ VALUES
  FROM "Users"  
  GROUP BY role
 
+ALTER TABLE "Users"
+DROP COLUMN "rating";
 
