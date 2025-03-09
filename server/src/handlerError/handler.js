@@ -1,3 +1,5 @@
+const logger = require('./../utils/logger');
+
 module.exports = (err, req, res, next) => {
   console.log(err);
   if (
@@ -9,6 +11,13 @@ module.exports = (err, req, res, next) => {
     err.message = 'Not Enough money';
     err.code = 406;
   }
+
+  logger.error({
+    message: err.message,
+    code: err.code || 500,
+    stack: err.stack,
+  });
+
   if (!err.message || !err.code) {
     res.status(500).send('Server Error');
   } else {
