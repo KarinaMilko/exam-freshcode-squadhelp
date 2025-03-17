@@ -2,4 +2,6 @@
 .vscode/
 node_modules/
 # uploadFiles/
+logs/error.log
+logs/daily/
 
