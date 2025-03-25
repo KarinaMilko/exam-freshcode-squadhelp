@@ -6,6 +6,7 @@ module.exports = {
   SQUADHELP_BANK_NAME: 'SquadHelp',
   SQUADHELP_BANK_CVC: '453',
   SQUADHELP_BANK_EXPIRY: '11/26',
+  MODERATOR: 'moderator',
   CUSTOMER: 'customer',
   CREATOR: 'creator',
   CREATOR_ENTRIES: 'creator_entries',
