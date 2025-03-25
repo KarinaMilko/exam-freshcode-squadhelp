@@ -1,9 +1,14 @@
 const { Router } = require('express');
 const offerController = require('./../controllers/offerController');
+const basicMiddlewares = require('./../middlewares/basicMiddlewares');
 
 const offersRouter = Router();
 
-offersRouter.get('/', offerController.getAllOffersForModerator);
+offersRouter.get(
+  '/',
+  basicMiddlewares.onlyForModerator,
+  offerController.getAllOffersForModerator
+);
 
 offersRouter.patch('/:id/status', offerController.updateOffersStatus);
 
