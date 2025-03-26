@@ -21,6 +21,10 @@ offersRouter.get(
   basicMiddlewares.onlyForCreative,
   offerController.getCreatorOffers
 );
-offersRouter.get('/customer', offerController.getCustomerOffers);
+offersRouter.get(
+  '/customer',
+  basicMiddlewares.onlyForCustomer,
+  offerController.getCustomerOffers
+);
 
 module.exports = offersRouter;

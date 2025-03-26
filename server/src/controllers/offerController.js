@@ -81,4 +81,24 @@ module.exports.getCreatorOffers = async (req, res, next) => {
   }
 };
 
-module.exports.getCustomerOffers = () => {};
+module.exports.getCustomerOffers = async (req, res, next) => {
+  const {
+    query: { page = 1, results = 10 },
+    tokenData: { userId },
+  } = req;
+
+  const limit = results;
+  const offset = (page - 1) * results;
+
+  try {
+    const foundCustomerOffers = await db.Offers.findAll({
+      limit,
+      offset: offset ? offset : 0,
+      where: { userId, status: CONSTANTS.OFFER_STATUS_APPROVED },
+      raw: true,
+    });
+    res.send(foundCustomerOffers);
+  } catch (err) {
+    next(err);
+  }
+};
