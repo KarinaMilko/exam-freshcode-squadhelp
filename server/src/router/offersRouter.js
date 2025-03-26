@@ -10,7 +10,11 @@ offersRouter.get(
   offerController.getAllOffersForModerator
 );
 
-offersRouter.patch('/:id/status', offerController.updateOffersStatus);
+offersRouter.patch(
+  '/:id/status',
+  basicMiddlewares.onlyForModerator,
+  offerController.updateOffersStatus
+);
 
 offersRouter.get('/creator', offerController.getCreatorOffers);
 offersRouter.get('/customer', offerController.getCustomerOffers);

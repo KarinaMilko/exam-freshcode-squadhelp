@@ -18,6 +18,7 @@ module.exports = {
   LOGO_CONTEST: 'logo',
   TAGLINE_CONTEST: 'tagline',
   OFFER_STATUS_PENDING: 'pending',
+  OFFER_STATUS_APPROVED: 'approved',
   OFFER_STATUS_REJECTED: 'rejected',
   OFFER_STATUS_WON: 'won',
   FILES_PATH: 'public/',

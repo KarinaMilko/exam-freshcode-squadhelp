@@ -67,7 +67,6 @@ module.exports.onlyForCustomer = (req, res, next) => {
 };
 
 module.exports.onlyForModerator = (req, res, next) => {
-  console.log('Token data:', req.tokenData);
   const { role } = req.tokenData || {};
   const { MODERATOR } = CONSTANTS;
 
