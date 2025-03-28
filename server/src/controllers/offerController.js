@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const db = require('../models');
 const BadRequestError = require('../errors/BadRequestError');
 const NotFound = require('../errors/UserNotFoundError');
@@ -16,7 +17,6 @@ module.exports.getAllOffersForModerator = async (req, res, next) => {
       limit,
       offset: offset ? offset : 0,
       attributes: { exclude: ['userId'] },
-      raw: true,
     });
     res.send(foundOffers);
   } catch (err) {
@@ -34,24 +34,42 @@ module.exports.updateOffersStatus = async (req, res, next) => {
     CONSTANTS;
 
   try {
-    const updateOffer = await db.Offers.findByPk(id);
+    const updateOffer = await db.Offers.findByPk(id, {
+      include: [
+        {
+          model: db.Contests,
+          attributes: ['id'],
+        },
+      ],
+    });
 
     if (!updateOffer) {
       return next(new NotFound('Offer not found'));
     }
 
-    const validStatuses = [
-      OFFER_STATUS_APPROVED,
-      OFFER_STATUS_PENDING,
-      OFFER_STATUS_REJECTED,
-    ];
+    if (updateOffer.status !== OFFER_STATUS_PENDING) {
+      return next(new BadRequestError('Only pending offers can be updated'));
+    }
+
+    const validStatuses = [OFFER_STATUS_APPROVED, OFFER_STATUS_REJECTED];
 
     if (!validStatuses.includes(status)) {
       return next(new BadRequestError('Invalid status provided'));
     }
 
-    updateOffer.status = status;
-    await updateOffer.save();
+    await updateOffer.update({ status });
+
+    if (status === OFFER_STATUS_APPROVED) {
+      await db.Offers.update(
+        { status: OFFER_STATUS_REJECTED },
+        {
+          where: {
+            contestId: updateOffer.contestId,
+            id: { [Op.ne]: id },
+          },
+        }
+      );
+    }
 
     res.send(updateOffer);
   } catch (err) {
