@@ -3,6 +3,7 @@ const db = require('../models');
 const BadRequestError = require('../errors/BadRequestError');
 const NotFound = require('../errors/UserNotFoundError');
 const CONSTANTS = require('./../constants');
+const { sendOffersMail } = require('../../services /sendOffersMail');
 
 module.exports.getAllOffersForModerator = async (req, res, next) => {
   const {
@@ -40,6 +41,12 @@ module.exports.updateOffersStatus = async (req, res, next) => {
           model: db.Contests,
           attributes: ['id'],
         },
+        {
+          model: db.Users,
+          attributes: ['email'],
+          where: { role: 'creator' },
+          required: false,
+        },
       ],
     });
 
@@ -70,7 +77,11 @@ module.exports.updateOffersStatus = async (req, res, next) => {
         }
       );
     }
-
+    if (status === OFFER_STATUS_APPROVED || status === OFFER_STATUS_REJECTED) {
+      if (updateOffer.User && updateOffer.User.email) {
+        await sendOffersMail(updateOffer.User.email, status);
+      }
+    }
     res.send(updateOffer);
   } catch (err) {
     next(err);
