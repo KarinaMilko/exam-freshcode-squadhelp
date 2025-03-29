@@ -35,6 +35,9 @@ export default {
     REGISTER: 'REGISTER',
     LOGIN: 'LOGIN',
   },
+  SLICE_NAME: {
+    OFFERS_SLICE_NAME: 'offers',
+  },
   HEADER_ANIMATION_TEXT: [
     'a Company',
     'a Brand',
