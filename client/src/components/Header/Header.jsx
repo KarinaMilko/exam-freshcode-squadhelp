@@ -44,47 +44,70 @@ class Header extends React.Component {
               alt="menu"
             />
             <ul>
-              <li>
-                <Link to="/dashboard" style={{ textDecoration: 'none' }}>
-                  <span>View Dashboard</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/account" style={{ textDecoration: 'none' }}>
-                  <span>My Account</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/events" style={{ textDecoration: 'none' }}>
-                  <span>My Events</span>
-                  <div className={styles.redBadgeContainer}>
-                    {this.props.eventList.completedEventsCount > 0 && (
-                      <span className={styles.redBadge}>
-                        {this.props.eventList.completedEventsCount}
-                      </span>
-                    )}
-                  </div>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="http:/www.google.com"
-                  style={{ textDecoration: 'none' }}
-                >
-                  <span>Messages</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="http:/www.google.com"
-                  style={{ textDecoration: 'none' }}
-                >
-                  <span>Affiliate Dashboard</span>
-                </Link>
-              </li>
-              <li>
-                <span onClick={this.logOut}>Logout</span>
-              </li>
+              {this.props.userStore.data.role === CONSTANTS.MODERATOR ? (
+                <>
+                  <li>
+                    <Link
+                      to="/moderator/offers"
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <span>View Offers</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/account" style={{ textDecoration: 'none' }}>
+                      <span>My Account</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <span onClick={this.logOut}>Logout</span>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    <Link to="/dashboard" style={{ textDecoration: 'none' }}>
+                      <span>View Dashboard</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/account" style={{ textDecoration: 'none' }}>
+                      <span>My Account</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/events" style={{ textDecoration: 'none' }}>
+                      <span>My Events</span>
+                      <div className={styles.redBadgeContainer}>
+                        {this.props.eventList.completedEventsCount > 0 && (
+                          <span className={styles.redBadge}>
+                            {this.props.eventList.completedEventsCount}
+                          </span>
+                        )}
+                      </div>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="http:/www.google.com"
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <span>Messages</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="http:/www.google.com"
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <span>Affiliate Dashboard</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <span onClick={this.logOut}>Logout</span>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
           <img
@@ -284,7 +307,8 @@ class Header extends React.Component {
               </ul>
             </div>
             {this.props.userStore.data &&
-              this.props.userStore.data.role !== CONSTANTS.CREATOR && (
+              this.props.userStore.data.role !== CONSTANTS.CREATOR &&
+              this.props.userStore.data.role !== CONSTANTS.MODERATOR && (
                 <div
                   className={styles.startContestBtn}
                   onClick={this.startContests}
