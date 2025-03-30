@@ -18,6 +18,12 @@ module.exports.getAllOffersForModerator = async (req, res, next) => {
       limit,
       offset: offset ? offset : 0,
       attributes: { exclude: ['userId'] },
+      include: [
+        {
+          model: db.Contests,
+          attributes: { exclude: ['userId'] },
+        },
+      ],
     });
     res.send(foundOffers);
   } catch (err) {

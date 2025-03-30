@@ -43,3 +43,5 @@ export const getActiveContests = data =>
 
 export const getContestById = ({ contestId }) =>
   http.get(`contests/${contestId}`);
+
+export const getOffers = () => http.get(`/offers`);
