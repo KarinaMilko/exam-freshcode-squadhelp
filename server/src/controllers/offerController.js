@@ -7,23 +7,20 @@ const { sendOffersMail } = require('../../services /sendOffersMail');
 
 module.exports.getAllOffersForModerator = async (req, res, next) => {
   const {
-    query: { page = 1, results = 10 },
+    query: { page = 1, results = 10, status },
   } = req;
 
   const limit = results;
   const offset = (page - 1) * results;
 
   try {
+    const where = status ? { status } : {};
+
     const foundOffers = await db.Offers.findAll({
       limit,
       offset: offset ? offset : 0,
+      where,
       attributes: { exclude: ['userId'] },
-      include: [
-        {
-          model: db.Contests,
-          attributes: { exclude: ['userId'] },
-        },
-      ],
     });
     res.send(foundOffers);
   } catch (err) {

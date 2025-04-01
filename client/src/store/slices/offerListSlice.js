@@ -2,19 +2,23 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import CONSTANS from '../../constants';
 import * as restController from './../../api/rest/restController';
 
-const { OFFERS_SLICE_NAME } = CONSTANS.SLICE_NAME;
+const {
+  SLICE_NAME: { OFFERS_SLICE_NAME },
+} = CONSTANS;
 
 const initialState = {
   offers: [],
   isFetching: false,
   error: null,
+  filter: '',
 };
 
 export const getOffersThunk = createAsyncThunk(
   `${OFFERS_SLICE_NAME}/get`,
   async (payload, { rejectWithValue }) => {
+    console.log(payload);
     try {
-      const { data } = await restController.getOffers();
+      const { data } = await restController.getOffers(payload);
       return data;
     } catch (err) {
       return rejectWithValue({
@@ -28,7 +32,11 @@ export const getOffersThunk = createAsyncThunk(
 const offerListSlice = createSlice({
   initialState,
   name: OFFERS_SLICE_NAME,
-  reducers: {},
+  reducers: {
+    setFilter: (state, { payload }) => {
+      state.filter = payload;
+    },
+  },
   extraReducers: builder => {
     builder.addCase(getOffersThunk.pending, state => {
       state.isFetching = true;
@@ -36,7 +44,6 @@ const offerListSlice = createSlice({
     });
     builder.addCase(getOffersThunk.fulfilled, (state, { payload }) => {
       state.isFetching = false;
-      console.log(payload);
       state.offers = [...payload];
     });
     builder.addCase(getOffersThunk.rejected, (state, { payload }) => {
@@ -48,6 +55,6 @@ const offerListSlice = createSlice({
 
 const { reducer, actions } = offerListSlice;
 
-// export const {} = actions;
+export const { setFilter } = actions;
 
 export default reducer;
