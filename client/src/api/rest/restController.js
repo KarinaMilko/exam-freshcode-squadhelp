@@ -44,5 +44,5 @@ export const getActiveContests = data =>
 export const getContestById = ({ contestId }) =>
   http.get(`contests/${contestId}`);
 
-export const getOffers = filter =>
-  http.get(`/offers${filter ? `?status=${filter}` : ''}`);
+export const getOffers = ({ status, page, results }) =>
+  http.get(`/offers?status=${status || ''}&page=${page}&results=${results} `);

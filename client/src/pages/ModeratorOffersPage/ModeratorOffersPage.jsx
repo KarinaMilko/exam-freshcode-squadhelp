@@ -1,6 +1,10 @@
 import { connect } from 'react-redux';
 import { useEffect } from 'react';
-import { getOffersThunk, setFilter } from '../../store/slices/offerListSlice';
+import {
+  getOffersThunk,
+  setFilter,
+  setPage,
+} from '../../store/slices/offerListSlice';
 import CONSTANS from './../../constants';
 import styles from './../ModeratorOffersPage/ModeratorOffersPage.module.sass';
 
@@ -14,10 +18,13 @@ function ModeratorOffersPage({
   error,
   filter,
   setFilter,
+  setPage,
+  page,
+  totalPages,
 }) {
   useEffect(() => {
-    getOffers(filter);
-  }, [filter]);
+    getOffers({ status: filter, page });
+  }, [filter, page]);
 
   return (
     <>
@@ -60,6 +67,25 @@ function ModeratorOffersPage({
           </li>
         ))}
       </ul>
+      <div className={styles.pagination}>
+        <button
+          className={styles.pageButton}
+          onClick={() => setPage(page - 1)}
+          disabled={page <= 1}
+        >
+          Previous
+        </button>
+        <span className={styles.pageNumber}>
+          Page {page} of {totalPages}
+        </span>
+        <button
+          className={styles.pageButton}
+          onClick={() => setPage(page + 1)}
+          disabled={page >= totalPages}
+        >
+          Next
+        </button>
+      </div>
     </>
   );
 }
@@ -72,6 +98,9 @@ const mapDispatchToProps = dispatch => ({
   },
   setFilter: newFilter => {
     dispatch(setFilter(newFilter));
+  },
+  setPage: newPage => {
+    dispatch(setPage(newPage));
   },
 });
 

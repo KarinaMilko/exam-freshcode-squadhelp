@@ -11,14 +11,15 @@ const initialState = {
   isFetching: false,
   error: null,
   filter: '',
+  page: 1,
+  totalPages: 1,
 };
 
 export const getOffersThunk = createAsyncThunk(
   `${OFFERS_SLICE_NAME}/get`,
-  async (payload, { rejectWithValue }) => {
-    console.log(payload);
+  async ({ status, page }, { rejectWithValue }) => {
     try {
-      const { data } = await restController.getOffers(payload);
+      const { data } = await restController.getOffers({ status, page });
       return data;
     } catch (err) {
       return rejectWithValue({
@@ -35,6 +36,10 @@ const offerListSlice = createSlice({
   reducers: {
     setFilter: (state, { payload }) => {
       state.filter = payload;
+      state.page = 1;
+    },
+    setPage: (state, { payload }) => {
+      state.page = payload;
     },
   },
   extraReducers: builder => {
@@ -44,7 +49,8 @@ const offerListSlice = createSlice({
     });
     builder.addCase(getOffersThunk.fulfilled, (state, { payload }) => {
       state.isFetching = false;
-      state.offers = [...payload];
+      state.offers = payload.offers;
+      state.totalPages = payload.totalPages;
     });
     builder.addCase(getOffersThunk.rejected, (state, { payload }) => {
       state.isFetching = false;
@@ -55,6 +61,6 @@ const offerListSlice = createSlice({
 
 const { reducer, actions } = offerListSlice;
 
-export const { setFilter } = actions;
+export const { setFilter, setPage } = actions;
 
 export default reducer;
