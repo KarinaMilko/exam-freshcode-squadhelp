@@ -40,52 +40,64 @@ function ModeratorOffersPage({
           <option value={OFFER_STATUS_REJECTED}>Rejected</option>
         </select>
       </section>
-      <ul className={styles.offersList}>
-        {offers.map(o => (
-          <li key={o.id} className={styles.offerItem}>
-            <p className={styles.offerInfo}>
-              <span className={styles.label}>Contest: </span> {o.contestId}
-            </p>
-            <p className={styles.offerInfo}>
-              <span className={styles.label}>Text: </span>
-              {o.text}
-            </p>
-            {o.fileName && (
-              <p className={styles.offerInfo}>
-                <span className={styles.label}>File: </span> {o.fileName}
-              </p>
-            )}
-            {o.originalFileName && (
-              <p className={styles.offerInfo}>
-                <span className={styles.label}>File_Name: </span>{' '}
-                {o.originalFileName}
-              </p>
-            )}
-            <p className={styles.offerInfo}>
-              <span className={styles.label}>Status: </span> {o.status}
-            </p>
-          </li>
-        ))}
-      </ul>
-      <div className={styles.pagination}>
-        <button
-          className={styles.pageButton}
-          onClick={() => setPage(page - 1)}
-          disabled={page <= 1}
-        >
-          Previous
-        </button>
-        <span className={styles.pageNumber}>
-          Page {page} of {totalPages}
-        </span>
-        <button
-          className={styles.pageButton}
-          onClick={() => setPage(page + 1)}
-          disabled={page >= totalPages}
-        >
-          Next
-        </button>
-      </div>
+
+      {isFetching ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : (
+        <>
+          <ul className={styles.offersList}>
+            {!isFetching &&
+              !error &&
+              offers.map(o => (
+                <li key={o.id} className={styles.offerItem}>
+                  <p className={styles.offerInfo}>
+                    <span className={styles.label}>Contest: </span>
+                    {o.contestId}
+                  </p>
+                  <p className={styles.offerInfo}>
+                    <span className={styles.label}>Text: </span>
+                    {o.text}
+                  </p>
+                  {o.fileName && (
+                    <p className={styles.offerInfo}>
+                      <span className={styles.label}>File: </span> {o.fileName}
+                    </p>
+                  )}
+                  {o.originalFileName && (
+                    <p className={styles.offerInfo}>
+                      <span className={styles.label}>File_Name: </span>{' '}
+                      {o.originalFileName}
+                    </p>
+                  )}
+                  <p className={styles.offerInfo}>
+                    <span className={styles.label}>Status: </span> {o.status}
+                  </p>
+                </li>
+              ))}
+          </ul>
+          <div className={styles.pagination}>
+            <button
+              className={styles.pageButton}
+              onClick={() => setPage(page - 1)}
+              disabled={page <= 1}
+            >
+              Previous
+            </button>
+            <span className={styles.pageNumber}>
+              Page {page} of {totalPages}
+            </span>
+            <button
+              className={styles.pageButton}
+              onClick={() => setPage(page + 1)}
+              disabled={page >= totalPages}
+            >
+              Next
+            </button>
+          </div>
+        </>
+      )}
     </>
   );
 }
