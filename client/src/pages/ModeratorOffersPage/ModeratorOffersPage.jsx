@@ -4,6 +4,7 @@ import {
   getOffersThunk,
   setFilter,
   setPage,
+  updateOffersStatusThunk,
 } from '../../store/slices/offerListSlice';
 import CONSTANS from './../../constants';
 import styles from './../ModeratorOffersPage/ModeratorOffersPage.module.sass';
@@ -13,6 +14,7 @@ const { OFFER_STATUS_PENDING, OFFER_STATUS_REJECTED, OFFER_STATUS_APPROVED } =
 
 function ModeratorOffersPage({
   getOffers,
+  updateOffersStatus,
   offers,
   isFetching,
   error,
@@ -74,6 +76,26 @@ function ModeratorOffersPage({
                   <p className={styles.offerInfo}>
                     <span className={styles.label}>Status: </span> {o.status}
                   </p>
+                  {o.status === OFFER_STATUS_PENDING && (
+                    <div className={styles.actionButtons}>
+                      <button
+                        className={styles.approveButton}
+                        onClick={() => {
+                          updateOffersStatus(o.id, OFFER_STATUS_APPROVED);
+                        }}
+                      >
+                        Approve
+                      </button>
+                      <button
+                        className={styles.rejectButton}
+                        onClick={() => {
+                          updateOffersStatus(o.id, OFFER_STATUS_REJECTED);
+                        }}
+                      >
+                        Reject
+                      </button>
+                    </div>
+                  )}
                 </li>
               ))}
           </ul>
@@ -113,6 +135,9 @@ const mapDispatchToProps = dispatch => ({
   },
   setPage: newPage => {
     dispatch(setPage(newPage));
+  },
+  updateOffersStatus: (id, status) => {
+    dispatch(updateOffersStatusThunk({ id, status }));
   },
 });
 

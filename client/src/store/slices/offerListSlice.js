@@ -30,6 +30,21 @@ export const getOffersThunk = createAsyncThunk(
   }
 );
 
+export const updateOffersStatusThunk = createAsyncThunk(
+  `${OFFERS_SLICE_NAME}/updateStatus`,
+  async (payload, { rejectWithValue }) => {
+    try {
+      const { data } = await restController.updateOffersStatus(payload);
+      return data;
+    } catch (err) {
+      return rejectWithValue({
+        data: err?.response?.data ?? 'Gateway Timeout',
+        status: err?.response?.status ?? 504,
+      });
+    }
+  }
+);
+
 const offerListSlice = createSlice({
   initialState,
   name: OFFERS_SLICE_NAME,
@@ -56,9 +71,14 @@ const offerListSlice = createSlice({
       state.isFetching = false;
       state.error = payload;
     });
+
+    builder.addCase(updateOffersStatusThunk.fulfilled, (state, { payload }) => {
+      state.offers = state.offers.map(o =>
+        o.id === payload.id ? { ...o, status: payload.status } : o
+      );
+    });
   },
 });
-
 const { reducer, actions } = offerListSlice;
 
 export const { setFilter, setPage } = actions;

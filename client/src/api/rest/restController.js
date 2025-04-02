@@ -46,3 +46,6 @@ export const getContestById = ({ contestId }) =>
 
 export const getOffers = ({ status, page, results }) =>
   http.get(`/offers?status=${status || ''}&page=${page}&results=${results} `);
+
+export const updateOffersStatus = ({ id, status }) =>
+  http.patch(`/offers/${id}/status`, { status });
