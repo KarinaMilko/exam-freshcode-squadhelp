@@ -46,8 +46,6 @@ module.exports.getContestById = async (req, res, next) => {
     tokenData: { role, userId },
   } = req;
 
-  const { CREATOR } = CONSTANTS;
-
   try {
     let contestInfo = await db.Contests.findOne({
       where: { id },
@@ -63,7 +61,7 @@ module.exports.getContestById = async (req, res, next) => {
         {
           model: db.Offers,
           required: false,
-          where: role === CREATOR ? { userId } : {},
+          where: UtilFunctions.getOfferWhereByRole(role, userId),
           attributes: { exclude: ['userId', 'contestId'] },
           include: [
             {
@@ -305,10 +303,10 @@ module.exports.getCustomersContests = (req, res, next) => {
 module.exports.getContests = (req, res, next) => {
   const {
     query: { typeIndex, contestId, industry, awardSort, limit, offset },
-    tokenData: { role },
+    tokenData: { role, userId },
   } = req;
 
-  const { CREATOR, CONTEST_STATUS_ACTIVE, OFFER_STATUS_APPROVED } = CONSTANTS;
+  const { CREATOR, CONTEST_STATUS_ACTIVE } = CONSTANTS;
 
   const predicates = UtilFunctions.createWhereForAllContests(
     typeIndex,
@@ -330,7 +328,7 @@ module.exports.getContests = (req, res, next) => {
       {
         model: db.Offers,
         required: false,
-        where: role === CREATOR ? { status: OFFER_STATUS_APPROVED } : {},
+        where: UtilFunctions.getOfferWhereByRole(role, userId),
         attributes: ['id', 'status'],
       },
     ],

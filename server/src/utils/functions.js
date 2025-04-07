@@ -35,7 +35,7 @@ module.exports.createWhereForAllContests = (
   return object;
 };
 
-function getPredicateTypes (index) {
+function getPredicateTypes(index) {
   return { [bd.Sequelize.Op.or]: [types[index].split(',')] };
 }
 
@@ -49,3 +49,12 @@ const types = [
   'logo,tagline',
   'name,logo',
 ];
+
+module.exports.getOfferWhereByRole = (role, userId) => {
+  const { MODERATOR, CUSTOMER, CREATOR, OFFER_STATUS_APPROVED } = CONSTANTS;
+
+  if (role === MODERATOR) return {};
+  if (role === CUSTOMER) return { status: OFFER_STATUS_APPROVED };
+  if (role === CREATOR) return { userId };
+  return {};
+};
