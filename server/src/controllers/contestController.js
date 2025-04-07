@@ -136,13 +136,21 @@ module.exports.setNewOffer = async (req, res, next) => {
   }
   obj.userId = req.tokenData.userId;
   obj.contestId = req.body.contestId;
+  obj.status = CONSTANTS.OFFER_STATUS_PENDING;
   try {
+    const contest = await db.Contests.findByPk(req.body.contestId);
+    if (!contest) {
+      return next(new NotFound('Contest not found'));
+    }
+
     const result = await contestQueries.createOffer(obj);
     delete result.contestId;
     delete result.userId;
+
     controller
       .getNotificationController()
       .emitEntryCreated(req.body.customerId);
+
     const User = Object.assign({}, req.tokenData, { id: req.tokenData.userId });
     res.send(Object.assign({}, result, { User }));
   } catch (e) {
@@ -296,17 +304,11 @@ module.exports.getCustomersContests = (req, res, next) => {
 
 module.exports.getContests = (req, res, next) => {
   const {
-    query: {
-      typeIndex,
-      contestId,
-      industry,
-      awardSort,
-      limit,
-      offset,
-      ownEntries,
-    },
-    tokenData: { userId },
+    query: { typeIndex, contestId, industry, awardSort, limit, offset },
+    tokenData: { role },
   } = req;
+
+  const { CREATOR, CONTEST_STATUS_ACTIVE, OFFER_STATUS_APPROVED } = CONSTANTS;
 
   const predicates = UtilFunctions.createWhereForAllContests(
     typeIndex,
@@ -314,6 +316,10 @@ module.exports.getContests = (req, res, next) => {
     industry,
     awardSort
   );
+
+  if (role === CREATOR) {
+    predicates.where.status = CONTEST_STATUS_ACTIVE;
+  }
 
   db.Contests.findAll({
     where: predicates.where,
@@ -323,9 +329,9 @@ module.exports.getContests = (req, res, next) => {
     include: [
       {
         model: db.Offers,
-        required: ownEntries,
-        where: ownEntries ? { userId } : {},
-        attributes: ['id'],
+        required: false,
+        where: role === CREATOR ? { status: OFFER_STATUS_APPROVED } : {},
+        attributes: ['id', 'status'],
       },
     ],
   })
