@@ -16,15 +16,4 @@ offersRouter.patch(
   offerController.updateOffersStatus
 );
 
-offersRouter.get(
-  '/creator',
-  basicMiddlewares.onlyForCreative,
-  offerController.getCreatorOffers
-);
-offersRouter.get(
-  '/customer',
-  basicMiddlewares.onlyForCustomer,
-  offerController.getCustomerOffers
-);
-
 module.exports = offersRouter;

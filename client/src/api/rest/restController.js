@@ -39,13 +39,15 @@ export const getCustomersContests = data =>
   http.get(`contests/byCustomer?${stringify(data)}`);
 
 export const getActiveContests = data =>
-  http.get(`contests/?${stringify(data)} `);
+  http.get(`contests/?${stringify(data)}`);
 
 export const getContestById = ({ contestId }) =>
   http.get(`contests/${contestId}`);
 
 export const getOffers = ({ status, page, results }) =>
-  http.get(`/offers?status=${status || ''}&page=${page}&results=${results} `);
+  http.get(
+    `/offers/moderator?status=${status || ''}&page=${page}&results=${results} `
+  );
 
 export const updateOffersStatus = ({ id, status }) =>
-  http.patch(`/offers/${id}/status`, { status });
+  http.patch(`/offers/moderator/${id}/status`, { status });

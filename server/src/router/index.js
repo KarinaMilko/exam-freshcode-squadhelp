@@ -29,7 +29,7 @@ router.use(checkToken.checkToken);
 
 router.use('/contests', contestsRouter);
 
-router.use('/offers', offersRouter);
+router.use('/offers/moderator', offersRouter);
 
 router.post('/dataForContest', contestController.dataForContest);
 
