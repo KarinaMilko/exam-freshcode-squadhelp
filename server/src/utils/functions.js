@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const bd = require('../models');
 const CONSTANTS = require('../constants');
 
@@ -51,10 +52,25 @@ const types = [
 ];
 
 module.exports.getOfferWhereByRole = (role, userId) => {
-  const { MODERATOR, CUSTOMER, CREATOR, OFFER_STATUS_APPROVED } = CONSTANTS;
+  const {
+    MODERATOR,
+    CUSTOMER,
+    CREATOR,
+    OFFER_STATUS_APPROVED,
+    OFFER_STATUS_WON,
+  } = CONSTANTS;
 
   if (role === MODERATOR) return {};
-  if (role === CUSTOMER) return { status: OFFER_STATUS_APPROVED };
-  if (role === CREATOR) return { userId };
+  if (role === CUSTOMER) {
+    return {
+      status: {
+        [Op.in]: [OFFER_STATUS_APPROVED, OFFER_STATUS_WON],
+      },
+    };
+  }
+  if (role === CREATOR)
+    return {
+      userId,
+    };
   return {};
 };

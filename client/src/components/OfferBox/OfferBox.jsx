@@ -120,7 +120,7 @@ const OfferBox = props => {
                   ? CONSTANTS.ANONYM_IMAGE_PATH
                   : `${CONSTANTS.publicURL}${avatar}`
               }
-              alt='user'
+              alt="user"
             />
             <div className={styles.nameAndEmail}>
               <span>{`${firstName} ${lastName}`}</span>
@@ -135,19 +135,19 @@ const OfferBox = props => {
               fullSymbol={
                 <img
                   src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`}
-                  alt='star'
+                  alt="star"
                 />
               }
               placeholderSymbol={
                 <img
                   src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`}
-                  alt='star'
+                  alt="star"
                 />
               }
               emptySymbol={
                 <img
                   src={`${CONSTANTS.STATIC_IMAGES_PATH}star-outline.png`}
-                  alt='star-outline'
+                  alt="star-outline"
                 />
               }
               readonly
@@ -165,7 +165,7 @@ const OfferBox = props => {
               }
               className={styles.responseLogo}
               src={`${CONSTANTS.publicURL}${data.fileName}`}
-              alt='logo'
+              alt="logo"
             />
           ) : (
             <span className={styles.response}>{data.text}</span>
@@ -176,19 +176,19 @@ const OfferBox = props => {
               fullSymbol={
                 <img
                   src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`}
-                  alt='star'
+                  alt="star"
                 />
               }
               placeholderSymbol={
                 <img
                   src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`}
-                  alt='star'
+                  alt="star"
                 />
               }
               emptySymbol={
                 <img
                   src={`${CONSTANTS.STATIC_IMAGES_PATH}star-outline.png`}
-                  alt='star'
+                  alt="star"
                 />
               }
               onClick={changeMark}
@@ -197,10 +197,10 @@ const OfferBox = props => {
           )}
         </div>
         {role !== CONSTANTS.CREATOR && (
-          <i onClick={goChat} className='fas fa-comments' />
+          <i onClick={goChat} className="fas fa-comments" />
         )}
       </div>
-      {props.needButtons(data.status) && (
+      {role === CONSTANTS.CUSTOMER && props.needButtons(data.status) && (
         <div className={styles.btnsContainer}>
           <div onClick={resolveOffer} className={styles.resolveBtn}>
             Resolve
