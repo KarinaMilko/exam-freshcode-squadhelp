@@ -26,11 +26,11 @@ import 'react-18-image-lightbox/style.css';
 import Error from '../../components/Error/Error';
 
 class ContestPage extends React.Component {
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.props.changeEditContest(false);
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getData();
   }
 
@@ -67,9 +67,10 @@ class ContestPage extends React.Component {
     const userId = this.props.userStore.data.id;
     const contestStatus = this.props.contestByIdStore.contestData.status;
     return (
-      contestCreatorId === userId &&
-      contestStatus === CONSTANTS.CONTEST_STATUS_ACTIVE &&
-      offerStatus === CONSTANTS.OFFER_STATUS_PENDING
+      (contestCreatorId === userId &&
+        contestStatus === CONSTANTS.CONTEST_STATUS_ACTIVE &&
+        offerStatus === CONSTANTS.OFFER_STATUS_PENDING) ||
+      offerStatus === CONSTANTS.OFFER_STATUS_APPROVED
     );
   };
 
@@ -115,7 +116,7 @@ class ContestPage extends React.Component {
     });
   };
 
-  render () {
+  render() {
     const { role } = this.props.userStore.data;
     const {
       contestByIdStore,

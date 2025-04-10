@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const db = require('../models');
 const ServerError = require('../errors/ServerError');
 const contestQueries = require('./queries/contestQueries');
@@ -181,16 +182,16 @@ const resolveOffer = async (
 ) => {
   const finishedContest = await contestQueries.updateContestStatus(
     {
-      status: db.sequelize.literal(`   CASE
-            WHEN "id"=${contestId}  AND "orderId"='${orderId}' THEN '${
-        CONSTANTS.CONTEST_STATUS_FINISHED
-      }'
-            WHEN "orderId"='${orderId}' AND "priority"=${priority + 1}  THEN '${
-        CONSTANTS.CONTEST_STATUS_ACTIVE
-      }'
-            ELSE '${CONSTANTS.CONTEST_STATUS_PENDING}'
-            END
-    `),
+      status: db.sequelize.literal(`
+      CASE 
+        WHEN "id"=${contestId}  
+          AND "orderId"='${orderId}' 
+            THEN '${CONSTANTS.CONTEST_STATUS_FINISHED}'
+        WHEN "orderId"='${orderId}' 
+          AND "priority"=${priority + 1}  
+            THEN '${CONSTANTS.CONTEST_STATUS_ACTIVE}'
+        ELSE '${CONSTANTS.CONTEST_STATUS_PENDING}' END
+        `),
     },
     { orderId },
     transaction
@@ -202,10 +203,11 @@ const resolveOffer = async (
   );
   const updatedOffers = await contestQueries.updateOfferStatus(
     {
-      status: db.sequelize.literal(` CASE
-            WHEN "id"=${offerId} THEN '${CONSTANTS.OFFER_STATUS_WON}'
-            ELSE '${CONSTANTS.OFFER_STATUS_REJECTED}'
-            END
+      status: db.sequelize.literal(` 
+      CASE
+        WHEN "id"=${offerId} 
+          THEN '${CONSTANTS.OFFER_STATUS_WON}'
+        ELSE '${CONSTANTS.OFFER_STATUS_REJECTED}' END
     `),
     },
     {
@@ -306,7 +308,7 @@ module.exports.getContests = (req, res, next) => {
     tokenData: { role, userId },
   } = req;
 
-  const { CREATOR, CONTEST_STATUS_ACTIVE } = CONSTANTS;
+  const { CREATOR, CONTEST_STATUS_ACTIVE, CONTEST_STATUS_FINISHED } = CONSTANTS;
 
   const predicates = UtilFunctions.createWhereForAllContests(
     typeIndex,
@@ -316,7 +318,9 @@ module.exports.getContests = (req, res, next) => {
   );
 
   if (role === CREATOR) {
-    predicates.where.status = CONTEST_STATUS_ACTIVE;
+    predicates.where.status = {
+      [Op.in]: [CONTEST_STATUS_ACTIVE, CONTEST_STATUS_FINISHED],
+    };
   }
 
   db.Contests.findAll({
