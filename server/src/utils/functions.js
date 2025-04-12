@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const bd = require('../models');
 const CONSTANTS = require('../constants');
 
@@ -35,7 +36,7 @@ module.exports.createWhereForAllContests = (
   return object;
 };
 
-function getPredicateTypes (index) {
+function getPredicateTypes(index) {
   return { [bd.Sequelize.Op.or]: [types[index].split(',')] };
 }
 
@@ -49,3 +50,27 @@ const types = [
   'logo,tagline',
   'name,logo',
 ];
+
+module.exports.getOfferWhereByRole = (role, userId) => {
+  const {
+    MODERATOR,
+    CUSTOMER,
+    CREATOR,
+    OFFER_STATUS_APPROVED,
+    OFFER_STATUS_WON,
+  } = CONSTANTS;
+
+  if (role === MODERATOR) return {};
+  if (role === CUSTOMER) {
+    return {
+      status: {
+        [Op.in]: [OFFER_STATUS_APPROVED, OFFER_STATUS_WON],
+      },
+    };
+  }
+  if (role === CREATOR)
+    return {
+      userId,
+    };
+  return {};
+};

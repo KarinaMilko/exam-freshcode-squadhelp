@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const db = require('../models');
 const ServerError = require('../errors/ServerError');
 const contestQueries = require('./queries/contestQueries');
@@ -46,8 +47,6 @@ module.exports.getContestById = async (req, res, next) => {
     tokenData: { role, userId },
   } = req;
 
-  const { CREATOR } = CONSTANTS;
-
   try {
     let contestInfo = await db.Contests.findOne({
       where: { id },
@@ -63,7 +62,7 @@ module.exports.getContestById = async (req, res, next) => {
         {
           model: db.Offers,
           required: false,
-          where: role === CREATOR ? { userId } : {},
+          where: UtilFunctions.getOfferWhereByRole(role, userId),
           attributes: { exclude: ['userId', 'contestId'] },
           include: [
             {
@@ -136,13 +135,21 @@ module.exports.setNewOffer = async (req, res, next) => {
   }
   obj.userId = req.tokenData.userId;
   obj.contestId = req.body.contestId;
+  obj.status = CONSTANTS.OFFER_STATUS_PENDING;
   try {
+    const contest = await db.Contests.findByPk(req.body.contestId);
+    if (!contest) {
+      return next(new NotFound('Contest not found'));
+    }
+
     const result = await contestQueries.createOffer(obj);
     delete result.contestId;
     delete result.userId;
+
     controller
       .getNotificationController()
       .emitEntryCreated(req.body.customerId);
+
     const User = Object.assign({}, req.tokenData, { id: req.tokenData.userId });
     res.send(Object.assign({}, result, { User }));
   } catch (e) {
@@ -175,16 +182,16 @@ const resolveOffer = async (
 ) => {
   const finishedContest = await contestQueries.updateContestStatus(
     {
-      status: db.sequelize.literal(`   CASE
-            WHEN "id"=${contestId}  AND "orderId"='${orderId}' THEN '${
-        CONSTANTS.CONTEST_STATUS_FINISHED
-      }'
-            WHEN "orderId"='${orderId}' AND "priority"=${priority + 1}  THEN '${
-        CONSTANTS.CONTEST_STATUS_ACTIVE
-      }'
-            ELSE '${CONSTANTS.CONTEST_STATUS_PENDING}'
-            END
-    `),
+      status: db.sequelize.literal(`
+      CASE 
+        WHEN "id"=${contestId}  
+          AND "orderId"='${orderId}' 
+            THEN '${CONSTANTS.CONTEST_STATUS_FINISHED}'
+        WHEN "orderId"='${orderId}' 
+          AND "priority"=${priority + 1}  
+            THEN '${CONSTANTS.CONTEST_STATUS_ACTIVE}'
+        ELSE '${CONSTANTS.CONTEST_STATUS_PENDING}' END
+        `),
     },
     { orderId },
     transaction
@@ -196,10 +203,11 @@ const resolveOffer = async (
   );
   const updatedOffers = await contestQueries.updateOfferStatus(
     {
-      status: db.sequelize.literal(` CASE
-            WHEN "id"=${offerId} THEN '${CONSTANTS.OFFER_STATUS_WON}'
-            ELSE '${CONSTANTS.OFFER_STATUS_REJECTED}'
-            END
+      status: db.sequelize.literal(` 
+      CASE
+        WHEN "id"=${offerId} 
+          THEN '${CONSTANTS.OFFER_STATUS_WON}'
+        ELSE '${CONSTANTS.OFFER_STATUS_REJECTED}' END
     `),
     },
     {
@@ -296,17 +304,11 @@ module.exports.getCustomersContests = (req, res, next) => {
 
 module.exports.getContests = (req, res, next) => {
   const {
-    query: {
-      typeIndex,
-      contestId,
-      industry,
-      awardSort,
-      limit,
-      offset,
-      ownEntries,
-    },
-    tokenData: { userId },
+    query: { typeIndex, contestId, industry, awardSort, limit, offset },
+    tokenData: { role, userId },
   } = req;
+
+  const { CREATOR, CONTEST_STATUS_ACTIVE, CONTEST_STATUS_FINISHED } = CONSTANTS;
 
   const predicates = UtilFunctions.createWhereForAllContests(
     typeIndex,
@@ -314,6 +316,12 @@ module.exports.getContests = (req, res, next) => {
     industry,
     awardSort
   );
+
+  if (role === CREATOR) {
+    predicates.where.status = {
+      [Op.in]: [CONTEST_STATUS_ACTIVE, CONTEST_STATUS_FINISHED],
+    };
+  }
 
   db.Contests.findAll({
     where: predicates.where,
@@ -323,9 +331,9 @@ module.exports.getContests = (req, res, next) => {
     include: [
       {
         model: db.Offers,
-        required: ownEntries,
-        where: ownEntries ? { userId } : {},
-        attributes: ['id'],
+        required: false,
+        where: UtilFunctions.getOfferWhereByRole(role, userId),
+        attributes: ['id', 'status'],
       },
     ],
   })

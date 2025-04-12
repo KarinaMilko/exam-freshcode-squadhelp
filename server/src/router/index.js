@@ -10,6 +10,8 @@ const upload = require('../utils/fileUpload');
 const contestsRouter = require('./contestsRouter');
 const chatRouter = require('./chatRouter');
 const usersRouter = require('./usersRouter');
+const offersRouter = require('./offersRouter');
+
 const router = express.Router();
 
 router.post(
@@ -26,6 +28,8 @@ router.use('/users', usersRouter);
 router.use(checkToken.checkToken);
 
 router.use('/contests', contestsRouter);
+
+router.use('/offers/moderator', offersRouter);
 
 router.post('/dataForContest', contestController.dataForContest);
 

@@ -4,6 +4,7 @@ const serverPort = 5000;
 export default {
   CUSTOMER: 'customer',
   CREATOR: 'creator',
+  MODERATOR: 'moderator',
   CONTEST_STATUS_ACTIVE: 'active',
   CONTEST_STATUS_FINISHED: 'finished',
   CONTEST_STATUS_PENDING: 'pending',
@@ -12,6 +13,7 @@ export default {
   TAGLINE_CONTEST: 'tagline',
   OFFER_STATUS_REJECTED: 'rejected',
   OFFER_STATUS_WON: 'won',
+  OFFER_STATUS_APPROVED: 'approved',
   OFFER_STATUS_PENDING: 'pending',
   STATIC_IMAGES_PATH: '/staticImages/',
   ANONYM_IMAGE_PATH: '/staticImages/anonym.png',
@@ -33,6 +35,9 @@ export default {
   AUTH_MODE: {
     REGISTER: 'REGISTER',
     LOGIN: 'LOGIN',
+  },
+  SLICE_NAME: {
+    OFFERS_SLICE_NAME: 'offers',
   },
   HEADER_ANIMATION_TEXT: [
     'a Company',
