@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const { format, createLogger, transports } = require('winston');
+const schedule = require('node-schedule');
 
 const { printf } = format;
 
@@ -73,11 +74,8 @@ const errorRotate = () => {
   });
 };
 
-setInterval(() => {
-  const now = new Date();
-  if (now.getHours() === 0 && now.getMinutes() === 0) {
-    errorRotate();
-  }
-}, 60 * 1000);
+schedule.scheduleJob('0 0 0 * * * ', () => {
+  errorRotate();
+});
 
 module.exports = logger;
