@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Catalog = sequelize.define(
-    'Catalogs',
+  const Chat = sequelize.define(
+    'Chats',
     {
       id: {
         allowNull: false,
@@ -8,11 +8,11 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      catalogName: {
-        type: DataTypes.STRING,
+      catalogId: {
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
-      userId: {
+      conversationId: {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
@@ -21,13 +21,13 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
     }
   );
-  Catalog.associate = function (models) {
-    Catalog.belongsTo(models.Users, {
-      foreignKey: 'userId',
-    });
-    Catalog.hasMany(models.Chats, {
+  Chat.associate = function (models) {
+    Chat.belongsTo(models.Catalogs, {
       foreignKey: 'catalogId',
     });
+    Chat.belongsTo(models.Conversations, {
+      foreignKey: 'conversationId',
+    });
   };
-  return Catalog;
+  return Chat;
 };
