@@ -1,243 +1,325 @@
-const { Conversation, Message, Catalog } = require('../models/mongoModels');
-const moment = require('moment');
-const db = require('../models');
-const userQueries = require('./queries/userQueries');
+const { Op } = require('sequelize');
+const {
+  Conversations,
+  Messages,
+  Catalogs,
+  Chats,
+  Users,
+} = require('../models');
 const controller = require('../socketInit');
-const _ = require('lodash');
+
+async function findOrCreateConversation(userId, interlocutorId) {
+  // Сортуємо ID, щоб стабільно мати creatorId < customerId
+  const [creatorId, customerId] =
+    userId < interlocutorId
+      ? [userId, interlocutorId]
+      : [interlocutorId, userId];
+
+  let conversation = await Conversations.findOne({
+    where: { creatorId, customerId },
+  });
+
+  if (!conversation) {
+    conversation = await Conversations.create({
+      creatorId,
+      customerId,
+      blackListCreator: false,
+      blackListCustomer: false,
+      favoriteCreator: false,
+      favoriteCustomer: false,
+    });
+  }
+
+  return conversation;
+}
 
 module.exports.addMessage = async (req, res, next) => {
-  const {
-    tokenData: { userId, firstName, lastName, displayName, avatar, email },
-    body: { recipient, messageBody, interlocutor },
-  } = req;
+  const senderId = Number(req.tokenData.userId);
+  const recipientId = Number(req.body.recipient);
+  const messageBody = req.body.messageBody;
 
-  const participants = [userId, recipient].sort(
-    (participant1, participant2) => participant1 - participant2
-  );
+  if (senderId === recipientId) {
+    return res.status(400).send({ error: 'Cannot send message to yourself' });
+  }
+
+  // Сортуємо, щоб гарантувати унікальність пари
+  const [creatorId, customerId] =
+    senderId < recipientId ? [senderId, recipientId] : [recipientId, senderId];
 
   try {
-    const newConversation = await Conversation.findOneAndUpdate(
-      {
-        participants,
-      },
-      { participants, blackList: [false, false], favoriteList: [false, false] },
-      {
-        upsert: true,
-        new: true,
-        setDefaultsOnInsert: true,
-        useFindAndModify: false,
-      }
-    );
-
-    const message = new Message({
-      sender: userId,
-      body: messageBody,
-      conversation: newConversation._id,
+    let conversation = await Conversations.findOne({
+      where: { creatorId, customerId },
     });
-    await message.save();
 
-    message._doc.participants = participants;
+    if (!conversation) {
+      conversation = await Conversations.create({
+        creatorId,
+        customerId,
+        blackListCreator: false,
+        blackListCustomer: false,
+        favoriteCreator: false,
+        favoriteCustomer: false,
+      });
+    }
 
-    const interlocutorId = participants.find(
-      participant => participant !== userId
-    );
+    const message = await Messages.create({
+      sender: senderId,
+      body: messageBody,
+      conversationId: conversation.id,
+    });
+
+    const interlocutorId =
+      senderId === conversation.creatorId
+        ? conversation.customerId
+        : conversation.creatorId;
+
+    const interlocutor = await Users.findByPk(interlocutorId, {
+      attributes: ['id', 'firstName', 'lastName', 'displayName', 'avatar'],
+    });
+
+    if (!interlocutor) {
+      return res.status(404).send({ error: 'Interlocutor not found' });
+    }
 
     const preview = {
-      _id: newConversation._id,
-      sender: userId,
+      id: conversation.id,
+      sender: senderId,
       text: messageBody,
-      createAt: message.createdAt,
-      participants,
-      blackList: newConversation.blackList,
-      favoriteList: newConversation.favoriteList,
-      preview: {
-        interlocutor: {
-          id: userId,
-          firstName: firstName,
-          lastName: lastName,
-          displayName: displayName,
-          avatar: avatar,
-          email: email,
-        },
-      },
+      createdAt: message.createdAt?.toISOString() || null,
+      blackListCreator: conversation.blackListCreator,
+      blackListCustomer: conversation.blackListCustomer,
+      favoriteCreator: conversation.favoriteCreator,
+      favoriteCustomer: conversation.favoriteCustomer,
+      creatorId: conversation.creatorId,
+      customerId: conversation.customerId,
     };
-    controller.getChatController().emitNewMessage(interlocutorId, {
-      message,
-      preview,
-    });
 
-    res.send({
+    controller.getChatController().emitNewMessage(interlocutorId, {
       message,
       preview: { ...preview, interlocutor },
     });
-  } catch (err) {
-    next(err);
-  }
-};
 
-module.exports.getChat = async (req, res, next) => {
-  const participants = [req.tokenData.userId, req.body.interlocutorId];
-  participants.sort(
-    (participant1, participant2) => participant1 - participant2
-  );
-  try {
-    const messages = await Message.aggregate([
-      {
-        $lookup: {
-          from: 'conversations',
-          localField: 'conversation',
-          foreignField: '_id',
-          as: 'conversationData',
-        },
-      },
-      { $match: { 'conversationData.participants': participants } },
-      { $sort: { createdAt: 1 } },
-      {
-        $project: {
-          _id: 1,
-          sender: 1,
-          body: 1,
-          conversation: 1,
-          createdAt: 1,
-          updatedAt: 1,
-        },
-      },
-    ]);
-
-    const interlocutor = await userQueries.findUser({
-      id: req.body.interlocutorId,
-    });
-    res.send({
-      messages,
-      interlocutor: {
-        firstName: interlocutor.firstName,
-        lastName: interlocutor.lastName,
-        displayName: interlocutor.displayName,
-        id: interlocutor.id,
-        avatar: interlocutor.avatar,
-      },
-    });
+    res.send({ message, preview: { ...preview, interlocutor } });
   } catch (err) {
     next(err);
   }
 };
 
 module.exports.getPreview = async (req, res, next) => {
+  const userId = Number(req.tokenData.userId);
+
   try {
-    const conversations = await Message.aggregate([
-      {
-        $lookup: {
-          from: 'conversations',
-          localField: 'conversation',
-          foreignField: '_id',
-          as: 'conversationData',
-        },
-      },
-      {
-        $unwind: '$conversationData',
-      },
-      {
-        $match: {
-          'conversationData.participants': req.tokenData.userId,
-        },
-      },
-      {
-        $sort: {
-          createdAt: -1,
-        },
-      },
-      {
-        $group: {
-          _id: '$conversationData._id',
-          sender: { $first: '$sender' },
-          text: { $first: '$body' },
-          createAt: { $first: '$createdAt' },
-          participants: { $first: '$conversationData.participants' },
-          blackList: { $first: '$conversationData.blackList' },
-          favoriteList: { $first: '$conversationData.favoriteList' },
-        },
-      },
-    ]);
-    const interlocutors = [];
-    conversations.forEach(conversation => {
-      interlocutors.push(
-        conversation.participants.find(
-          participant => participant !== req.tokenData.userId
-        )
-      );
-    });
-    const senders = await db.Users.findAll({
+    // Отримуємо всі розмови, де користувач є creator або customer
+    const conversations = await Conversations.findAll({
       where: {
-        id: interlocutors,
+        [Op.or]: [{ creatorId: userId }, { customerId: userId }],
       },
-      attributes: ['id', 'firstName', 'lastName', 'displayName', 'avatar'],
+      include: [
+        {
+          model: Messages,
+          separate: true,
+          limit: 1,
+          order: [['createdAt', 'DESC']],
+        },
+      ],
+      order: [['updatedAt', 'DESC']],
     });
-    conversations.forEach(conversation => {
-      senders.forEach(sender => {
-        if (conversation.participants.includes(sender.dataValues.id)) {
-          conversation.interlocutor = {
-            id: sender.dataValues.id,
-            firstName: sender.dataValues.firstName,
-            lastName: sender.dataValues.lastName,
-            displayName: sender.dataValues.displayName,
-            avatar: sender.dataValues.avatar,
-          };
-        }
-      });
-    });
-    res.send(conversations);
+
+    // Формуємо відповідь асинхронно
+    const response = await Promise.all(
+      conversations.map(async conversation => {
+        const {
+          id,
+          creatorId,
+          customerId,
+          favoriteCreator,
+          favoriteCustomer,
+          blackListCreator,
+          blackListCustomer,
+        } = conversation;
+
+        const lastMessage = conversation.Messages[0] || null;
+        const isCreator = creatorId === userId;
+
+        // Співрозмовник — це той, хто не є користувачем
+        const interlocutorId = isCreator ? customerId : creatorId;
+
+        // Отримуємо дані співрозмовника
+        const interlocutor = await Users.findByPk(interlocutorId, {
+          attributes: ['id', 'firstName', 'lastName', 'displayName', 'avatar'],
+        });
+
+        return {
+          id,
+          creatorId,
+          customerId,
+          favoriteCreator,
+          favoriteCustomer,
+          blackListCreator,
+          blackListCustomer,
+          sender: lastMessage ? lastMessage.sender : null,
+          text: lastMessage ? lastMessage.body : null,
+          createdAt: lastMessage?.createdAt
+            ? new Date(lastMessage.createdAt).toISOString()
+            : null,
+          interlocutor,
+          isCreator,
+        };
+      })
+    );
+
+    res.send(response);
   } catch (err) {
     next(err);
   }
 };
 
-module.exports.blackList = async (req, res, next) => {
-  const predicate =
-    'blackList.' + req.body.participants.indexOf(req.tokenData.userId);
+module.exports.getChat = async (req, res, next) => {
+  const userId = Number(req.tokenData.userId);
+  const interlocutorId = Number(req.params.interlocutorId);
+
+  if (userId === interlocutorId) {
+    return res.status(400).send({ error: 'Cannot open chat with yourself' });
+  }
+
+  // Нормалізуємо порядок ID, щоб відповідало унікальному ключу
+  const [creatorId, customerId] =
+    userId < interlocutorId
+      ? [userId, interlocutorId]
+      : [interlocutorId, userId];
+
   try {
-    const chat = await Conversation.findOneAndUpdate(
-      { participants: req.body.participants },
-      { $set: { [predicate]: req.body.blackListFlag } },
-      { new: true }
-    );
-    res.send(chat);
-    const interlocutorId = req.body.participants.filter(
-      participant => participant !== req.tokenData.userId
-    )[0];
-    controller.getChatController().emitChangeBlockStatus(interlocutorId, chat);
+    // Знаходимо розмову за нормалізованою парою
+    const conversation = await Conversations.findOne({
+      where: { creatorId, customerId },
+    });
+
+    if (!conversation) {
+      conversation = await Conversations.create({
+        creatorId,
+        customerId,
+        favoriteCreator: false,
+        favoriteCustomer: false,
+        blackListCreator: false,
+        blackListCustomer: false,
+      });
+    }
+
+    // Вивантажуємо всі повідомлення з розмови
+    const messages = await Messages.findAll({
+      where: { conversationId: conversation.id },
+      order: [['createdAt', 'ASC']],
+    });
+
+    // Визначаємо співрозмовника (той, хто не є userId)
+    const interlocutorUserId =
+      userId === conversation.creatorId
+        ? conversation.customerId
+        : conversation.creatorId;
+
+    // Знаходимо користувача співрозмовника
+    const interlocutor = await Users.findByPk(interlocutorUserId, {
+      attributes: ['id', 'firstName', 'lastName', 'displayName', 'avatar'],
+    });
+
+    if (!interlocutor) {
+      return res.status(404).send({ error: 'Interlocutor not found' });
+    }
+
+    res.send({
+      messages,
+      interlocutor,
+      blackListCreator: conversation.blackListCreator,
+      blackListCustomer: conversation.blackListCustomer,
+      favoriteCreator: conversation.favoriteCreator,
+      favoriteCustomer: conversation.favoriteCustomer,
+      creatorId: conversation.creatorId,
+      customerId: conversation.customerId,
+    });
   } catch (err) {
-    res.send(err);
+    next(err);
   }
 };
 
 module.exports.favoriteChat = async (req, res, next) => {
-  const predicate =
-    'favoriteList.' + req.body.participants.indexOf(req.tokenData.userId);
+  const { userId } = req.tokenData;
+  const { interlocutorId, favoriteFlag } = req.body;
+
+  if (!userId || !interlocutorId) {
+    return res.status(400).send({ message: 'Invalid user or interlocutor ID' });
+  }
+
   try {
-    const chat = await Conversation.findOneAndUpdate(
-      { participants: req.body.participants },
-      { $set: { [predicate]: req.body.favoriteFlag } },
-      { new: true }
-    );
-    res.send(chat);
+    const conversation = await findOrCreateConversation(userId, interlocutorId);
+
+    const isCreator = conversation.creatorId === userId;
+
+    await conversation.update({
+      [isCreator ? 'favoriteCreator' : 'favoriteCustomer']: favoriteFlag,
+    });
+
+    const updatedConversation = conversation.toJSON();
+
+    controller
+      .getChatController()
+      ?.emitChangeBlockStatus(interlocutorId, updatedConversation);
+
+    res.send(updatedConversation);
   } catch (err) {
-    res.send(err);
+    next(err);
+  }
+};
+module.exports.blackList = async (req, res, next) => {
+  const { userId } = req.tokenData;
+  const { interlocutorId, blackListFlag } = req.body;
+
+  if (!userId || !interlocutorId) {
+    return res.status(400).send({ message: 'Invalid user or interlocutor ID' });
+  }
+
+  try {
+    const conversation = await findOrCreateConversation(userId, interlocutorId);
+
+    const isCreator = conversation.creatorId === userId;
+
+    await conversation.update({
+      [isCreator ? 'blackListCreator' : 'blackListCustomer']: blackListFlag,
+    });
+
+    const updatedConversation = conversation.toJSON();
+
+    controller
+      .getChatController()
+      ?.emitChangeBlockStatus(interlocutorId, updatedConversation);
+
+    res.send(updatedConversation);
+  } catch (err) {
+    next(err);
   }
 };
 
 module.exports.createCatalog = async (req, res, next) => {
-  const {
-    body: { catalogName, chatId },
-    tokenData: { userId },
-  } = req;
+  const { catalogName, chatId } = req.body;
+  const { userId } = req.tokenData;
 
-  const catalog = new Catalog({
-    userId,
-    catalogName,
-    chats: [chatId],
-  });
+  if (!catalogName || !chatId) {
+    return res
+      .status(400)
+      .send({ message: 'Catalog name and chat ID are required.' });
+  }
+
   try {
-    await catalog.save();
+    const catalog = await Catalogs.create({
+      userId,
+      catalogName,
+    });
+
+    // Додаємо зв'язок в таблицю Chats (як проміжну)
+    await Chats.create({
+      catalogId: catalog.id,
+      conversationId: chatId, // тут chatId — це conversationId!
+    });
+
     res.send(catalog);
   } catch (err) {
     next(err);
@@ -245,72 +327,214 @@ module.exports.createCatalog = async (req, res, next) => {
 };
 
 module.exports.updateNameCatalog = async (req, res, next) => {
-  const {
-    params: { id: catalogId },
-    body: { catalogName },
-    tokenData: { userId },
-  } = req;
+  const { catalogId, catalogName } = req.body;
+  const { userId } = req.tokenData;
+
+  if (!catalogId || !catalogName) {
+    return res
+      .status(400)
+      .send({ message: 'Catalog ID and catalog name are required.' });
+  }
 
   try {
-    const catalog = await Catalog.findOneAndUpdate(
-      { _id: catalogId, userId },
-      { catalogName },
-      { new: true }
-    );
-    res.send(catalog);
+    const catalog = await Catalogs.findOne({
+      where: { id: catalogId, userId },
+    });
+
+    if (!catalog) {
+      return res.status(404).send({ message: 'Catalog not found.' });
+    }
+
+    catalog.catalogName = catalogName;
+    await catalog.save();
+
+    const fullCatalog = await Catalogs.findByPk(catalogId, {
+      include: [
+        {
+          model: Chats,
+          as: 'chats',
+          include: [
+            {
+              model: Conversations,
+              as: 'conversation',
+              attributes: [
+                'id',
+                'creatorId',
+                'customerId',
+                'blackListCreator',
+                'blackListCustomer',
+                'favoriteCreator',
+                'favoriteCustomer',
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    res.send(fullCatalog);
   } catch (err) {
     next(err);
   }
 };
 
 module.exports.addNewChatToCatalog = async (req, res, next) => {
-  const {
-    body: { catalogId, chatId },
-    tokenData: { userId },
-  } = req;
+  const { catalogId, chatId } = req.body;
+  const { userId } = req.tokenData;
+
+  if (!catalogId || !chatId) {
+    return res
+      .status(400)
+      .send({ message: 'Catalog ID and chat ID are required.' });
+  }
 
   try {
-    const catalog = await Catalog.findOneAndUpdate(
-      { _id: catalogId, userId },
-      { $addToSet: { chats: chatId } },
-      { new: true }
-    );
-    res.send(catalog);
+    // Перевіряємо, чи існує каталог
+    const catalog = await Catalogs.findOne({
+      where: {
+        id: catalogId,
+        userId,
+      },
+    });
+
+    if (!catalog) {
+      return res.status(404).send({ message: 'Catalog not found.' });
+    }
+
+    // Перевіряємо, чи зв’язок вже існує
+    const existing = await Chats.findOne({
+      where: {
+        catalogId,
+        conversationId: chatId,
+      },
+    });
+
+    if (existing) {
+      const updatedCatalog = await Catalogs.findByPk(catalogId, {
+        include: [
+          {
+            model: Chats,
+            as: 'chats',
+            include: [
+              {
+                model: Conversations,
+                as: 'conversation',
+              },
+            ],
+          },
+        ],
+      });
+
+      return res.status(200).send(updatedCatalog); // ⬅️ повертаємо все як успішну відповідь
+    }
+
+    // Створюємо зв’язок
+    await Chats.create({
+      catalogId,
+      conversationId: chatId,
+    });
+
+    // Повертаємо оновлений каталог
+    const updatedCatalog = await Catalogs.findByPk(catalogId, {
+      include: [
+        {
+          model: Chats,
+          as: 'chats',
+          include: [
+            {
+              model: Conversations,
+              as: 'conversation',
+            },
+          ],
+        },
+      ],
+    });
+
+    res.send(updatedCatalog);
   } catch (err) {
     next(err);
   }
 };
 
 module.exports.removeChatFromCatalog = async (req, res, next) => {
-  const {
-    params: { catalogId, chatId },
-    tokenData: { userId },
-  } = req;
+  const { catalogId, chatId } = req.body;
+  const { userId } = req.tokenData;
+
+  if (!catalogId || !chatId) {
+    return res
+      .status(400)
+      .send({ message: 'Catalog ID and chat ID are required.' });
+  }
 
   try {
-    const catalog = await Catalog.findOneAndUpdate(
-      { _id: catalogId, userId },
-      { $pull: { chats: chatId } },
-      { new: true }
-    );
+    const catalog = await Catalogs.findOne({
+      where: {
+        id: catalogId,
+        userId,
+      },
+    });
 
-    res.send(catalog);
+    if (!catalog) {
+      return res.status(404).send({ message: 'Catalog not found.' });
+    }
+
+    // Видаляємо чат із каталогу
+    const deleted = await Chats.destroy({
+      where: {
+        catalogId,
+        conversationId: chatId,
+      },
+    });
+
+    if (!deleted) {
+      return res.status(404).send({ message: 'Chat not found in catalog.' });
+    }
+
+    const updatedCatalog = await Catalogs.findByPk(catalogId, {
+      include: [
+        {
+          model: Chats,
+          as: 'chats',
+          include: [
+            {
+              model: Conversations,
+              as: 'conversation',
+            },
+          ],
+        },
+      ],
+    });
+
+    res.send(updatedCatalog);
+
+    // res.send(catalog);
   } catch (err) {
     next(err);
   }
 };
 
 module.exports.deleteCatalog = async (req, res, next) => {
-  const {
-    params: { id: catalogId },
-    tokenData: { userId },
-  } = req;
+  const { catalogId } = req.params;
+  const { userId } = req.tokenData;
+
+  if (!catalogId) {
+    return res.status(400).send({ message: 'Catalog ID is required.' });
+  }
 
   try {
-    await Catalog.deleteOne({
-      _id: catalogId,
-      userId,
+    const catalog = await Catalogs.findOne({
+      where: {
+        id: catalogId,
+        userId,
+      },
     });
+
+    if (!catalog) {
+      return res.status(404).send({ message: 'Catalog not found.' });
+    }
+
+    await catalog.destroy(); // Завдяки CASCADE Chats автоматично видаляться
+
     res.end();
   } catch (err) {
     next(err);
@@ -318,21 +542,61 @@ module.exports.deleteCatalog = async (req, res, next) => {
 };
 
 module.exports.getCatalogs = async (req, res, next) => {
-  const {
-    tokenData: { userId },
-  } = req;
+  const { userId } = req.tokenData;
 
   try {
-    const catalogs = await Catalog.aggregate([
-      { $match: { userId } },
-      {
-        $project: {
-          _id: 1,
-          catalogName: 1,
-          chats: 1,
-        },
+    const catalogs = await Catalogs.findAll({
+      where: {
+        userId,
       },
-    ]);
+      include: [
+        {
+          model: Chats, // Використовуємо асоціацію між Catalog і Chat
+          as: 'chats',
+          attributes: ['id', 'catalogId', 'conversationId'], // Тут визначаємо, які атрибути чатів нам потрібні
+          include: [
+            {
+              model: Conversations,
+              as: 'conversation',
+              attributes: [
+                'id',
+                'creatorId',
+                'customerId',
+                'blackListCreator',
+                'blackListCustomer',
+                'favoriteCreator',
+                'favoriteCustomer',
+              ],
+              include: [
+                {
+                  model: Users,
+                  as: 'creator',
+                  attributes: [
+                    'id',
+                    'firstName',
+                    'lastName',
+                    'displayName',
+                    'avatar',
+                  ],
+                },
+                {
+                  model: Users,
+                  as: 'customer',
+                  attributes: [
+                    'id',
+                    'firstName',
+                    'lastName',
+                    'displayName',
+                    'avatar',
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
     res.send(catalogs);
   } catch (err) {
     next(err);
