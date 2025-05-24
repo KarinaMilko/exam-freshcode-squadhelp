@@ -3,50 +3,63 @@ module.exports = (sequelize, DataTypes) => {
     'Conversations',
     {
       id: {
+        type: DataTypes.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: DataTypes.INTEGER,
       },
-      blackListCreative: {
+      creatorId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      customerId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      blackListCreator: {
         type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
       blackListCustomer: {
         type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
-      favoriteListCreative: {
+      favoriteCreator: {
         type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
-      favoriteListCustomer: {
+      favoriteCustomer: {
         type: DataTypes.BOOLEAN,
-      },
-      creativeId: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
-      },
-      customerId: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
+        defaultValue: false,
       },
     },
     {
-      timestamps: false,
+      timestamps: true,
+      indexes: [
+        {
+          unique: true,
+          fields: ['creatorId', 'customerId'],
+        },
+      ],
     }
   );
   Conversation.associate = function (models) {
-    Conversation.belongsTo(models.Users, {
-      foreignKey: 'creativeId',
-      as: 'creator',
-    });
-    Conversation.belongsTo(models.Users, {
-      foreignKey: 'customerId',
-      as: 'customer',
-    });
     Conversation.hasMany(models.Messages, {
       foreignKey: 'conversationId',
     });
-    Conversation.hasMany(models.Chats, {
+
+    Conversation.belongsToMany(models.Catalogs, {
+      through: models.Chats,
       foreignKey: 'conversationId',
+    });
+    Conversation.belongsTo(models.Users, {
+      foreignKey: 'creatorId',
+      as: 'creator',
+    });
+
+    Conversation.belongsTo(models.Users, {
+      foreignKey: 'customerId',
+      as: 'customer',
     });
   };
 

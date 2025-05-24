@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      timestamps: false,
+      timestamps: true,
     }
   );
   Catalog.associate = function (models) {
@@ -27,6 +27,13 @@ module.exports = (sequelize, DataTypes) => {
     });
     Catalog.hasMany(models.Chats, {
       foreignKey: 'catalogId',
+      as: 'chats',
+      onDelete: 'CASCADE',
+    });
+    Catalog.belongsToMany(models.Conversations, {
+      through: models.Chats,
+      foreignKey: 'catalogId',
+      as: 'conversations',
     });
   };
   return Catalog;

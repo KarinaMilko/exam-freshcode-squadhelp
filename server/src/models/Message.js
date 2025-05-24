@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      timestamps: false,
+      timestamps: true,
     }
   );
   Message.associate = function (models) {
