@@ -17,23 +17,26 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import './confirmStyle.css';
 
 const OfferBox = props => {
-  const findConversationInfo = () => {
-    const { messagesPreview, id } = props;
-    const participants = [id, props.data.User.id];
-    participants.sort(
-      (participant1, participant2) => participant1 - participant2
+  const findConversationInfo = interlocutorId => {
+    const { messagesPreview } = props;
+    const { id } = data.User.id;
+
+    const conversation = messagesPreview.find(
+      item =>
+        item.creatorId === (CONSTANTS.CREATOR ? id : interlocutorId) &&
+        item.customerId === (CONSTANTS.CREATOR ? interlocutorId : id)
     );
-    for (let i = 0; i < messagesPreview.length; i++) {
-      if (isEqual(participants, messagesPreview[i].participants)) {
-        return {
-          participants: messagesPreview[i].participants,
-          _id: messagesPreview[i]._id,
-          blackList: messagesPreview[i].blackList,
-          favoriteList: messagesPreview[i].favoriteList,
-        };
-      }
-    }
-    return null;
+    if (!conversation) return null;
+
+    return {
+      id: conversation.id,
+      creatorId: conversation.creatorId,
+      customerId: conversation.customerId,
+      blackListCreator: conversation.blackListCreator,
+      blackListCustomer: conversation.blackListCustomer,
+      favoriteCreator: conversation.favoriteCreator,
+      favoriteCustomer: conversation.favoriteCustomer,
+    };
   };
 
   const resolveOffer = () => {

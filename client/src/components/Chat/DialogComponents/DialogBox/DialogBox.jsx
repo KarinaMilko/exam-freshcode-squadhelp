@@ -16,15 +16,19 @@ const DialogBox = props => {
     interlocutor,
   } = props;
   const {
-    favoriteList,
-    participants,
-    blackList,
-    _id,
+    favoriteCreator,
+    favoriteCustomer,
+    blackListCreator,
+    blackListCustomer,
+    creatorId,
+    customerId,
+    id,
     text,
-    createAt,
+    createdAt,
   } = chatPreview;
-  const isFavorite = favoriteList[participants.indexOf(userId)];
-  const isBlocked = blackList[participants.indexOf(userId)];
+
+  const isFavorite = userId === creatorId ? favoriteCreator : favoriteCustomer;
+  const isBlocked = userId === creatorId ? blackListCreator : blackListCustomer;
   return (
     <div
       className={styles.previewChatBox}
@@ -32,10 +36,13 @@ const DialogBox = props => {
         goToExpandedDialog({
           interlocutor,
           conversationData: {
-            participants,
-            _id,
-            blackList,
-            favoriteList,
+            id,
+            creatorId,
+            customerId,
+            favoriteCreator,
+            favoriteCustomer,
+            blackListCreator,
+            blackListCustomer,
           },
         })
       }
@@ -46,7 +53,7 @@ const DialogBox = props => {
             ? CONSTANTS.ANONYM_IMAGE_PATH
             : `${CONSTANTS.publicURL}${interlocutor.avatar}`
         }
-        alt='user'
+        alt="user"
       />
       <div className={styles.infoContainer}>
         <div className={styles.interlocutorInfo}>
@@ -56,12 +63,13 @@ const DialogBox = props => {
           <span className={styles.interlocutorMessage}>{text}</span>
         </div>
         <div className={styles.buttonsContainer}>
-          <span className={styles.time}>{getTimeStr(createAt)}</span>
+          <span className={styles.time}>{getTimeStr(createdAt)}</span>
+
           <i
             onClick={event =>
               changeFavorite(
                 {
-                  participants,
+                  interlocutorId: interlocutor.id,
                   favoriteFlag: !isFavorite,
                 },
                 event
@@ -76,7 +84,7 @@ const DialogBox = props => {
             onClick={event =>
               changeBlackList(
                 {
-                  participants,
+                  interlocutorId: interlocutor.id,
                   blackListFlag: !isBlocked,
                 },
                 event
@@ -88,7 +96,7 @@ const DialogBox = props => {
             })}
           />
           <i
-            onClick={event => catalogOperation(event, _id)}
+            onClick={event => catalogOperation(event, id)}
             className={classNames({
               'far fa-plus-square':
                 chatMode !== CONSTANTS.CATALOG_PREVIEW_CHAT_MODE,

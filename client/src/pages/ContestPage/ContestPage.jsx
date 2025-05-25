@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import isEqual from 'lodash/isEqual';
 import LightBox from 'react-18-image-lightbox';
 import withRouter from '../../hocs/withRouter';
 import { goToExpandedDialog } from '../../store/slices/chatSlice';
@@ -91,21 +90,22 @@ class ContestPage extends React.Component {
   findConversationInfo = interlocutorId => {
     const { messagesPreview } = this.props.chatStore;
     const { id } = this.props.userStore.data;
-    const participants = [id, interlocutorId];
-    participants.sort(
-      (participant1, participant2) => participant1 - participant2
+
+    const conversation = messagesPreview.find(
+      item =>
+        item.creatorId === (CONSTANTS.CREATOR ? id : interlocutorId) &&
+        item.customerId === (CONSTANTS.CREATOR ? interlocutorId : id)
     );
-    for (let i = 0; i < messagesPreview.length; i++) {
-      if (isEqual(participants, messagesPreview[i].participants)) {
-        return {
-          participants: messagesPreview[i].participants,
-          _id: messagesPreview[i]._id,
-          blackList: messagesPreview[i].blackList,
-          favoriteList: messagesPreview[i].favoriteList,
-        };
-      }
-    }
-    return null;
+    if (!conversation) return null;
+    return {
+      id: conversation.id,
+      creatorId: conversation.creatorId,
+      customerId: conversation.customerId,
+      blackListCreator: conversation.blackListCreator,
+      blackListCustomer: conversation.blackListCustomer,
+      favoriteCreator: conversation.favoriteCreator,
+      favoriteCustomer: conversation.favoriteCustomer,
+    };
   };
 
   goChat = () => {
