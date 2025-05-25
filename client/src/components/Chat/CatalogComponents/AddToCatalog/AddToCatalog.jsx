@@ -19,7 +19,7 @@ const AddToCatalog = props => {
     const { catalogList } = props;
     const valueArray = [];
     catalogList.forEach(catalog => {
-      valueArray.push(catalog._id);
+      valueArray.push(catalog.id);
     });
     return valueArray;
   };
@@ -36,8 +36,8 @@ const AddToCatalog = props => {
         <Formik onSubmit={click} initialValues={{ catalogId: '' }}>
           <Form className={styles.form}>
             <SelectInput
-              name='catalogId'
-              header='name of catalog'
+              name="catalogId"
+              header="name of catalog"
               classes={{
                 inputContainer: styles.selectInputContainer,
                 inputHeader: styles.selectHeader,
@@ -46,7 +46,7 @@ const AddToCatalog = props => {
               optionsArray={selectArray}
               valueArray={getValueArray()}
             />
-            <button type='submit'>Add</button>
+            <button type="submit">Add</button>
           </Form>
         </Formik>
       ) : (

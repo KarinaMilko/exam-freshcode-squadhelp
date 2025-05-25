@@ -12,8 +12,8 @@ import Schems from '../../../../utils/validators/validationSchems';
 
 const CatalogListHeader = props => {
   const changeCatalogName = values => {
-    const { changeCatalogName, _id } = props;
-    changeCatalogName({ catalogName: values.catalogName, catalogId: _id });
+    const { changeCatalogName, id } = props;
+    changeCatalogName({ catalogName: values.catalogName, catalogId: id });
   };
   const {
     catalogName,
@@ -24,14 +24,14 @@ const CatalogListHeader = props => {
   return (
     <div className={styles.headerContainer}>
       <i
-        className='fas fa-long-arrow-alt-left'
+        className="fas fa-long-arrow-alt-left"
         onClick={() => changeShowModeCatalog()}
       />
       {!isRenameCatalog && (
         <div className={styles.infoContainer}>
           <span>{catalogName}</span>
           <i
-            className='fas fa-edit'
+            className="fas fa-edit"
             onClick={() => changeRenameCatalogMode()}
           />
         </div>
@@ -45,17 +45,17 @@ const CatalogListHeader = props => {
           >
             <Form>
               <FormInput
-                name='catalogName'
+                name="catalogName"
                 classes={{
                   container: styles.inputContainer,
                   input: styles.input,
                   warning: styles.fieldWarning,
                   notValid: styles.notValid,
                 }}
-                type='text'
-                label='Catalog Name'
+                type="text"
+                label="Catalog Name"
               />
-              <button type='submit'>Change</button>
+              <button type="submit">Change</button>
             </Form>
           </Formik>
         </div>
@@ -66,9 +66,9 @@ const CatalogListHeader = props => {
 
 const mapStateToProps = state => {
   const { isRenameCatalog } = state.chatStore;
-  const { catalogName, _id } = state.chatStore.currentCatalog;
+  const { catalogName, id } = state.chatStore.currentCatalog;
   return {
-    _id,
+    id,
     catalogName,
     isRenameCatalog,
     initialValues: {

@@ -1,0 +1,89 @@
+### 200 OK - Creator
+POST http://localhost:5000/chat/addMessage HTTP/1.1
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJCdXllciIsInVzZXJJZCI6MSwicm9sZSI6ImN1c3RvbWVyIiwibGFzdE5hbWUiOiJCdXllcm92eWNoIiwiYXZhdGFyIjoiYW5vbi5wbmciLCJkaXNwbGF5TmFtZSI6ImJ1eWVyZG4iLCJiYWxhbmNlIjoiMCIsImVtYWlsIjoiYnV5ZXJAZ21haWwuY29tIiwicmF0aW5nIjowLCJpYXQiOjE3NDY2NDE5NzIsImV4cCI6MTc0NjY0NTU3Mn0.WptysKItyD2wOSlPQjX8Tpex8eBFoZ00TXQXbf4mnZo
+Content-Type: application/json
+
+{
+  "recipient": 2,
+  "messageBody": "Привіт, це тестове повідомлення"
+}
+
+### 200 OK - Creator
+GET  http://localhost:5000/chat/getChat/1 HTTP/1.1
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJDcmVhdGl2ZSIsInVzZXJJZCI6Miwicm9sZSI6ImNyZWF0b3IiLCJsYXN0TmFtZSI6IkNyZWF0b3Z5Y2giLCJhdmF0YXIiOiJhbm9uLnBuZyIsImRpc3BsYXlOYW1lIjoiY3JlYXRpdmVkbiIsImJhbGFuY2UiOiIxMDAiLCJlbWFpbCI6ImNyZWF0aXZlQGdtYWlsLmNvbSIsInJhdGluZyI6MCwiaWF0IjoxNzQ2NjQ3MDc4LCJleHAiOjE3NDY2NTA2Nzh9.5rteGctyILO6b-FxEATPQAQtjt5q52X1AKuQncGAC4w
+Content-Type: application/json
+
+### 200 OK - Creator
+GET  http://localhost:5000/chat/getPreview HTTP/1.1
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJDcmVhdGl2ZSIsInVzZXJJZCI6Miwicm9sZSI6ImNyZWF0b3IiLCJsYXN0TmFtZSI6IkNyZWF0b3Z5Y2giLCJhdmF0YXIiOiJhbm9uLnBuZyIsImRpc3BsYXlOYW1lIjoiY3JlYXRpdmVkbiIsImJhbGFuY2UiOiIxMDAiLCJlbWFpbCI6ImNyZWF0aXZlQGdtYWlsLmNvbSIsInJhdGluZyI6MCwiaWF0IjoxNzQ2NjQ3MDc4LCJleHAiOjE3NDY2NTA2Nzh9.5rteGctyILO6b-FxEATPQAQtjt5q52X1AKuQncGAC4w
+Content-Type: application/json
+
+### 200 OK - Creator
+PATCH http://localhost:5000/chat/blackList HTTP/1.1
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJDcmVhdGl2ZSIsInVzZXJJZCI6Miwicm9sZSI6ImNyZWF0b3IiLCJsYXN0TmFtZSI6IkNyZWF0b3Z5Y2giLCJhdmF0YXIiOiJhbm9uLnBuZyIsImRpc3BsYXlOYW1lIjoiY3JlYXRpdmVkbiIsImJhbGFuY2UiOiIxMDAiLCJlbWFpbCI6ImNyZWF0aXZlQGdtYWlsLmNvbSIsInJhdGluZyI6MCwiaWF0IjoxNzQ2NjQ3MDc4LCJleHAiOjE3NDY2NTA2Nzh9.5rteGctyILO6b-FxEATPQAQtjt5q52X1AKuQncGAC4w
+Content-Type: application/json
+
+{
+  "interlocutorId": 4,
+  "blackListFlag": true
+}
+
+### 200 OK - Creator
+PATCH http://localhost:5000/chat/favoriteChat HTTP/1.1
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJDcmVhdGl2ZSIsInVzZXJJZCI6Miwicm9sZSI6ImNyZWF0b3IiLCJsYXN0TmFtZSI6IkNyZWF0b3Z5Y2giLCJhdmF0YXIiOiJhbm9uLnBuZyIsImRpc3BsYXlOYW1lIjoiY3JlYXRpdmVkbiIsImJhbGFuY2UiOiIxMDAiLCJlbWFpbCI6ImNyZWF0aXZlQGdtYWlsLmNvbSIsInJhdGluZyI6MCwiaWF0IjoxNzQ2NjQ3MDc4LCJleHAiOjE3NDY2NTA2Nzh9.5rteGctyILO6b-FxEATPQAQtjt5q52X1AKuQncGAC4w
+Content-Type: application/json
+
+{
+  "interlocutorId": 4,
+   "favoriteFlag": true
+}
+
+### 200 OK - Creator
+POST http://localhost:5000/chat/createCatalog HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJDcmVhdGl2ZSIsInVzZXJJZCI6Miwicm9sZSI6ImNyZWF0b3IiLCJsYXN0TmFtZSI6IkNyZWF0b3Z5Y2giLCJhdmF0YXIiOiJhbm9uLnBuZyIsImRpc3BsYXlOYW1lIjoiY3JlYXRpdmVkbiIsImJhbGFuY2UiOiIxMDAiLCJlbWFpbCI6ImNyZWF0aXZlQGdtYWlsLmNvbSIsInJhdGluZyI6MCwiaWF0IjoxNzQ2NzI5NTUxLCJleHAiOjE3NDY3MzMxNTF9.ART6jRWN_sxjnJQO7k8Tu3HUfVpP1IciPVEItunlWjo
+Content-Type: application/json
+
+{
+  "catalogName": "Important",
+  "chatId": 1
+}
+
+### 200 OK - Creator
+PATCH http://localhost:5000/chat/updateNameCatalog HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJDcmVhdGl2ZSIsInVzZXJJZCI6Miwicm9sZSI6ImNyZWF0b3IiLCJsYXN0TmFtZSI6IkNyZWF0b3Z5Y2giLCJhdmF0YXIiOiJhbm9uLnBuZyIsImRpc3BsYXlOYW1lIjoiY3JlYXRpdmVkbiIsImJhbGFuY2UiOiIxMDAiLCJlbWFpbCI6ImNyZWF0aXZlQGdtYWlsLmNvbSIsInJhdGluZyI6MCwiaWF0IjoxNzQ2NzI5NTUxLCJleHAiOjE3NDY3MzMxNTF9.ART6jRWN_sxjnJQO7k8Tu3HUfVpP1IciPVEItunlWjo
+Content-Type: application/json
+
+{
+  "catalogId": 1,
+  "catalogName": "New Name"
+}
+
+### 200 OK - Creator
+PATCH http://localhost:5000/chat/addNewChatToCatalog HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJDcmVhdGl2ZSIsInVzZXJJZCI6Miwicm9sZSI6ImNyZWF0b3IiLCJsYXN0TmFtZSI6IkNyZWF0b3Z5Y2giLCJhdmF0YXIiOiJhbm9uLnBuZyIsImRpc3BsYXlOYW1lIjoiY3JlYXRpdmVkbiIsImJhbGFuY2UiOiIxMDAiLCJlbWFpbCI6ImNyZWF0aXZlQGdtYWlsLmNvbSIsInJhdGluZyI6MCwiaWF0IjoxNzQ2NzI5NTUxLCJleHAiOjE3NDY3MzMxNTF9.ART6jRWN_sxjnJQO7k8Tu3HUfVpP1IciPVEItunlWjo
+Content-Type: application/json
+
+{
+  "catalogId": 5,
+  "chatId": 2
+}
+
+### 200 OK - Creator
+PATCH http://localhost:5000/chat/removeChatFromCatalog HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJDcmVhdGl2ZSIsInVzZXJJZCI6Miwicm9sZSI6ImNyZWF0b3IiLCJsYXN0TmFtZSI6IkNyZWF0b3Z5Y2giLCJhdmF0YXIiOiJhbm9uLnBuZyIsImRpc3BsYXlOYW1lIjoiY3JlYXRpdmVkbiIsImJhbGFuY2UiOiIxMDAiLCJlbWFpbCI6ImNyZWF0aXZlQGdtYWlsLmNvbSIsInJhdGluZyI6MCwiaWF0IjoxNzQ2NzI5NTUxLCJleHAiOjE3NDY3MzMxNTF9.ART6jRWN_sxjnJQO7k8Tu3HUfVpP1IciPVEItunlWjo
+Content-Type: application/json
+
+{
+  "catalogId": 5,
+  "chatId": 2
+}
+
+### 200 OK - Creator
+DELETE http://localhost:5000/chat/deleteCatalog/1 HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJDcmVhdGl2ZSIsInVzZXJJZCI6Miwicm9sZSI6ImNyZWF0b3IiLCJsYXN0TmFtZSI6IkNyZWF0b3Z5Y2giLCJhdmF0YXIiOiJhbm9uLnBuZyIsImRpc3BsYXlOYW1lIjoiY3JlYXRpdmVkbiIsImJhbGFuY2UiOiIxMDAiLCJlbWFpbCI6ImNyZWF0aXZlQGdtYWlsLmNvbSIsInJhdGluZyI6MCwiaWF0IjoxNzQ2NzI5NTUxLCJleHAiOjE3NDY3MzMxNTF9.ART6jRWN_sxjnJQO7k8Tu3HUfVpP1IciPVEItunlWjo
+
+### 200 OK - Creator
+GET http://localhost:5000/chat/getCatalogs HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJDcmVhdGl2ZSIsInVzZXJJZCI6Miwicm9sZSI6ImNyZWF0b3IiLCJsYXN0TmFtZSI6IkNyZWF0b3Z5Y2giLCJhdmF0YXIiOiJhbm9uLnBuZyIsImRpc3BsYXlOYW1lIjoiY3JlYXRpdmVkbiIsImJhbGFuY2UiOiIxMDAiLCJlbWFpbCI6ImNyZWF0aXZlQGdtYWlsLmNvbSIsInJhdGluZyI6MCwiaWF0IjoxNzQ2NzMzMjU5LCJleHAiOjE3NDY3MzY4NTl9.z0MvAqyFRLEdZz9qP9gGU9TvOM_31iiPRSrwpP42XwI
+Content-Type: application/json
+

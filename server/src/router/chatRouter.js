@@ -3,18 +3,22 @@ const chatController = require('../controllers/chatController');
 
 const chatRouter = Router();
 
-chatRouter.post('/', chatController.createCatalog);
-chatRouter.post('/message', chatController.addMessage);
-chatRouter.post('/chat', chatController.addNewChatToCatalog);
+chatRouter.post('/addMessage', chatController.addMessage);
+chatRouter.post('/createCatalog', chatController.createCatalog);
 
-chatRouter.get('/', chatController.getCatalogs);
+chatRouter.get('/getChat/:interlocutorId', chatController.getChat);
+chatRouter.get('/getPreview', chatController.getPreview);
+chatRouter.get('/getCatalogs', chatController.getCatalogs);
 
-chatRouter.patch('/:id', chatController.updateNameCatalog);
-
-chatRouter.delete(
-  '/chat/:catalogId/:chatId',
+chatRouter.patch('/blackList', chatController.blackList);
+chatRouter.patch('/favoriteChat', chatController.favoriteChat);
+chatRouter.patch('/addNewChatToCatalog', chatController.addNewChatToCatalog);
+chatRouter.patch(
+  '/removeChatFromCatalog',
   chatController.removeChatFromCatalog
 );
-chatRouter.delete('/:id', chatController.deleteCatalog);
+chatRouter.patch('/updateNameCatalog', chatController.updateNameCatalog);
+
+chatRouter.delete('/deleteCatalog/:catalogId', chatController.deleteCatalog);
 
 module.exports = chatRouter;

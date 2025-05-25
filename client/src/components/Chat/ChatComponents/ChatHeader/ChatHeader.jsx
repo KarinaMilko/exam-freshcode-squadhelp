@@ -10,6 +10,13 @@ import styles from './ChatHeader.module.sass';
 import CONSTANTS from '../../../../constants';
 
 const ChatHeader = props => {
+  const {
+    interlocutor: { avatar, firstName },
+    backToDialogList,
+    chatData,
+    userId,
+  } = props;
+
   const changeFavorite = (data, event) => {
     props.changeChatFavorite(data);
     event.stopPropagation();
@@ -21,17 +28,20 @@ const ChatHeader = props => {
   };
 
   const isFavorite = (chatData, userId) => {
-    const { favoriteList, participants } = chatData;
-    return favoriteList[participants.indexOf(userId)];
+    const { favoriteCreator, favoriteCustomer, creatorId } = chatData;
+    return creatorId === userId ? favoriteCreator : favoriteCustomer;
   };
 
   const isBlocked = (chatData, userId) => {
-    const { participants, blackList } = chatData;
-    return blackList[participants.indexOf(userId)];
+    const { blackListCreator, blackListCustomer, creatorId } = chatData;
+    return creatorId === userId ? blackListCreator : blackListCustomer;
   };
 
-  const { avatar, firstName } = props.interlocutor;
-  const { backToDialogList, chatData, userId } = props;
+  const getInterlocutorId = (chatData, userId) => {
+    const { creatorId, customerId } = chatData;
+    return creatorId === userId ? customerId : creatorId;
+  };
+
   return (
     <div className={styles.chatHeader}>
       <div
@@ -40,7 +50,7 @@ const ChatHeader = props => {
       >
         <img
           src={`${CONSTANTS.STATIC_IMAGES_PATH}arrow-left-thick.png`}
-          alt='back'
+          alt="back"
         />
       </div>
       <div className={styles.infoContainer}>
@@ -51,7 +61,7 @@ const ChatHeader = props => {
                 ? CONSTANTS.ANONYM_IMAGE_PATH
                 : `${CONSTANTS.publicURL}${avatar}`
             }
-            alt='user'
+            alt="user"
           />
           <span>{firstName}</span>
         </div>
@@ -61,7 +71,7 @@ const ChatHeader = props => {
               onClick={event =>
                 changeFavorite(
                   {
-                    participants: chatData.participants,
+                    interlocutorId: getInterlocutorId(chatData, userId),
                     favoriteFlag: !isFavorite(chatData, userId),
                   },
                   event
@@ -76,7 +86,7 @@ const ChatHeader = props => {
               onClick={event =>
                 changeBlackList(
                   {
-                    participants: chatData.participants,
+                    interlocutorId: getInterlocutorId(chatData, userId),
                     blackListFlag: !isBlocked(chatData, userId),
                   },
                   event

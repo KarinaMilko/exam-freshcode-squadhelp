@@ -5,7 +5,6 @@ const userController = require('../controllers/userController');
 const contestController = require('../controllers/contestController');
 const checkToken = require('../middlewares/checkToken');
 const validators = require('../middlewares/validators');
-const chatController = require('../controllers/chatController');
 const upload = require('../utils/fileUpload');
 const contestsRouter = require('./contestsRouter');
 const chatRouter = require('./chatRouter');
@@ -56,14 +55,6 @@ router.post(
 
 router.post('/updateUser', upload.uploadAvatar, userController.updateUser);
 
-router.use('/catalog', chatRouter);
-
-router.post('/getChat', chatController.getChat);
-
-router.post('/getPreview', chatController.getPreview);
-
-router.post('/blackList', chatController.blackList);
-
-router.post('/favorite', chatController.favoriteChat);
+router.use('/chat', chatRouter);
 
 module.exports = router;

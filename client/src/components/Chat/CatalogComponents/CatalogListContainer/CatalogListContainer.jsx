@@ -8,13 +8,13 @@ import CatalogList from '../CatalogList/CatalogList';
 import DialogList from '../../DialogComponents/DialogList/DialogList';
 
 class CatalogListContainer extends React.Component {
-  componentDidMount () {
+  componentDidMount() {
     this.props.getCatalogList();
   }
 
   removeChatFromCatalog = (event, chatId) => {
-    const { _id } = this.props.chatStore.currentCatalog;
-    this.props.removeChatFromCatalog({ chatId, catalogId: _id });
+    const { id } = this.props.chatStore.currentCatalog;
+    this.props.removeChatFromCatalog({ chatId, catalogId: id });
     event.stopPropagation();
   };
 
@@ -24,7 +24,7 @@ class CatalogListContainer extends React.Component {
     const dialogsInCatalog = [];
     for (let i = 0; i < messagesPreview.length; i++) {
       for (let j = 0; j < chats.length; j++) {
-        if (chats[j] === messagesPreview[i]._id) {
+        if (chats[j].conversationId === messagesPreview[i].id) {
           dialogsInCatalog.push(messagesPreview[i]);
         }
       }
@@ -32,7 +32,7 @@ class CatalogListContainer extends React.Component {
     return dialogsInCatalog;
   };
 
-  render () {
+  render() {
     const { catalogList, isShowChatsInCatalog } = this.props.chatStore;
     const { id } = this.props.userStore.data;
     return (
