@@ -19,7 +19,7 @@ const initialState = {
   messages: [],
   error: null,
   isExpanded: false,
-  interlocutor: [],
+  interlocutor: {},
   messagesPreview: [],
   isShow: false,
   chatMode: CONSTANTS.NORMAL_PREVIEW_CHAT_MODE,
@@ -87,21 +87,28 @@ const sendMessageExtraReducers = createExtraReducers({
     const { messagesPreview } = state;
     let isNew = true;
     messagesPreview.forEach(preview => {
-      if (isEqual(preview.participants, payload.message.participants)) {
+      if (
+        preview.creatorId === payload.preview.creatorId &&
+        preview.customerId === payload.preview.customerId
+      ) {
         preview.text = payload.message.body;
         preview.sender = payload.message.sender;
-        preview.createAt = payload.message.createdAt;
+        preview.createdAt = payload.message.createdAt;
         isNew = false;
       }
     });
     if (isNew) {
       messagesPreview.push(payload.preview);
     }
+
     const chatData = {
-      _id: payload.preview._id,
-      participants: payload.preview.participants,
-      favoriteList: payload.preview.favoriteList,
-      blackList: payload.preview.blackList,
+      id: payload.preview.id,
+      creatorId: payload.preview.creatorId,
+      customerId: payload.preview.customerId,
+      favoriteCreator: payload.preview.favoriteCreator,
+      favoriteCustomer: payload.preview.favoriteCustomer,
+      blackListCreator: payload.preview.blackListCreator,
+      blackListCustomer: payload.preview.blackListCustomer,
     };
     state.chatData = { ...state.chatData, ...chatData };
     state.messagesPreview = messagesPreview;
@@ -125,12 +132,26 @@ const changeChatFavoriteExtraReducers = createExtraReducers({
   thunk: changeChatFavorite,
   fulfilledReducer: (state, { payload }) => {
     const { messagesPreview } = state;
-    messagesPreview.forEach(preview => {
-      if (isEqual(preview.participants, payload.participants))
-        preview.favoriteList = payload.favoriteList;
+    const { creatorId, customerId, favoriteCreator, favoriteCustomer, id } =
+      payload;
+
+    state.messagesPreview = messagesPreview.map(preview => {
+      if (preview.creatorId === creatorId && preview.customerId === customerId)
+        return {
+          ...preview,
+          favoriteCreator,
+          favoriteCustomer,
+        };
+      return preview;
     });
-    state.chatData = payload;
-    state.messagesPreview = messagesPreview;
+
+    if (state.chatData?.id === id) {
+      state.chatData = {
+        ...state.chatData,
+        favoriteCreator,
+        favoriteCustomer,
+      };
+    }
   },
   rejectedReducer: (state, { payload }) => {
     state.error = payload;
@@ -150,12 +171,26 @@ const changeChatBlockExtraReducers = createExtraReducers({
   thunk: changeChatBlock,
   fulfilledReducer: (state, { payload }) => {
     const { messagesPreview } = state;
-    messagesPreview.forEach(preview => {
-      if (isEqual(preview.participants, payload.participants))
-        preview.blackList = payload.blackList;
+    const { creatorId, customerId, blackListCreator, blackListCustomer, id } =
+      payload;
+
+    state.messagesPreview = messagesPreview.map(preview => {
+      if (preview.creatorId === creatorId && preview.customerId === customerId)
+        return {
+          ...preview,
+          blackListCreator,
+          blackListCustomer,
+        };
+      return preview;
     });
-    state.chatData = payload;
-    state.messagesPreview = messagesPreview;
+
+    if (state.chatData?.id === id) {
+      state.chatData = {
+        ...state.chatData,
+        blackListCreator,
+        blackListCustomer,
+      };
+    }
   },
   rejectedReducer: (state, { payload }) => {
     state.error = payload;
@@ -194,7 +229,7 @@ const addChatToCatalogExtraReducers = createExtraReducers({
   fulfilledReducer: (state, { payload }) => {
     const { catalogList } = state;
     for (let i = 0; i < catalogList.length; i++) {
-      if (catalogList[i]._id === payload._id) {
+      if (catalogList[i].id === payload.id) {
         catalogList[i].chats = payload.chats;
         break;
       }
@@ -244,7 +279,7 @@ const deleteCatalogExtraReducers = createExtraReducers({
     const { catalogList } = state;
     const newCatalogList = remove(
       catalogList,
-      catalog => payload.catalogId !== catalog._id
+      catalog => payload.catalogId !== catalog.id
     );
     state.catalogList = [...newCatalogList];
   },
@@ -267,7 +302,7 @@ const removeChatFromCatalogExtraReducers = createExtraReducers({
   fulfilledReducer: (state, { payload }) => {
     const { catalogList } = state;
     for (let i = 0; i < catalogList.length; i++) {
-      if (catalogList[i]._id === payload._id) {
+      if (catalogList[i].id === payload.id) {
         catalogList[i].chats = payload.chats;
         break;
       }
@@ -294,7 +329,7 @@ const changeCatalogNameExtraReducers = createExtraReducers({
   fulfilledReducer: (state, { payload }) => {
     const { catalogList } = state;
     for (let i = 0; i < catalogList.length; i++) {
-      if (catalogList[i]._id === payload._id) {
+      if (catalogList[i].id === payload.id) {
         catalogList[i].catalogName = payload.catalogName;
         break;
       }
@@ -312,23 +347,47 @@ const changeCatalogNameExtraReducers = createExtraReducers({
 const reducers = {
   changeBlockStatusInStore: (state, { payload }) => {
     const { messagesPreview } = state;
-    messagesPreview.forEach(preview => {
-      if (isEqual(preview.participants, payload.participants))
-        preview.blackList = payload.blackList;
+    const { creatorId, customerId, blackListCreator, blackListCustomer } =
+      payload;
+    state.messagesPreview = messagesPreview.map(preview => {
+      if (
+        preview.creatorId === creatorId &&
+        preview.customerId === customerId
+      ) {
+        return {
+          ...preview,
+          blackListCreator,
+          blackListCustomer,
+        };
+      }
+      return preview;
     });
-    state.chatData = payload;
-    state.messagesPreview = messagesPreview;
+
+    if (
+      state.chatData &&
+      state.chatData.creatorId === creatorId &&
+      state.chatData.customerId === customerId
+    ) {
+      state.chatData = {
+        ...state.chatData,
+        blackListCreator,
+        blackListCustomer,
+      };
+    }
   },
 
   addMessage: (state, { payload }) => {
-    const { message, preview } = payload;
+    const { message, preview, creatorId, customerId } = payload;
     const { messagesPreview } = state;
     let isNew = true;
     messagesPreview.forEach(preview => {
-      if (isEqual(preview.participants, message.participants)) {
+      if (
+        preview.creatorId === creatorId &&
+        preview.customerId === customerId
+      ) {
         preview.text = message.body;
         preview.sender = message.sender;
-        preview.createAt = message.createdAt;
+        preview.createdAt = message.createdAt;
         isNew = false;
       }
     });
