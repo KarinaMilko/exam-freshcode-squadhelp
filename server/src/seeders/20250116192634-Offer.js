@@ -3,55 +3,31 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+    const [contests] = await queryInterface.sequelize.query(
+      `SELECT id FROM "Contests" ORDER BY id ASC;`
+    );
+
+    const [creators] = await queryInterface.sequelize.query(
+      `SELECT id FROM "Users" WHERE role = 'creator' ORDER BY id ASC;`
+    );
+
     await queryInterface.bulkInsert(
       'Offers',
       [
         {
-          userId: 53,
-          contestId: 1,
+          userId: creators[0]?.id,
+          contestId: contests[0]?.id,
           text: 'Offer 1',
           fileName: null,
           originalFileName: null,
           status: 'pending',
         },
         {
-          userId: 37,
-          contestId: 2,
+          userId: creators[1]?.id || creators[0]?.id,
+          contestId: contests[1]?.id,
           text: 'Offer 2',
           fileName: 'file2.png',
           originalFileName: 'original2.png',
-          status: 'approved',
-        },
-        {
-          userId: 39,
-          contestId: 3,
-          text: 'Offer 3',
-          fileName: null,
-          originalFileName: null,
-          status: 'rejected',
-        },
-        {
-          userId: 35,
-          contestId: 4,
-          text: 'Offer 4',
-          fileName: 'file4.pdf',
-          originalFileName: 'original4.pdf',
-          status: 'pending',
-        },
-        {
-          userId: 41,
-          contestId: 5,
-          text: 'Offer 5',
-          fileName: 'file5.docx',
-          originalFileName: 'original5.docx',
-          status: 'approved',
-        },
-        {
-          userId: 33,
-          contestId: 6,
-          text: 'Offer 6',
-          fileName: null,
-          originalFileName: null,
           status: 'approved',
         },
       ],
