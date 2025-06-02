@@ -3,7 +3,7 @@ const db = require('../models');
 const BadRequestError = require('../errors/BadRequestError');
 const NotFound = require('../errors/UserNotFoundError');
 const CONSTANTS = require('./../constants');
-const { sendOffersMail } = require('../../services /sendOffersMail');
+const { sendOffersMail } = require('./../../services/sendOffersMail');
 
 module.exports.getAllOffersForModerator = async (req, res, next) => {
   const {
