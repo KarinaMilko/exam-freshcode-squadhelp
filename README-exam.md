@@ -1,45 +1,76 @@
 to run docker containers in development mode
 
-- command to start building images and containers: sudo docker compose -f docker-compose-dev.yaml up
-- run Sequelize migrations and seeders inside the backend container: sudo docker exec -it exam-freshcode-server-dev-1 sh
+- command to start building images and containers: docker compose --file docker-compose-dev.yaml up -d
+- run Sequelize migrations and seeders inside the backend container: docker exec -it exam-freshcode-server-dev-1 sh
   Apply migrations: npx sequelize db:migrate
   Seed the database: npx sequelize db:seed:all
 - application starts:
   Front: http://localhost:5000
   Server API: http://localhost:3000
-- to check on which port the application started, you need to execute the command: sudo docker container inspect exam-freshcode-front-react-1
+- to check on which port the application started, you need to execute the command: docker container inspect exam-freshcode-front-react-1
 
 address at the end in the "IPAddress" field
 
-in server/.env
+Local Development Configuration
 
-PostgreSQL
+If you want to run the project without Docker, make sure to use the following configuration files and settings:
 
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=qwerty
-POSTGRES_DB=squad-help-dev
-POSTGRES_HOST=localhost
+PostgreSQL (server/src/config/postgresConfig.json)
 
-Mongo
+"username": "postgres",
+"password": "qwerty",
+"database": "squad-help-dev",
+"host": "localhost"
 
-MONGO_HOST=localhost
+MongoDB (server/src/config/mongoConfig.json)
 
-Server
+"database": "squad-help-dev",
+"host": "localhost",
+"port": 27017
+
+Environment Variables (server/.env)
 
 PORT=5000
-STATIC_PATH=public/images
-JWT_SECRET=asdasdasd4as5d4as8d7a8sd4as65d4a8sd7asd4as56d4
-API_URL=http://localhost:3000
+NODE_ENV=development
 
-in .env at the root of the project where docker-compose-dev.yaml is located
+Client Configuration (client/src/constants.js)
 
-variables are stored:
+const serverPort = 5000;
 
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=password
-POSTGRES_DB=todo-dev
-POSTGRES_HOST=db-dev
-MONGO_HOST=mongo-dev
+Ports:
+
+Frontend (React): http://localhost:3000
+Backend (Server API): http://localhost:3000
+
+Docker Development Configuration
+If you prefer to run the project using Docker (docker-compose-dev.yaml), use the following settings:
+
+PostgreSQL (server/src/config/postgresConfig.json)
+
+"username": "postgres",
+"password": "password",
+"database": "todo-dev",
+"host": "db-dev"
+
+MongoDB (server/src/config/mongoConfig.json)
+
+"database": "squad-help-dev",
+"host": "mongo-dev",
+"port": 27017
+
+Environment Variables (server/.env)
+
+PORT=3000
+NODE_ENV=development
+
+Client Configuration (client/src/constants.js)
+
+const serverPort = 3000;
+
+Ports:
+
+Frontend: http://localhost:5000
+Backend (Server API): http://localhost:3000
 
 Bug fixes
 
