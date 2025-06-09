@@ -20,9 +20,9 @@ function HowItWorkPage() {
           <iframe
             className={styles.introVideo}
             src="https://iframe.mediadelivery.net/embed/239474/327efcdd-b1a2-4891-b274-974787ae8362"
-            frameborder="0"
-            allow="autoplay; fullscreen; picture-in-picture"
-            allowfullscreen
+            frameBorder="0"
+            allow="fullscreen; picture-in-picture"
+            allowFullScreen
           ></iframe>
         </section>
       </div>
