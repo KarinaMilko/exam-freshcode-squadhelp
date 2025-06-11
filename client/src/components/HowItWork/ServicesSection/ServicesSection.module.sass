@@ -1,0 +1,126 @@
+.servicesContainer
+    padding: 80px 0
+    @media screen and (max-width: 991px)
+        padding: 60px 0
+    @media screen and (max-width: 575px)
+        padding: 0 12px
+
+.servicesSection
+    max-width: 1480px
+    width: 100%
+    margin: 0 auto
+    @media screen and (max-width: 1560px)
+        max-width: 1190px
+    @media screen and (max-width: 1399px)
+        max-width: 1140px
+    @media screen and (max-width: 1199px)
+        max-width: 960px
+    @media screen and (max-width: 991px)
+        max-width: 720px
+    @media screen and (max-width: 767px)
+        max-width: 540px
+
+.servicesHeader
+    margin: 0 auto
+    max-width: 800px
+    display: flex
+    flex-direction: column
+    align-items: center
+    text-align: center
+
+.servicesSubtitle
+    padding: 7px 15px
+    margin: 0 0 15px
+    font-size: 12px
+    font-weight: 400
+    color: #377dff
+    background-color: #377DFF1A
+    border-radius: 20px
+    @media screen and (max-width: 991px)
+        font-size: 11px
+
+.servicesTitle
+    font-size: 32px
+    font-weight: 700
+
+.servicesDescription
+    color: #19184A
+    font-weight: 400
+    margin: 10px 0 40px
+    @media screen and (max-width: 991px)
+        font-size: 14px
+
+.servicesList
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    gap: 24px
+    width: 100%
+    margin: 0 0 24px
+    @media screen and (max-width: 991px)
+        flex-wrap: wrap
+    @media screen and (max-width: 767px)
+        max-width: 536px
+        gap: 8px
+
+.serviceCard
+    padding: 25px 25px 16px
+    max-height: 100%
+    width: 30%
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    align-items: flex-start
+    background-color: #fff
+    gap: 10px
+    border-radius: 24px
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 16px 32px 0px
+    @media screen and (max-width: 991px)
+        width: 40%
+    @media screen and (max-width: 767px)
+        width: 45%
+        text-align: center
+        align-items: center
+        padding: 10px 10px 16px
+    @media screen and (max-width: 575px)
+        width: 100%
+        min-width: 307px
+
+.serviceIconWrapper
+    height: 48px
+    width: 48px
+
+.serviceTitle
+    font-size: 20px
+    font-weight: 700
+
+.serviceDescription
+    color: #828282
+    margin: 0 0 48px
+    @media screen and (max-width: 991px)
+        font-size: 14px
+
+.serviceBtn
+    display: flex
+    justify-content: center
+    align-items: center
+    @media screen and (max-width: 575px)
+        margin: 0 0 16px
+
+.serviceLink
+    padding: 16px
+    background: linear-gradient(-45deg, #5a73ed 0, #3d57d5 100%)
+    border-radius: 8px
+    color: #FFF
+    font-weight: 700
+    text-decoration: none
+    display: flex
+    align-items: center
+    gap: 10px
+
+    &:hover .serviceArrow
+        transform: translateX(10px)
+        transition: transform 0.3s ease
+
+.serviceArrow
+    transition: transform 0.3s ease
