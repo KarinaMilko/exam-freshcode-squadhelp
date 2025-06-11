@@ -383,11 +383,16 @@
 .faqItem
     border-radius: 16px
     border: 1px solid #f5f5f5
+    overflow: hidden
     transition: background-color 0.3s ease, border 0.3s ease
+    margin: 0 0 16px 0
 
     &:hover
         background-color: rgba(48, 125, 246, .1)
         border: 1px solid #307df6
+
+    &.openItem
+        background-color: #0d6efd
 
 .faqQuestion
     display: flex
@@ -395,9 +400,33 @@
     padding: 24px 70px 24px 24px
     font-size: 20px
     font-weight: 700
+    color: #000
+    transition: color 0.3s ease, padding 0.3s ease
     @media screen and (max-width: 767px)
         font-size: 18px
         padding: 18px 30px 18px 20px
+
+    &.openQuestion
+        color: #fff
+        padding: 24px 70px 24px 24px
+
+.faqAnswer
+    max-height: 0
+    overflow: hidden
+    padding: 0 24px
+    font-size: 16px
+    transition: max-height 0.5s ease, padding 0.5s ease, color 0.5s ease
+
+    ul
+        color: black
+
+    a
+        color: #fff
+
+.showAnswer
+    max-height: 1000px
+    padding: 0 24px 30px 24px
+    color: #fff
 
 .faqSearchContainer
     padding: 80px 0
