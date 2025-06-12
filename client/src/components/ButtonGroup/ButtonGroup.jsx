@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import CONSTANTS from './../../constants';
 import styles from './ButtonGroup.module.sass';
 import ButtonGroupOption from './ButtonGroupOption';
@@ -8,9 +8,9 @@ const { ButtonGroupItems } = CONSTANTS;
 function ButtonGroup() {
   const [isActive, setIsActive] = useState(0);
 
-  const btnGroupActive = index => {
+  const btnGroupActive = useCallback(index => {
     setIsActive(index);
-  };
+  }, []);
 
   return (
     <>

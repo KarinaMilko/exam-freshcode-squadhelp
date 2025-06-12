@@ -11,12 +11,13 @@ const ButtonGroupOption = ({
   isActive,
   btnGroupActive,
 }) => {
+  const handleClick = () => btnGroupActive(index);
   return (
     <div
       className={`${styles.btnGroupOption} ${
         isActive === index ? styles.btnGroupOptionActive : ''
       }`}
-      onClick={() => btnGroupActive(index)}
+      onClick={handleClick}
     >
       {index === 0 && <span className={styles.btnGroupLabel}>Recommended</span>}
       {isActive === index && (
