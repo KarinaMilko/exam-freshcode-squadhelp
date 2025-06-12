@@ -1,21 +1,24 @@
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs').promises;
 const { format, createLogger, transports } = require('winston');
 const schedule = require('node-schedule');
 
 const { printf } = format;
 
 const logDir = path.resolve(__dirname, '../../logs');
-if (!fs.existsSync(logDir)) {
-  fs.mkdirSync(logDir);
-}
 
 const dailyDir = path.resolve(logDir, 'daily');
-if (!fs.existsSync(dailyDir)) {
-  fs.mkdirSync(dailyDir);
-}
 
 const logFilePath = path.resolve(logDir, 'error.log');
+
+(async () => {
+  try {
+    await fs.mkdir(logDir, { recursive: true });
+    await fs.mkdir(dailyDir, { recursive: true });
+  } catch (err) {
+    console.error('Error creating log directories', err);
+  }
+})();
 
 const customFormat = printf(({ timestamp, code, message, stack }) => {
   return JSON.stringify({
@@ -50,12 +53,13 @@ const logger = createLogger({
   transports: [currentLogTransport],
 });
 
-const errorRotate = () => {
-  const date = new Date().toISOString().split('T')[0];
-  const backupFile = path.join(dailyDir, `error-${date}.log`);
+const errorRotate = async () => {
+  try {
+    const date = new Date().toISOString().split('T')[0];
+    const backupFile = path.join(dailyDir, `error-${date}.log`);
 
-  fs.readFile(logFilePath, 'utf8', (err, data) => {
-    if (err || !data) return;
+    const data = await fs.readFile(logFilePath, 'utf8');
+    if (!data) return;
 
     const transformedData = data
       .split('\n')
@@ -63,18 +67,14 @@ const errorRotate = () => {
       .map(transformedFormat)
       .join('\n');
 
-    fs.appendFile(backupFile, transformedData + '\n', appendErr => {
-      if (appendErr)
-        return logger.error('Error writing to rotation file', appendErr);
-
-      fs.truncate(logFilePath, 0, truncateErr => {
-        if (truncateErr) logger.error('Error clearing error.log', truncateErr);
-      });
-    });
-  });
+    await fs.appendFile(backupFile, transformedData + '\n');
+    await fs.truncate(logFilePath, 0);
+  } catch (error) {
+    logger.error('Error during log rotation', error);
+  }
 };
 
-schedule.scheduleJob('0 0 0 * * * ', () => {
+schedule.scheduleJob('0 0 0 * * *', () => {
   errorRotate();
 });
 
