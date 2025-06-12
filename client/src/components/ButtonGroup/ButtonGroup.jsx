@@ -5,7 +5,7 @@ import styles from './ButtonGroup.module.sass';
 const { STATIC_IMAGES_PATH, ButtonGroupItems } = CONSTANTS;
 
 function ButtonGroup() {
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(0);
 
   const btnGroupActive = index => {
     setIsActive(index);
