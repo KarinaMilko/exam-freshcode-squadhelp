@@ -3,8 +3,7 @@
   justify-content: flex-start
   align-items: center
   border-top: 1px solid #f3f3f3
-  padding: 0 15px
-  margin-top: 8px
+  padding: 0 10px
   padding-top: 7px
 
   &:last-child
@@ -28,7 +27,6 @@
 
     img
       position: absolute
-      margin-left: 20px
       cursor: pointer
       top: -15px
       left: -8px
@@ -41,25 +39,10 @@
 
     .container
       display: flex
+      flex-direction: column
       padding: 0 15px
       justify-content: flex-start
       align-items: center
-
-      .fieldWarning
-        font-size: 15px
-        display: flex
-        flex-direction: row
-        justify-content: center
-        align-items: center
-        color: white
-        border: 1px solid #b72522
-        margin-bottom: 15px
-        padding-bottom: 5px
-        padding-top: 5px
-        text-align: center
-
-      .notValid
-        border: 1px solid red !important
 
       .input
         height: 20px
@@ -75,3 +58,19 @@
         &:hover
           transition: border 0.5s
           border-color: #28d2d0
+
+        &.fieldWarning
+          font-size: 15px
+          display: flex
+          flex-direction: row
+          justify-content: center
+          align-items: center
+          color: white
+          border: 1px solid #b72522
+          margin-bottom: 15px
+          padding-bottom: 5px
+          padding-top: 5px
+          text-align: center
+
+        &.notValid
+          border: 1px solid red
