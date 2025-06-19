@@ -42,4 +42,20 @@ export const {
   updateCompletedEventsCount,
 } = actions;
 
+export const selectCompletedEventsCount = state => {
+  const now = new Date();
+  return state.eventList.events.filter(e => {
+    const eventDateTime = new Date(`${e.date}T${e.time}`);
+
+    const notifyBeforeTime =
+      (e.notifyBeforeDays || 0) * 24 * 60 * 60 * 1000 +
+      (e.notifyBeforeHours || 0) * 60 * 60 * 1000 +
+      (e.notifyBeforeMinutes || 0) * 60 * 1000;
+
+    const notifyAt = new Date(eventDateTime.getTime() - notifyBeforeTime);
+
+    return notifyAt <= now && e.isMessageVisible !== false;
+  }).length;
+};
+
 export default reducer;

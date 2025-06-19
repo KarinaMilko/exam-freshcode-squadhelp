@@ -7,6 +7,7 @@ import { clearUserStore } from '../../store/slices/userSlice';
 import { getUser } from '../../store/slices/userSlice';
 import withRouter from '../../hocs/withRouter';
 import Message from './Message/Message';
+import { selectCompletedEventsCount } from '../../store/slices/eventListSlice';
 
 class Header extends React.Component {
   componentDidMount() {
@@ -79,9 +80,9 @@ class Header extends React.Component {
                     <Link to="/events" style={{ textDecoration: 'none' }}>
                       <span>My Events</span>
                       <div className={styles.redBadgeContainer}>
-                        {this.props.eventList.completedEventsCount > 0 && (
+                        {this.props.completedEventsCount > 0 && (
                           <span className={styles.redBadge}>
-                            {this.props.eventList.completedEventsCount}
+                            {this.props.completedEventsCount}
                           </span>
                         )}
                       </div>
@@ -115,15 +116,6 @@ class Header extends React.Component {
             className={styles.emailIcon}
             alt="email"
           />
-          {this.props.eventList.events.map(e => (
-            <Message
-              key={e.id}
-              eventId={e.id}
-              timeOutMessage={e.timeOutMessage}
-              time={e.time}
-              date={e.date}
-            />
-          ))}
         </>
       );
     }
@@ -326,6 +318,7 @@ class Header extends React.Component {
 const mapStateToProps = state => ({
   userStore: state.userStore,
   eventList: state.eventList,
+  completedEventsCount: selectCompletedEventsCount(state),
 });
 const mapDispatchToProps = dispatch => ({
   getUser: () => dispatch(getUser()),
