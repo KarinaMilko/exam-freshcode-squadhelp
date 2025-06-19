@@ -16,7 +16,8 @@ function EventsForm({ create }) {
   };
 
   const handleSubmit = (values, { resetForm }) => {
-    create(values);
+    const createdAt = new Date().toISOString();
+    create({ ...values, createdAt });
     resetForm();
   };
 

@@ -5,21 +5,25 @@ import CONSTANTS from './../../../constants';
 
 const { STATIC_IMAGES_PATH } = CONSTANTS;
 
-function EventListItem({ event: { id, eventName, date, time }, remove }) {
+function EventListItem({
+  event: { id, eventName, date, time, createdAt },
+  remove,
+}) {
   const [leftTime, setLeftTime] = useState('');
   const [progressBar, setProgressBar] = useState(100);
 
   useEffect(() => {
     const eventDate = new Date(`${date}T${time}`);
-    const startDate = new Date();
+    const startDate = new Date(createdAt);
     const totalTime = eventDate - startDate;
 
     const showTimeDifference = () => {
       const nowDate = new Date();
+      const timeLeft = eventDate - nowDate;
 
-      if (eventDate < nowDate) {
+      if (timeLeft < 0 || totalTime <= 0) {
         setLeftTime('Event has passed');
-        setProgressBar(0);
+        setProgressBar(100);
         return;
       }
 
@@ -28,9 +32,9 @@ function EventListItem({ event: { id, eventName, date, time }, remove }) {
         end: eventDate,
       });
 
-      const percentProgress = Math.max(
-        ((eventDate - nowDate) / totalTime) * 100,
-        0
+      const percentProgress = Math.min(
+        ((totalTime - timeLeft) / totalTime) * 100,
+        100
       );
       setProgressBar(percentProgress);
 
