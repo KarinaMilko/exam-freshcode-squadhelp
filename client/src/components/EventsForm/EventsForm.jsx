@@ -9,7 +9,10 @@ function EventsForm({ create }) {
     eventName: '',
     date: '',
     time: '',
-    timeOutMessage: '',
+    notifyBeforeDays: '',
+    notifyBeforeHours: '',
+    notifyBeforeMinutes: '',
+    notifyTimeValidation: '',
   };
 
   const handleSubmit = (values, { resetForm }) => {
@@ -61,16 +64,36 @@ function EventsForm({ create }) {
             </label>
             <label className={styles.formLabel}>
               <span className={styles.formSpan}>Time Out Message:</span>
-              <Field
-                name="timeOutMessage"
-                type="time"
-                className={styles.formInput}
-              />
-              <ErrorMessage
-                name="timeOutMessage"
-                component="span"
-                className={styles.formError}
-              />
+              <div className={styles.notifyInputsContainer}>
+                <Field
+                  name="notifyBeforeDays"
+                  type="number"
+                  min="0"
+                  placeholder="Days"
+                  className={styles.notifyInput}
+                />
+                <Field
+                  name="notifyBeforeHours"
+                  type="number"
+                  min="0"
+                  max="23"
+                  placeholder="Hours"
+                  className={styles.notifyInput}
+                />
+                <Field
+                  name="notifyBeforeMinutes"
+                  type="number"
+                  min="0"
+                  max="59"
+                  placeholder="Minutes"
+                  className={styles.notifyInput}
+                />
+              </div>
+              {formikProps.errors.notifyTimeValidation && (
+                <span className={styles.formError}>
+                  {formikProps.errors.notifyTimeValidation}
+                </span>
+              )}
             </label>
             <div className={styles.btns}>
               <button type="submit" className={styles.formButton}>

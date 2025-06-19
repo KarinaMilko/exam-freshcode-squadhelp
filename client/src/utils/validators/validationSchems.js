@@ -214,17 +214,72 @@ export default {
       )
       .required('required'),
   }),
-  EventsFormSchema: yup.object().shape({
-    eventName: yup
-      .string()
-      .min(1, 'required atleast one symbol')
-      .trim()
-      .required('Event name is required'),
-    date: yup
-      .date()
-      .min(new Date(), 'Date cannot be in the past')
-      .required('Date is required'),
-    time: yup.string().required('Time is required'),
-    timeOutMessage: yup.string().required('Notification time is required'),
-  }),
+  EventsFormSchema: yup
+    .object()
+    .shape({
+      eventName: yup
+        .string()
+        .min(1, 'required atleast one symbol')
+        .trim()
+        .required('Event name is required'),
+      date: yup
+        .date()
+        .min(new Date(), 'Date cannot be in the past')
+        .required('Date is required'),
+      time: yup.string().required('Time is required'),
+      notifyBeforeDays: yup
+        .number()
+        .min(0, 'Days cannot be negative')
+        .integer('Days must be an integer')
+        .default(0),
+
+      notifyBeforeHours: yup
+        .number()
+        .min(0, 'Hours cannot be negative')
+        .max(23, 'Hours cannot exceed 23')
+        .integer('Hours must be an integer')
+        .default(0),
+
+      notifyBeforeMinutes: yup
+        .number()
+        .min(0, 'Minutes cannot be negative')
+        .max(59, 'Minutes cannot exceed 59')
+        .integer('Minutes must be an integer')
+        .default(0),
+    })
+    .test('notify-time-valid', null, function (values) {
+      const {
+        date,
+        time,
+        notifyBeforeDays,
+        notifyBeforeHours,
+        notifyBeforeMinutes,
+      } = values;
+
+      if (!date || !time) return true;
+
+      const eventDateTime = new Date(date);
+      const [hours, minutes] = time.split(':');
+
+      eventDateTime.setHours(+hours);
+      eventDateTime.setMinutes(+minutes);
+      eventDateTime.setSeconds(0);
+
+      const notifyBeforeTime =
+        (notifyBeforeDays || 0) * 24 * 60 * 60 * 1000 +
+        (notifyBeforeHours || 0) * 60 * 60 * 1000 +
+        (notifyBeforeMinutes || 0) * 60 * 1000;
+
+      const notifyTime = new Date(eventDateTime.getTime() - notifyBeforeTime);
+      const now = new Date();
+
+      if (notifyTime <= now) {
+        return this.createError({
+          path: 'notifyTimeValidation',
+          message:
+            'Notification time must be before event time and in the future',
+        });
+      }
+      return true;
+    }),
 };

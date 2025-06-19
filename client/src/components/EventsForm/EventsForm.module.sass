@@ -15,15 +15,26 @@
     align-items: center
     gap: 10px
     width: 100%
-    flex-wrap: wrap
     position: relative
 
 .formSpan
-    flex: 1 1 120px
+    flex: 0 0 120px
 
 .formInput
     flex: 1 1 240px
     padding: 10px
+
+.notifyInputsContainer
+    flex: 1 1 auto
+    display: flex
+    gap: 10px
+    min-width: 0
+
+.notifyInput
+    flex: 1 1 0
+    padding: 10px
+    min-width: 0
+    box-sizing: border-box
 
 .formError
     color: #e74c3c
