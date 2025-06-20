@@ -14,12 +14,10 @@ const eventListSlice = createSlice({
       const foundEventIndex = state.events.findIndex(e => e.id === payload);
       if (foundEventIndex !== -1) {
         state.events.splice(foundEventIndex, 1);
-        localStorage.setItem('events', JSON.stringify(state.events));
       }
     },
     createEvent: (state, { payload }) => {
       state.events.push({ ...payload, id: uuidv4() });
-      localStorage.setItem('events', JSON.stringify(state.events));
     },
     hideMessage: (state, { payload }) => {
       const event = state.events.find(e => e.id === payload);

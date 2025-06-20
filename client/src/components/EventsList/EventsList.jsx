@@ -12,6 +12,10 @@ const { STATIC_IMAGES_PATH } = CONSTANTS;
 
 function EventsList({ events, remove, updateCompletedEventsCount }) {
   useEffect(() => {
+    localStorage.setItem('events', JSON.stringify(events));
+  }, [events]);
+
+  useEffect(() => {
     const countEvents = events.filter(e => {
       const eventDate = new Date(`${e.date}T${e.time}`);
       const startDate = new Date();
