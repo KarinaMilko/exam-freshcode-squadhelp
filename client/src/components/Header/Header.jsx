@@ -76,18 +76,21 @@ class Header extends React.Component {
                       <span>My Account</span>
                     </Link>
                   </li>
-                  <li>
-                    <Link to="/events" style={{ textDecoration: 'none' }}>
-                      <span>My Events</span>
-                      <div className={styles.redBadgeContainer}>
-                        {this.props.completedEventsCount > 0 && (
-                          <span className={styles.redBadge}>
-                            {this.props.completedEventsCount}
-                          </span>
-                        )}
-                      </div>
-                    </Link>
-                  </li>
+                  {this.props.userStore.data.role === CONSTANTS.CUSTOMER && (
+                    <li>
+                      <Link to="/events" style={{ textDecoration: 'none' }}>
+                        <span>My Events</span>
+                        <div className={styles.redBadgeContainer}>
+                          {this.props.completedEventsCount > 0 && (
+                            <span className={styles.redBadge}>
+                              {this.props.completedEventsCount}
+                            </span>
+                          )}
+                        </div>
+                      </Link>
+                    </li>
+                  )}
+
                   <li>
                     <Link
                       to="http:/www.google.com"
