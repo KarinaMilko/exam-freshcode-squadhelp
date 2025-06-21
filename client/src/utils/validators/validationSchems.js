@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import { isBefore } from 'date-fns';
 import valid from 'card-validator';
 
 export default {
@@ -222,10 +223,7 @@ export default {
         .min(1, 'required atleast one symbol')
         .trim()
         .required('Event name is required'),
-      date: yup
-        .date()
-        .min(new Date(), 'Date cannot be in the past')
-        .required('Date is required'),
+      date: yup.date().required('Date is required'),
       time: yup.string().required('Time is required'),
       notifyBeforeDays: yup
         .number()
@@ -247,39 +245,70 @@ export default {
         .integer('Minutes must be an integer')
         .default(0),
     })
-    .test('notify-time-valid', null, function (values) {
-      const {
-        date,
-        time,
-        notifyBeforeDays,
-        notifyBeforeHours,
-        notifyBeforeMinutes,
-      } = values;
+    .test(
+      'not-in-past',
+      'Event date and time cannot be in the past',
+      function (values) {
+        const { date, time } = values;
+        if (!date || !time) return true;
 
-      if (!date || !time) return true;
+        const [hours, minutes] = time.split(':').map(Number);
+        const eventDateTime = new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate(),
+          hours,
+          minutes,
+          0
+        );
 
-      const eventDateTime = new Date(date);
-      const [hours, minutes] = time.split(':');
+        if (isBefore(eventDateTime, new Date())) {
+          return this.createError({
+            path: 'date',
+            message: 'Event cannot be scheduled in the past',
+          });
+        }
 
-      eventDateTime.setHours(+hours);
-      eventDateTime.setMinutes(+minutes);
-      eventDateTime.setSeconds(0);
-
-      const notifyBeforeTime =
-        (notifyBeforeDays || 0) * 24 * 60 * 60 * 1000 +
-        (notifyBeforeHours || 0) * 60 * 60 * 1000 +
-        (notifyBeforeMinutes || 0) * 60 * 1000;
-
-      const notifyTime = new Date(eventDateTime.getTime() - notifyBeforeTime);
-      const now = new Date();
-
-      if (notifyTime <= now) {
-        return this.createError({
-          path: 'notifyTimeValidation',
-          message:
-            'Notification time must be before event time and in the future',
-        });
+        return true;
       }
-      return true;
-    }),
+    )
+    .test(
+      'notify-time-valid',
+      'Event date and time must be in the future',
+      function (values) {
+        const {
+          date,
+          time,
+          notifyBeforeDays,
+          notifyBeforeHours,
+          notifyBeforeMinutes,
+        } = values;
+
+        if (!date || !time) return true;
+
+        const eventDateTime = new Date(date);
+        const [hours, minutes] = time.split(':');
+
+        eventDateTime.setHours(+hours);
+        eventDateTime.setMinutes(+minutes);
+        eventDateTime.setSeconds(0);
+
+        const notifyBeforeTime =
+          (notifyBeforeDays || 0) * 24 * 60 * 60 * 1000 +
+          (notifyBeforeHours || 0) * 60 * 60 * 1000 +
+          (notifyBeforeMinutes || 0) * 60 * 1000;
+
+        const notifyTime = new Date(eventDateTime.getTime() - notifyBeforeTime);
+        const now = new Date();
+
+        if (notifyTime <= now) {
+          return this.createError({
+            path: 'notifyTimeValidation',
+            message:
+              'Notification time must be before event time and in the future',
+          });
+        }
+        return true;
+      }
+    ),
 };
