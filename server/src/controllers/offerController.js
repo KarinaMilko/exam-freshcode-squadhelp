@@ -7,17 +7,23 @@ const { sendOffersMail } = require('./../../services/sendOffersMail');
 
 module.exports.getAllOffersForModerator = async (req, res, next) => {
   const {
-    query: { page = 1, results = 2, status },
+    query: { page = 1, results = 10, status },
   } = req;
 
-  const limit = Number(results) || 2;
+  const limit = Number(results) || 10;
   const offset = (Number(page) - 1) * limit;
 
   try {
+    const where = {};
+    if (status && status.trim() !== '') {
+      where.status = status;
+    }
+
     const { count, rows } = await db.Offers.findAndCountAll({
       limit,
       offset: offset ? offset : 0,
       attributes: { exclude: ['userId'] },
+      where,
     });
 
     const totalPages = Math.ceil(count / limit);

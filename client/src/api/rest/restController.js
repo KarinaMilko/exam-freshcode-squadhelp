@@ -45,7 +45,7 @@ export const getContestById = ({ contestId }) =>
 
 export const getOffers = ({ status, page, results }) =>
   http.get(
-    `/offers/moderator?status=${status || ''}&page=${page}&results=${results} `
+    `/offers/moderator?status=${status || ''}&page=${page}&results=${results}`
   );
 
 export const updateOffersStatus = ({ id, status }) =>
