@@ -1,4 +1,3 @@
-const { Op } = require('sequelize');
 const db = require('../models');
 const BadRequestError = require('../errors/BadRequestError');
 const NotFound = require('../errors/UserNotFoundError');
@@ -75,23 +74,37 @@ module.exports.updateOffersStatus = async (req, res, next) => {
 
     await updateOffer.update({ status });
 
-    if (status === OFFER_STATUS_APPROVED) {
-      await db.Offers.update(
-        { status: OFFER_STATUS_REJECTED },
-        {
-          where: {
-            contestId: updateOffer.contestId,
-            id: { [Op.ne]: id },
-          },
-        }
-      );
-    }
     if (status === OFFER_STATUS_APPROVED || status === OFFER_STATUS_REJECTED) {
       if (updateOffer.User && updateOffer.User.email) {
         await sendOffersMail(updateOffer.User.email, status);
       }
     }
     res.send(updateOffer);
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports.getApprovedOffersForCustomer = async (req, res, next) => {
+  try {
+    const { contestId } = req.params;
+
+    const approvedOffers = await db.Offers.findAll({
+      where: {
+        contestId,
+        status: CONSTANTS.OFFER_STATUS_APPROVED,
+      },
+      attributes: [
+        'id',
+        'text',
+        'fileName',
+        'originalFileName',
+        'contestId',
+        'status',
+      ],
+    });
+
+    res.send(approvedOffers);
   } catch (err) {
     next(err);
   }

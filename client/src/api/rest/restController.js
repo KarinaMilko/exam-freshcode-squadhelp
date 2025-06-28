@@ -50,3 +50,6 @@ export const getOffers = ({ status, page, results }) =>
 
 export const updateOffersStatus = ({ id, status }) =>
   http.patch(`/offers/moderator/${id}/status`, { status });
+
+export const getApprovedOffersForCustomer = contestId =>
+  http.get(`/offers/customer/${contestId}`);

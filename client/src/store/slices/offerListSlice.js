@@ -45,6 +45,23 @@ export const updateOffersStatusThunk = createAsyncThunk(
   }
 );
 
+export const getApprovedOffersThunk = createAsyncThunk(
+  `${OFFERS_SLICE_NAME}/getApproved`,
+  async (payload, { rejectWithValue }) => {
+    try {
+      const { data } = await restController.getApprovedOffersForCustomer(
+        payload
+      );
+      return data;
+    } catch (err) {
+      return rejectWithValue({
+        data: err?.response?.data ?? 'Gateway Timeout',
+        status: err?.response?.status ?? 504,
+      });
+    }
+  }
+);
+
 const offerListSlice = createSlice({
   initialState,
   name: OFFERS_SLICE_NAME,
@@ -76,6 +93,20 @@ const offerListSlice = createSlice({
       state.offers = state.offers.map(o =>
         o.id === payload.id ? { ...o, status: payload.status } : o
       );
+    });
+
+    builder.addCase(getApprovedOffersThunk.pending, state => {
+      state.isFetching = true;
+      state.error = null;
+    });
+    builder.addCase(getApprovedOffersThunk.fulfilled, (state, { payload }) => {
+      state.isFetching = false;
+      state.offers = payload;
+      state.totalPages = 1;
+    });
+    builder.addCase(getApprovedOffersThunk.rejected, (state, { payload }) => {
+      state.isFetching = false;
+      state.error = payload;
     });
   },
 });
