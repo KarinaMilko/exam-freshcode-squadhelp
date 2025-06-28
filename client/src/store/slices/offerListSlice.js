@@ -90,9 +90,13 @@ const offerListSlice = createSlice({
     });
 
     builder.addCase(updateOffersStatusThunk.fulfilled, (state, { payload }) => {
-      state.offers = state.offers.map(o =>
-        o.id === payload.id ? { ...o, status: payload.status } : o
-      );
+      if (state.filter === CONSTANS.OFFER_STATUS_PENDING) {
+        state.filter = state.offers.filter(o => o.id !== payload.id);
+      } else {
+        state.offers = state.offers.map(o =>
+          o.id === payload.id ? { ...o, status: payload.status } : o
+        );
+      }
     });
 
     builder.addCase(getApprovedOffersThunk.pending, state => {
