@@ -84,20 +84,44 @@ const OfferBox = props => {
   };
 
   const offerStatus = () => {
-    const { status } = props.data;
-    if (status === CONSTANTS.OFFER_STATUS_REJECTED) {
-      return (
-        <i
-          className={classNames('fas fa-times-circle reject', styles.reject)}
-        />
-      );
+    const { status, moderationStatus } = props.data;
+
+    if (role === CONSTANTS.CUSTOMER) {
+      return null;
     }
-    if (status === CONSTANTS.OFFER_STATUS_WON) {
-      return (
-        <i
-          className={classNames('fas fa-check-circle resolve', styles.resolve)}
-        />
-      );
+
+    if (role === CONSTANTS.CREATOR) {
+      if (moderationStatus === CONSTANTS.OFFER_STATUS_REJECTED) {
+        return (
+          <i
+            className={classNames('fas fa-times-circle reject', styles.reject)}
+          />
+        );
+      }
+
+      if (moderationStatus === CONSTANTS.OFFER_STATUS_APPROVED) {
+        if (status === CONSTANTS.OFFER_STATUS_WON) {
+          return (
+            <i
+              className={classNames(
+                'fas fa-check-circle resolve',
+                styles.resolve
+              )}
+            />
+          );
+        }
+        if (status === CONSTANTS.OFFER_STATUS_REJECTED) {
+          return (
+            <i
+              className={classNames(
+                'fas fa-times-circle reject',
+                styles.reject
+              )}
+            />
+          );
+        }
+      }
+      return null;
     }
     return null;
   };

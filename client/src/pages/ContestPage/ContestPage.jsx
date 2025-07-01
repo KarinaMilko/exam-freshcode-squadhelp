@@ -45,14 +45,16 @@ class ContestPage extends React.Component {
 
     const filteredOffers =
       role === CONSTANTS.CUSTOMER
-        ? offers.filter(o => o.status === CONSTANTS.OFFER_STATUS_APPROVED)
+        ? offers.filter(
+            o => o.moderationStatus === CONSTANTS.OFFER_STATUS_APPROVED
+          )
         : offers;
 
     for (let i = 0; i < filteredOffers.length; i++) {
       array.push(
         <OfferBox
-          data={this.props.contestByIdStore.offers[i]}
-          key={this.props.contestByIdStore.offers[i].id}
+          data={filteredOffers[i]}
+          key={filteredOffers[i].id}
           needButtons={this.needButtons}
           setOfferStatus={this.setOfferStatus}
           contestType={this.props.contestByIdStore.contestData.contestType}

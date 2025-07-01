@@ -43,9 +43,11 @@ export const getActiveContests = data =>
 export const getContestById = ({ contestId }) =>
   http.get(`contests/${contestId}`);
 
-export const getOffers = ({ status, page, results }) =>
+export const getOffers = ({ moderationStatus, page, results }) =>
   http.get(
-    `/offers/moderator?status=${status || ''}&page=${page}&results=${results}`
+    `/offers/moderator?moderationStatus=${
+      moderationStatus || ''
+    }&page=${page}&results=${results}`
   );
 
 export const updateOffersStatus = ({ id, status }) =>
@@ -53,3 +55,6 @@ export const updateOffersStatus = ({ id, status }) =>
 
 export const getApprovedOffersForCustomer = contestId =>
   http.get(`/offers/customer/${contestId}`);
+
+export const updateOfferStatusByCustomer = ({ id, status }) =>
+  http.patch(`/offers/customer/${id}/status`, { status });

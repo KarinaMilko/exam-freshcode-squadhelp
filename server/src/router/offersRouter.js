@@ -22,4 +22,10 @@ offersRouter.get(
   offerController.getApprovedOffersForCustomer
 );
 
+offersRouter.patch(
+  '/customer/:id/status',
+  basicMiddlewares.onlyForCustomer,
+  offerController.updateOfferStatusByCustomer
+);
+
 module.exports = offersRouter;

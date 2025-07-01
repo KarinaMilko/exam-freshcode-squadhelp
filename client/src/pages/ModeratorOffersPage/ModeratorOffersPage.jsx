@@ -25,7 +25,7 @@ function ModeratorOffersPage({
   totalPages,
 }) {
   useEffect(() => {
-    getOffers({ status: filter, page });
+    getOffers({ moderationStatus: filter, page });
   }, [filter, page]);
 
   return (
@@ -74,9 +74,10 @@ function ModeratorOffersPage({
                     </p>
                   )}
                   <p className={styles.offerInfo}>
-                    <span className={styles.label}>Status: </span> {o.status}
+                    <span className={styles.label}>Moderation Status: </span>{' '}
+                    {o.moderationStatus}
                   </p>
-                  {o.status === OFFER_STATUS_PENDING && (
+                  {o.moderationStatus === OFFER_STATUS_PENDING && (
                     <div className={styles.actionButtons}>
                       <button
                         className={styles.approveButton}
@@ -127,8 +128,8 @@ function ModeratorOffersPage({
 const mapStateToProps = ({ offerList }) => offerList;
 
 const mapDispatchToProps = dispatch => ({
-  getOffers: filter => {
-    dispatch(getOffersThunk(filter));
+  getOffers: ({ moderationStatus, page }) => {
+    dispatch(getOffersThunk({ moderationStatus, page }));
   },
   setFilter: newFilter => {
     dispatch(setFilter(newFilter));
