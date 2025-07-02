@@ -22,6 +22,7 @@ class CustomerDashboard extends React.Component {
   };
 
   componentDidMount() {
+    this.props.clearContestsList();
     this.getContests();
   }
 
@@ -46,10 +47,18 @@ class CustomerDashboard extends React.Component {
     const array = [];
     const { contests } = this.props;
     for (let i = 0; i < contests.length; i++) {
+      const contest = contests[i];
+
+      const approvedOffersCount = contest.Offers
+        ? contest.Offers.filter(
+            offer => offer.moderationStatus === CONSTANTS.OFFER_STATUS_APPROVED
+          ).length
+        : 0;
+
       array.push(
         <ContestBox
-          data={contests[i]}
-          key={contests[i].id}
+          data={{ ...contest, count: approvedOffersCount }}
+          key={`${contests[i].id}-${i}`}
           goToExtended={this.goToExtended}
         />
       );
