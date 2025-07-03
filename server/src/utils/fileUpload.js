@@ -1,11 +1,14 @@
+require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const ServerError = require('../errors/ServerError');
-const env = process.env.NODE_ENV || 'development';
-const devFilePath = path.resolve(__dirname, '..', '..', '..', 'public/images');
 
-const filePath = env === 'production' ? '/var/www/html/images/' : devFilePath;
+const env = process.env.NODE_ENV || 'development';
+
+const filePath =
+  process.env.FILE_UPLOAD_PATH ||
+  path.resolve(__dirname, '..', '..', '..', 'public/images');
 
 if (!fs.existsSync(filePath)) {
   fs.mkdirSync(filePath, {
@@ -14,10 +17,10 @@ if (!fs.existsSync(filePath)) {
 }
 
 const storageContestFiles = multer.diskStorage({
-  destination (req, file, cb) {
+  destination(req, file, cb) {
     cb(null, filePath);
   },
-  filename (req, file, cb) {
+  filename(req, file, cb) {
     cb(null, Date.now() + file.originalname);
   },
 });
