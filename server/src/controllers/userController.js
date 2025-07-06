@@ -1,17 +1,20 @@
 const jwt = require('jsonwebtoken');
+const moment = require('moment');
+const { v4: uuid } = require('uuid');
 const CONSTANTS = require('../constants');
 const bd = require('../models');
 const NotUniqueEmail = require('../errors/NotUniqueEmail');
-const moment = require('moment');
-const { v4: uuid } = require('uuid');
 const controller = require('../socketInit');
 const userQueries = require('./queries/userQueries');
 const bankQueries = require('./queries/bankQueries');
 const ratingQueries = require('./queries/ratingQueries');
+const AuthorizationError = require('../errors/AuthorizationError');
 
 module.exports.login = async (req, res, next) => {
   try {
-    const foundUser = await userQueries.findUser({ email: req.body.email });
+    const foundUser = await userQueries.findUserForLogin({
+      email: req.body.email,
+    });
     await userQueries.passwordCompare(req.body.password, foundUser.password);
     const accessToken = jwt.sign(
       {
@@ -31,6 +34,9 @@ module.exports.login = async (req, res, next) => {
     await userQueries.updateUser({ accessToken }, foundUser.id);
     res.send({ token: accessToken });
   } catch (err) {
+    if (err.message === 'Authentication error') {
+      return next(new AuthorizationError('Authentication error'));
+    }
     next(err);
   }
 };
