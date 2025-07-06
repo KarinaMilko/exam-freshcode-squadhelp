@@ -8,6 +8,7 @@ import { getUser } from '../../store/slices/userSlice';
 import withRouter from '../../hocs/withRouter';
 import Message from './Message/Message';
 import { selectCompletedEventsCount } from '../../store/slices/eventListSlice';
+import Logo from './../../components/Logo';
 
 class Header extends React.Component {
   componentDidMount() {
@@ -157,11 +158,7 @@ class Header extends React.Component {
           </div>
         </div>
         <div className={styles.navContainer}>
-          <img
-            src={`${CONSTANTS.STATIC_IMAGES_PATH}blue-logo.png`}
-            className={styles.logo}
-            alt="blue_logo"
-          />
+          <Logo className={styles.logo} />
           <div className={styles.leftNav}>
             <div className={styles.nav}>
               <ul>
