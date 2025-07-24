@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styles from './ContestCreationPage.module.sass';
@@ -12,18 +12,31 @@ import ButtonGroup from '../../components/ButtonGroup/ButtonGroup';
 const ContestCreationPage = props => {
   const formRef = useRef();
   const navigate = useNavigate();
+  const [localFiles, setLocalFiles] = useState({});
 
   const contestData = props.contestCreationStore.contests[props.contestType]
     ? props.contestCreationStore.contests[props.contestType]
     : { contestType: props.contestType };
 
   const handleSubmit = values => {
-    props.saveContest({ type: props.contestType, info: values });
+    const { file, ...otherValues } = values;
+
+    props.saveContest({ type: props.contestType, info: otherValues });
+
+    setLocalFiles(prev => ({ ...prev, [props.contestType]: file }));
+
     const route =
       props.bundleStore.bundle[props.contestType] === 'payment'
         ? '/payment'
         : `/startContest/${props.bundleStore.bundle[props.contestType]}Contest`;
-    navigate(route);
+
+    if (route === '/payment') {
+      navigate(route, {
+        state: { localFiles: { ...localFiles, [props.contestType]: file } },
+      });
+    } else {
+      navigate(route);
+    }
   };
 
   const submitForm = () => {
@@ -32,7 +45,11 @@ const ContestCreationPage = props => {
     }
   };
 
-  !props.bundleStore.bundle && navigate('/startContest', { replace: true });
+  useEffect(() => {
+    if (!props.bundleStore.bundle) {
+      navigate('/startContest', { replace: true });
+    }
+  }, [props.bundleStore.bundle, navigate]);
 
   return (
     <div>
