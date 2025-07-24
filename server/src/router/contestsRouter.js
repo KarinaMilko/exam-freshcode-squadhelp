@@ -8,7 +8,7 @@ const contestController = require('../controllers/contestController');
 const contestsRouter = Router();
 
 contestsRouter.post(
-  '/',
+  '/customer',
   basicMiddlewares.onlyForCustomer,
   upload.uploadContestFiles,
   basicMiddlewares.parseBody,
@@ -28,7 +28,7 @@ contestsRouter.get(
   contestController.getContests
 );
 
-contestsRouter.get('/byCustomer', contestController.getCustomersContests);
+contestsRouter.get('/customer', contestController.getCustomersContests);
 
 contestsRouter.get(
   '/:id',
@@ -40,6 +40,23 @@ contestsRouter.patch(
   '/:id',
   upload.updateContestFile,
   contestController.updateContest
+);
+
+contestsRouter.post('/dataForContest', contestController.dataForContest);
+
+contestsRouter.get('/downloadFile/:fileName', contestController.downloadFile);
+
+contestsRouter.post(
+  '/setNewOffer',
+  upload.uploadLogoFiles,
+  basicMiddlewares.canSendOffer,
+  contestController.setNewOffer
+);
+
+contestsRouter.post(
+  '/setOfferStatus',
+  basicMiddlewares.onlyForCustomerWhoCreateContest,
+  contestController.setOfferStatus
 );
 
 module.exports = contestsRouter;
