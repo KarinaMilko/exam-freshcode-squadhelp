@@ -13,15 +13,6 @@ const offersRouter = require('./offersRouter');
 
 const router = express.Router();
 
-router.post(
-  '/registration',
-  validators.validateRegistrationData,
-  hashPass,
-  userController.registration
-);
-
-router.post('/login', validators.validateLogin, userController.login);
-
 router.use('/users', usersRouter);
 
 router.use(checkToken.checkToken);
@@ -46,14 +37,6 @@ router.post(
   basicMiddlewares.onlyForCustomerWhoCreateContest,
   contestController.setOfferStatus
 );
-
-router.post(
-  '/changeMark',
-  basicMiddlewares.onlyForCustomer,
-  userController.changeMark
-);
-
-router.post('/updateUser', upload.uploadAvatar, userController.updateUser);
 
 router.use('/chat', chatRouter);
 

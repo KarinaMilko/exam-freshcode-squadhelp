@@ -1,9 +1,12 @@
 import { stringify } from 'query-string';
 import http from '../interceptor';
 
-export const registerRequest = data => http.post('registration', data);
-export const loginRequest = data => http.post('login', data);
+export const registerRequest = data => http.post('users/registration', data);
+export const loginRequest = data => http.post('users/login', data);
 export const getUser = () => http.get('users');
+export const updateUser = data => http.post('users/updateUser', data);
+export const changeMark = data => http.post('users/changeMark', data);
+
 export const updateContest = data =>
   http.patch(`contests/${data.get('contestId')}`, data);
 export const setNewOffer = data => http.post('setNewOffer', data);
@@ -11,10 +14,9 @@ export const setOfferStatus = data => http.post('setOfferStatus', data);
 export const downloadContestFile = data =>
   http.get(`downloadFile/${data.fileName}`);
 export const payMent = data => http.post('contests', data.formData);
-export const changeMark = data => http.post('changeMark', data);
+
 export const dataForContest = data => http.post('dataForContest', data);
 export const cashOut = data => http.post('contests/creative', data);
-export const updateUser = data => http.post('updateUser', data);
 
 export const newMessage = data => http.post('chat/addMessage', data);
 export const getDialog = data =>
