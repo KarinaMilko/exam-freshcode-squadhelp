@@ -17,6 +17,10 @@ const ImageUpload = props => {
     setFieldValue(props.name, file);
     helpers.setTouched(true);
 
+    setTimeout(() => {
+      setFieldValue(props.name, file);
+    }, 0);
+
     const imageType = /image.*/;
     if (!file.type.match(imageType)) {
       e.target.value = '';

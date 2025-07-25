@@ -17,7 +17,7 @@ const OfferForm = props => {
     if (props.contestType === CONTANTS.LOGO_CONTEST) {
       return (
         <ImageUpload
-          name='offerData'
+          name="offerData"
           classes={{
             uploadContainer: styles.imageUploadContainer,
             inputContainer: styles.uploadInputContainer,
@@ -28,15 +28,15 @@ const OfferForm = props => {
     }
     return (
       <FormInput
-        name='offerData'
+        name="offerData"
         classes={{
           container: styles.inputContainer,
           input: styles.input,
           warning: styles.fieldWarning,
           notValid: styles.notValid,
         }}
-        type='text'
-        label='your suggestion'
+        type="text"
+        label="your suggestion"
       />
     );
   };
@@ -53,7 +53,7 @@ const OfferForm = props => {
     resetForm();
   };
 
-  const { valid, addOfferError, clearOfferError } = props;
+  const { addOfferError, clearOfferError } = props;
   const validationSchema =
     props.contestType === CONTANTS.LOGO_CONTEST
       ? Schems.LogoOfferSchema
@@ -74,14 +74,16 @@ const OfferForm = props => {
         }}
         validationSchema={validationSchema}
       >
-        <Form className={styles.form}>
-          {renderOfferInput()}
-          {valid && (
-            <button type='submit' className={styles.btnOffer}>
-              Send Offer
-            </button>
-          )}
-        </Form>
+        {({ isValid, values }) => (
+          <Form className={styles.form}>
+            {renderOfferInput()}
+            {isValid && values.offerData && (
+              <button type="submit" className={styles.btnOffer}>
+                Send Offer
+              </button>
+            )}
+          </Form>
+        )}
       </Formik>
     </div>
   );
