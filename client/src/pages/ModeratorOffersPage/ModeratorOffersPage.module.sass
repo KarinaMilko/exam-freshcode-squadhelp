@@ -1,15 +1,15 @@
 .filterSection
-    margin: 20px auto
     display: flex
-    justify-content: center
+    justify-content: flex-start
+    margin: 20px auto
 
 .filterSelect
+    cursor: pointer
     padding: 8px 12px
     font-size: 16px
     border: 1px solid #ccc
     border-radius: 5px
     background-color: #f8f9fa
-    cursor: pointer
     transition: border-color 0.3s ease
 
     &:hover
@@ -20,15 +20,18 @@
         border-color: #0056b3
 
 .offersList
-    padding: 0
-    margin: 0 auto
-    max-width: 600px
+    display: flex
+    flex-direction: column
+    gap: 16px
 
 .offerItem
-    background-color: #fff
-    padding: 15px
+    display: flex
+    flex-direction: column
+    gap: 6px
+    padding: 30px
     margin-bottom: 10px
     border-radius: 8px
+    background-color: #fff
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1)
     transition: transform 0.2s ease
 
@@ -36,9 +39,10 @@
         transform: scale(1.02)
 
 .offerInfo
+    padding: 0 20px
+    margin: 5px 0
     font-size: 14px
     color: #333
-    margin: 5px 0
 
 .label
     font-weight: bold
@@ -48,15 +52,19 @@
     display: flex
     gap: 10px
     margin-top: 10px
+    padding: 0 20px
+
+.approveButton,
+.rejectButton
+    cursor: pointer
+    padding: 8px 12px
+    font-weight: bold
+    color: white
+    border: none
+    border-radius: 5px
 
 .approveButton
     background-color: #4CAF50
-    color: white
-    border: none
-    padding: 8px 12px
-    cursor: pointer
-    border-radius: 5px
-    font-weight: bold
     transition: background-color 0.3s ease
 
     &:hover
@@ -64,12 +72,6 @@
 
 .rejectButton
     background-color: #f44336
-    color: white
-    border: none
-    padding: 8px 12px
-    cursor: pointer
-    border-radius: 5px
-    font-weight: bold
     transition: background-color 0.3s ease
 
     &:hover
@@ -79,15 +81,16 @@
     display: flex
     justify-content: center
     align-items: center
-    margin: 70px auto
+    margin: 30px auto 20px
+    gap: 12px
 
 .pageButton
+    cursor: pointer
     padding: 8px 12px
     margin: 0 10px
-    border: none
     background-color: #007bff
     color: white
-    cursor: pointer
+    border: none
     border-radius: 5px
     transition: background-color 0.3s ease
 
