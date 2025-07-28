@@ -23,6 +23,12 @@ module.exports.getAllOffersForModerator = async (req, res, next) => {
       offset: offset ? offset : 0,
       attributes: { exclude: ['userId'] },
       where,
+      include: [
+        {
+          model: db.Contests,
+          attributes: { exclude: ['userId', 'orderId'] },
+        },
+      ],
     });
 
     const totalPages = Math.ceil(count / limit);
