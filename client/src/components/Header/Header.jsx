@@ -11,6 +11,7 @@ import {
   selectCompletedEventsCount,
   updateCompletedEventsCount,
 } from '../../store/slices/eventListSlice';
+import { countCompletedEvents } from '../../utils/functions';
 
 class Header extends React.Component {
   intervalId = null;
@@ -35,21 +36,8 @@ class Header extends React.Component {
 
   updateCompletedEventsCount() {
     const { eventList, updateCompletedEventsCount } = this.props;
-    const now = new Date();
 
-    const count = eventList.filter(e => {
-      const eventDateTime = new Date(`${e.date}T${e.time}`);
-
-      const notifyBeforeTime =
-        (e.notifyBeforeDays || 0) * 24 * 60 * 60 * 1000 +
-        (e.notifyBeforeHours || 0) * 60 * 60 * 1000 +
-        (e.notifyBeforeMinutes || 0) * 60 * 1000;
-
-      const notifyAt = new Date(eventDateTime.getTime() - notifyBeforeTime);
-
-      return notifyAt <= now && e.isMessageVisible !== false;
-    }).length;
-
+    const count = countCompletedEvents(eventList);
     updateCompletedEventsCount(count);
   }
 
