@@ -7,13 +7,50 @@ import { clearUserStore } from '../../store/slices/userSlice';
 import { getUser } from '../../store/slices/userSlice';
 import withRouter from '../../hocs/withRouter';
 import Message from './Message/Message';
-import { selectCompletedEventsCount } from '../../store/slices/eventListSlice';
+import {
+  selectCompletedEventsCount,
+  updateCompletedEventsCount,
+} from '../../store/slices/eventListSlice';
 
 class Header extends React.Component {
+  intervalId = null;
   componentDidMount() {
     if (!this.props.userStore.data) {
       this.props.getUser();
     }
+    this.startEventCountUpdater();
+  }
+
+  componentWillUnmount() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  }
+
+  startEventCountUpdater() {
+    this.intervalId = setInterval(() => {
+      this.updateCompletedEventsCount();
+    }, 1000);
+  }
+
+  updateCompletedEventsCount() {
+    const { eventList, updateCompletedEventsCount } = this.props;
+    const now = new Date();
+
+    const count = eventList.filter(e => {
+      const eventDateTime = new Date(`${e.date}T${e.time}`);
+
+      const notifyBeforeTime =
+        (e.notifyBeforeDays || 0) * 24 * 60 * 60 * 1000 +
+        (e.notifyBeforeHours || 0) * 60 * 60 * 1000 +
+        (e.notifyBeforeMinutes || 0) * 60 * 1000;
+
+      const notifyAt = new Date(eventDateTime.getTime() - notifyBeforeTime);
+
+      return notifyAt <= now && e.isMessageVisible !== false;
+    }).length;
+
+    updateCompletedEventsCount(count);
   }
 
   logOut = () => {
@@ -320,12 +357,14 @@ class Header extends React.Component {
 
 const mapStateToProps = state => ({
   userStore: state.userStore,
-  eventList: state.eventList,
+  eventList: state.eventList.events,
   completedEventsCount: selectCompletedEventsCount(state),
 });
 const mapDispatchToProps = dispatch => ({
   getUser: () => dispatch(getUser()),
   clearUserStore: () => dispatch(clearUserStore()),
+  updateCompletedEventsCount: count =>
+    dispatch(updateCompletedEventsCount(count)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));
