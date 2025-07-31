@@ -56,14 +56,24 @@ class Header extends React.Component {
       return (
         <>
           <div className={styles.userInfo}>
-            <img
-              src={
-                this.props.userStore.data.avatar === 'anon.png'
-                  ? CONSTANTS.ANONYM_IMAGE_PATH
-                  : `${CONSTANTS.publicURL}${this.props.userStore.data.avatar}`
-              }
-              alt="user"
-            />
+            <div className={styles.avatarWrapper}>
+              <img
+                src={
+                  this.props.userStore.data.avatar === 'anonym.png'
+                    ? CONSTANTS.ANONYM_IMAGE_PATH
+                    : `${CONSTANTS.publicURL}${this.props.userStore.data.avatar}`
+                }
+                alt="user"
+                className={styles.avatar}
+              />
+
+              {this.props.completedEventsCount > 0 && (
+                <span className={styles.redBadgeSmall}>
+                  {this.props.completedEventsCount}
+                </span>
+              )}
+            </div>
+
             <span>{`Hi, ${this.props.userStore.data.displayName}`}</span>
             <img
               src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
