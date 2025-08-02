@@ -35,10 +35,14 @@ class Header extends React.Component {
   }
 
   updateCompletedEventsCount() {
-    const { eventList, updateCompletedEventsCount } = this.props;
+    const { eventList, completedEventsCount, updateCompletedEventsCount } =
+      this.props;
 
     const count = countCompletedEvents(eventList);
-    updateCompletedEventsCount(count);
+
+    if (count !== completedEventsCount) {
+      updateCompletedEventsCount(count);
+    }
   }
 
   logOut = () => {
