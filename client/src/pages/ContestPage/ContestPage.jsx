@@ -40,11 +40,21 @@ class ContestPage extends React.Component {
 
   setOffersList = () => {
     const array = [];
-    for (let i = 0; i < this.props.contestByIdStore.offers.length; i++) {
+    const { role } = this.props.userStore.data;
+    const { offers } = this.props.contestByIdStore;
+
+    const filteredOffers =
+      role === CONSTANTS.CUSTOMER
+        ? offers.filter(
+            o => o.moderationStatus === CONSTANTS.OFFER_STATUS_APPROVED
+          )
+        : offers;
+
+    for (let i = 0; i < filteredOffers.length; i++) {
       array.push(
         <OfferBox
-          data={this.props.contestByIdStore.offers[i]}
-          key={this.props.contestByIdStore.offers[i].id}
+          data={filteredOffers[i]}
+          key={filteredOffers[i].id}
           needButtons={this.needButtons}
           setOfferStatus={this.setOfferStatus}
           contestType={this.props.contestByIdStore.contestData.contestType}

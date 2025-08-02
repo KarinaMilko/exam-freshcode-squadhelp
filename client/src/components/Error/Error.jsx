@@ -9,6 +9,8 @@ const Error = props => {
         return data;
       case 400:
         return 'Check the input data';
+      case 401:
+        return data || 'Authorization error';
       case 409:
         return data;
       case 403:
@@ -24,7 +26,7 @@ const Error = props => {
   return (
     <div className={styles.errorContainer}>
       <span>{getMessage()}</span>
-      <i className='far fa-times-circle' onClick={() => clearError()} />
+      <i className="far fa-times-circle" onClick={() => clearError()} />
     </div>
   );
 };

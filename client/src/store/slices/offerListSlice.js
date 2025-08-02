@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import CONSTANS from '../../constants';
+import CONSTANTS from '../../constants';
 import * as restController from './../../api/rest/restController';
 
 const {
   SLICE_NAME: { OFFERS_SLICE_NAME },
-} = CONSTANS;
+} = CONSTANTS;
 
 const initialState = {
   offers: [],
@@ -17,9 +17,12 @@ const initialState = {
 
 export const getOffersThunk = createAsyncThunk(
   `${OFFERS_SLICE_NAME}/get`,
-  async ({ status, page }, { rejectWithValue }) => {
+  async ({ moderationStatus, page }, { rejectWithValue }) => {
     try {
-      const { data } = await restController.getOffers({ status, page });
+      const { data } = await restController.getOffers({
+        moderationStatus,
+        page,
+      });
       return data;
     } catch (err) {
       return rejectWithValue({
@@ -32,9 +35,47 @@ export const getOffersThunk = createAsyncThunk(
 
 export const updateOffersStatusThunk = createAsyncThunk(
   `${OFFERS_SLICE_NAME}/updateStatus`,
+  async ({ id, status }, { rejectWithValue }) => {
+    try {
+      const { data } = await restController.updateOffersStatus({
+        id,
+        status,
+      });
+      return data;
+    } catch (err) {
+      return rejectWithValue({
+        data: err?.response?.data ?? 'Gateway Timeout',
+        status: err?.response?.status ?? 504,
+      });
+    }
+  }
+);
+
+export const getApprovedOffersThunk = createAsyncThunk(
+  `${OFFERS_SLICE_NAME}/getApproved`,
   async (payload, { rejectWithValue }) => {
     try {
-      const { data } = await restController.updateOffersStatus(payload);
+      const { data } = await restController.getApprovedOffersForCustomer(
+        payload
+      );
+      return data;
+    } catch (err) {
+      return rejectWithValue({
+        data: err?.response?.data ?? 'Gateway Timeout',
+        status: err?.response?.status ?? 504,
+      });
+    }
+  }
+);
+
+export const updateOfferStatusByCustomerThunk = createAsyncThunk(
+  `${OFFERS_SLICE_NAME}/customerUpdateStatus`,
+  async ({ id, status }, { rejectWithValue }) => {
+    try {
+      const { data } = await restController.updateOfferStatusByCustomer({
+        id,
+        status,
+      });
       return data;
     } catch (err) {
       return rejectWithValue({
@@ -73,10 +114,47 @@ const offerListSlice = createSlice({
     });
 
     builder.addCase(updateOffersStatusThunk.fulfilled, (state, { payload }) => {
-      state.offers = state.offers.map(o =>
-        o.id === payload.id ? { ...o, status: payload.status } : o
-      );
+      if (state.filter === CONSTANTS.OFFER_STATUS_PENDING) {
+        state.offers = state.offers.filter(o => o.id !== payload.id);
+      } else {
+        state.offers = state.offers.map(o =>
+          o.id === payload.id
+            ? {
+                ...o,
+                moderationStatus: payload.moderationStatus,
+              }
+            : o
+        );
+      }
     });
+
+    builder.addCase(getApprovedOffersThunk.pending, state => {
+      state.isFetching = true;
+      state.error = null;
+    });
+    builder.addCase(getApprovedOffersThunk.fulfilled, (state, { payload }) => {
+      state.isFetching = false;
+      state.offers = payload;
+      state.totalPages = 1;
+    });
+    builder.addCase(getApprovedOffersThunk.rejected, (state, { payload }) => {
+      state.isFetching = false;
+      state.error = payload;
+    });
+
+    builder.addCase(
+      updateOfferStatusByCustomerThunk.fulfilled,
+      (state, { payload }) => {
+        state.offers = state.offers.map(o =>
+          o.id === payload.id
+            ? {
+                ...o,
+                status: payload.status,
+              }
+            : o
+        );
+      }
+    );
   },
 });
 const { reducer, actions } = offerListSlice;

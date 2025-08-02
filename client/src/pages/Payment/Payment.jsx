@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import isEmpty from 'lodash/isEmpty';
 import { pay, clearPaymentStore } from '../../store/slices/paymentSlice';
 import PayForm from '../../components/PayForm/PayForm';
@@ -10,6 +10,17 @@ import Error from '../../components/Error/Error';
 
 const Payment = props => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const { contests } = props.contestCreationStore;
+
+  useEffect(() => {
+    if (isEmpty(contests)) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [contests, navigate]);
+
+  const localFiles = location.state?.localFiles || {};
 
   const pay = values => {
     const { contests } = props.contestCreationStore;
@@ -17,12 +28,21 @@ const Payment = props => {
     Object.keys(contests).forEach(key =>
       contestArray.push({ ...contests[key] })
     );
-    const { number, expiry, cvc } = values;
+
     const data = new FormData();
-    for (let i = 0; i < contestArray.length; i++) {
-      data.append('files', contestArray[i].file);
-      contestArray[i].haveFile = !!contestArray[i].file;
-    }
+
+    contestArray.forEach(contest => {
+      const file = localFiles[contest.contestType];
+      if (file) {
+        data.append('files', file);
+        contest.haveFile = true;
+      } else {
+        contest.haveFile = false;
+      }
+    });
+
+    const { number, expiry, cvc } = values;
+
     data.append('number', number);
     data.append('expiry', expiry);
     data.append('cvc', cvc);
@@ -40,12 +60,9 @@ const Payment = props => {
     navigate(-1);
   };
 
-  const { contests } = props.contestCreationStore;
   const { error } = props.payment;
   const { clearPaymentStore } = props;
-  if (isEmpty(contests)) {
-    navigate('/dashboard', { replace: true });
-  }
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.paymentContainer}>

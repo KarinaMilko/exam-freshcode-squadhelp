@@ -58,13 +58,19 @@ module.exports.getOfferWhereByRole = (role, userId) => {
     CREATOR,
     OFFER_STATUS_APPROVED,
     OFFER_STATUS_WON,
+    OFFER_STATUS_PENDING,
   } = CONSTANTS;
 
   if (role === MODERATOR) return {};
   if (role === CUSTOMER) {
     return {
+      moderationStatus: OFFER_STATUS_APPROVED,
       status: {
-        [Op.in]: [OFFER_STATUS_APPROVED, OFFER_STATUS_WON],
+        [Op.in]: [
+          OFFER_STATUS_APPROVED,
+          OFFER_STATUS_WON,
+          OFFER_STATUS_PENDING,
+        ],
       },
     };
   }

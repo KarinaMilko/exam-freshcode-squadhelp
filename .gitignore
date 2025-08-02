@@ -13,3 +13,5 @@
 **server/public/*
 *server/public/*
 .qodo
+
+/var/www/html/images/*

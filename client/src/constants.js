@@ -66,6 +66,26 @@ export default {
     },
   ],
 
+  CONTEST_FIELDS: [
+    { label: 'id', key: 'id' },
+    { label: 'Contest Title', key: 'title' },
+    { label: 'Type', key: 'contestType' },
+    { label: 'Industry', key: 'industry' },
+    { label: 'Focus of Work', key: 'focusOfWork' },
+    { label: 'Target Customer', key: 'targetCustomer' },
+    { label: 'Style Name', key: 'styleName' },
+    { label: 'Prize', key: 'prize' },
+    { label: 'Status', key: 'status' },
+    { label: 'Created At', key: 'createdAt' },
+    { label: 'File Name', key: 'fileName' },
+    { label: 'Original File Name', key: 'originalFileName' },
+    { label: 'Type of Name', key: 'typeOfName' },
+    { label: 'Name Venture', key: 'nameVenture' },
+    { label: 'Type of Tagline', key: 'typeOfTagline' },
+    { label: 'Brand Style', key: 'brandStyle' },
+    { label: 'Priority', key: 'priority' },
+  ],
+
   FooterItems: [
     {
       title: 'SQUADHELP',

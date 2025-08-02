@@ -285,7 +285,7 @@ module.exports.getCustomersContests = (req, res, next) => {
       {
         model: db.Offers,
         required: false,
-        attributes: ['id'],
+        attributes: ['id', 'moderationStatus'],
       },
     ],
   })
@@ -333,7 +333,7 @@ module.exports.getContests = (req, res, next) => {
         model: db.Offers,
         required: false,
         where: UtilFunctions.getOfferWhereByRole(role, userId),
-        attributes: ['id', 'status'],
+        attributes: ['id', 'status', 'userId', 'moderationStatus'],
       },
     ],
   })

@@ -17,6 +17,13 @@ module.exports = {
           cvc: '505',
           balance: 5000,
         },
+        {
+          cardNumber: '5555555555554444',
+          name: 'creator',
+          expiry: '12/26',
+          cvc: '123',
+          balance: 0,
+        },
       ],
       {}
     );

@@ -88,19 +88,18 @@ class CreatorDashboard extends React.Component {
     );
   };
 
-  componentWillReceiveProps (nextProps, nextContext) {
-    if (nextProps.location.search !== this.props.location.search) {
-      this.parseUrlForParams(nextProps.location.search);
+  componentDidUpdate(prevProps) {
+    if (this.props.location.search !== prevProps.location.search) {
+      this.props.clearContestsList();
+      this.parseUrlForParams(this.props.location.search);
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
+    this.props.clearContestsList();
     this.props.getDataForContest();
-    if (
-      this.parseUrlForParams(this.props.location.search) &&
-      !this.props.contests.length
-    )
-      this.getContests(this.props.creatorFilter);
+    this.parseUrlForParams(this.props.location.search);
+    this.getContests(this.props.creatorFilter);
   }
 
   getContests = filter => {
@@ -197,7 +196,7 @@ class CreatorDashboard extends React.Component {
     });
   };
 
-  render () {
+  render() {
     const { error, haveMore, creatorFilter } = this.props;
     const { isFetching } = this.props.dataForContest;
     return (
@@ -225,14 +224,14 @@ class CreatorDashboard extends React.Component {
             <div className={styles.inputContainer}>
               <span>By contest ID</span>
               <input
-                type='text'
+                type="text"
                 onChange={({ target }) =>
                   this.changePredicate({
                     name: 'contestId',
                     value: target.value,
                   })
                 }
-                name='contestId'
+                name="contestId"
                 value={creatorFilter.contestId}
                 className={styles.input}
               />
@@ -255,8 +254,8 @@ class CreatorDashboard extends React.Component {
                 value={creatorFilter.awardSort}
                 className={styles.input}
               >
-                <option value='desc'>Descending</option>
-                <option value='asc'>Ascending</option>
+                <option value="desc">Descending</option>
+                <option value="asc">Ascending</option>
               </select>
             </div>
           </div>
