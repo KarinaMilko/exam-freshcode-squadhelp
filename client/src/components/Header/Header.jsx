@@ -7,14 +7,38 @@ import { clearUserStore } from '../../store/slices/userSlice';
 import { getUser } from '../../store/slices/userSlice';
 import withRouter from '../../hocs/withRouter';
 import Message from './Message/Message';
-import { selectCompletedEventsCount } from '../../store/slices/eventListSlice';
-import Logo from './../../components/Logo';
+import {
+  selectCompletedEventsCount,
+  updateCompletedEventsCount,
+} from '../../store/slices/eventListSlice';
+import { countCompletedEvents } from '../../utils/functions';
 
 class Header extends React.Component {
+  intervalId = null;
   componentDidMount() {
     if (!this.props.userStore.data) {
       this.props.getUser();
     }
+    this.startEventCountUpdater();
+  }
+
+  componentWillUnmount() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  }
+
+  startEventCountUpdater() {
+    this.intervalId = setInterval(() => {
+      this.updateCompletedEventsCount();
+    }, 1000);
+  }
+
+  updateCompletedEventsCount() {
+    const { eventList, updateCompletedEventsCount } = this.props;
+
+    const count = countCompletedEvents(eventList);
+    updateCompletedEventsCount(count);
   }
 
   logOut = () => {
@@ -32,14 +56,24 @@ class Header extends React.Component {
       return (
         <>
           <div className={styles.userInfo}>
-            <img
-              src={
-                this.props.userStore.data.avatar === 'anon.png'
-                  ? CONSTANTS.ANONYM_IMAGE_PATH
-                  : `${CONSTANTS.publicURL}${this.props.userStore.data.avatar}`
-              }
-              alt="user"
-            />
+            <div className={styles.avatarWrapper}>
+              <img
+                src={
+                  this.props.userStore.data.avatar === 'anonym.png'
+                    ? CONSTANTS.ANONYM_IMAGE_PATH
+                    : `${CONSTANTS.publicURL}${this.props.userStore.data.avatar}`
+                }
+                alt="user"
+                className={styles.avatar}
+              />
+
+              {this.props.completedEventsCount > 0 && (
+                <span className={styles.redBadgeSmall}>
+                  {this.props.completedEventsCount}
+                </span>
+              )}
+            </div>
+
             <span>{`Hi, ${this.props.userStore.data.displayName}`}</span>
             <img
               src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
@@ -158,7 +192,11 @@ class Header extends React.Component {
           </div>
         </div>
         <div className={styles.navContainer}>
-          <Logo className={styles.logo} />
+          <img
+            src={`${CONSTANTS.STATIC_IMAGES_PATH}blue-logo.png`}
+            className={styles.logo}
+            alt="blue_logo"
+          />
           <div className={styles.leftNav}>
             <div className={styles.nav}>
               <ul>
@@ -317,12 +355,14 @@ class Header extends React.Component {
 
 const mapStateToProps = state => ({
   userStore: state.userStore,
-  eventList: state.eventList,
+  eventList: state.eventList.events,
   completedEventsCount: selectCompletedEventsCount(state),
 });
 const mapDispatchToProps = dispatch => ({
   getUser: () => dispatch(getUser()),
   clearUserStore: () => dispatch(clearUserStore()),
+  updateCompletedEventsCount: count =>
+    dispatch(updateCompletedEventsCount(count)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));
