@@ -49,8 +49,9 @@ module.exports.addMessage = async (req, res, next) => {
       creatorId: conversation.creatorId,
       customerId: conversation.customerId,
     };
+    const interlocutorId = interlocutor?.id || interlocutor?.dataValues?.id;
 
-    controller.getChatController().emitNewMessage(interlocutor, {
+    controller.getChatController().emitNewMessage(interlocutorId, {
       message,
       preview: { ...preview, interlocutor },
     });
