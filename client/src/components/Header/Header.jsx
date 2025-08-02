@@ -63,7 +63,7 @@ class Header extends React.Component {
             <div className={styles.avatarWrapper}>
               <img
                 src={
-                  this.props.userStore.data.avatar === 'anonym.png'
+                  this.props.userStore.data.avatar === 'anon.png'
                     ? CONSTANTS.ANONYM_IMAGE_PATH
                     : `${CONSTANTS.publicURL}${this.props.userStore.data.avatar}`
                 }
@@ -161,6 +161,7 @@ class Header extends React.Component {
         </>
       );
     }
+
     return (
       <>
         <Link to="/login" style={{ textDecoration: 'none' }}>
