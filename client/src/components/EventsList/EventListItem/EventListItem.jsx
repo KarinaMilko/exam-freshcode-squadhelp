@@ -10,7 +10,7 @@ function EventListItem({
   remove,
 }) {
   const [leftTime, setLeftTime] = useState('');
-  const [progressBar, setProgressBar] = useState(100);
+  const [progressBar, setProgressBar] = useState(0);
 
   useEffect(() => {
     const eventDate = new Date(`${date}T${time}`);
