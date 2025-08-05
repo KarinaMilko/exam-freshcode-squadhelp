@@ -6,10 +6,11 @@ import CONSTANTS from '../../constants';
 import { clearUserStore } from '../../store/slices/userSlice';
 import { getUser } from '../../store/slices/userSlice';
 import withRouter from '../../hocs/withRouter';
-import Message from './Message/Message';
+
 import {
   clearEventsStore,
   selectCompletedEventsCount,
+  setEvents,
   updateCompletedEventsCount,
 } from '../../store/slices/eventListSlice';
 import { countCompletedEvents } from '../../utils/functions';
@@ -20,19 +21,22 @@ class Header extends React.Component {
     if (!this.props.userStore.data) {
       this.props.getUser();
     }
-    this.startEventCountUpdater();
+  }
+  componentDidUpdate(prevProps) {
+    if (!prevProps.userStore.data && this.props.userStore.data) {
+      const userId = this.props.userStore.data.id;
+      const savedEvents =
+        JSON.parse(localStorage.getItem(`events_${userId}`)) || [];
+      this.props.setEvents(savedEvents);
+
+      this.props.updateCompletedEventsCount(countCompletedEvents(savedEvents));
+    }
   }
 
   componentWillUnmount() {
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
-  }
-
-  startEventCountUpdater() {
-    this.intervalId = setInterval(() => {
-      this.updateCompletedEventsCount();
-    }, 1000);
   }
 
   updateCompletedEventsCount() {
@@ -372,6 +376,7 @@ const mapDispatchToProps = dispatch => ({
   updateCompletedEventsCount: count =>
     dispatch(updateCompletedEventsCount(count)),
   clearEventsStore: () => dispatch(clearEventsStore()),
+  setEvents: events => dispatch(setEvents(events)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));
