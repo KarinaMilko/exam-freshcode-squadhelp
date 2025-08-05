@@ -8,6 +8,7 @@ import { getUser } from '../../store/slices/userSlice';
 import withRouter from '../../hocs/withRouter';
 import Message from './Message/Message';
 import {
+  clearEventsStore,
   selectCompletedEventsCount,
   updateCompletedEventsCount,
 } from '../../store/slices/eventListSlice';
@@ -46,8 +47,10 @@ class Header extends React.Component {
   }
 
   logOut = () => {
-    localStorage.clear();
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('user');
     this.props.clearUserStore();
+    this.props.clearEventsStore();
     this.props.navigate('/login', { replace: true });
   };
 
@@ -368,6 +371,7 @@ const mapDispatchToProps = dispatch => ({
   clearUserStore: () => dispatch(clearUserStore()),
   updateCompletedEventsCount: count =>
     dispatch(updateCompletedEventsCount(count)),
+  clearEventsStore: () => dispatch(clearEventsStore()),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

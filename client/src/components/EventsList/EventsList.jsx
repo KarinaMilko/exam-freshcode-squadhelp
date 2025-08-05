@@ -1,4 +1,4 @@
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import EventListItem from './EventListItem/EventListItem';
 import CONSTANTS from './../../constants';
@@ -11,9 +11,13 @@ import {
 const { STATIC_IMAGES_PATH } = CONSTANTS;
 
 function EventsList({ events, remove, updateCompletedEventsCount }) {
+  const user = useSelector(state => state.userStore.data);
+
   useEffect(() => {
-    localStorage.setItem('events', JSON.stringify(events));
-  }, [events]);
+    if (!user?.id) return;
+    if (events.length === 0) return;
+    localStorage.setItem(`events_${user.id}`, JSON.stringify(events));
+  }, [events, user]);
 
   useEffect(() => {
     const countEvents = events.filter(e => {
