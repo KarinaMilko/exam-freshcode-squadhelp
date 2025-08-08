@@ -10,12 +10,10 @@ import styles from './ChatHeader.module.sass';
 import CONSTANTS from '../../../../constants';
 
 const ChatHeader = props => {
-  const {
-    interlocutor: { avatar, firstName },
-    backToDialogList,
-    chatData,
-    userId,
-  } = props;
+  const { interlocutor, backToDialogList, chatData, userId } = props;
+
+  const avatar = interlocutor?.avatar || 'anon.png';
+  const firstName = interlocutor?.firstName || 'Anonymous';
 
   const changeFavorite = (data, event) => {
     props.changeChatFavorite(data);

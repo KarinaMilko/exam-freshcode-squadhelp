@@ -377,17 +377,17 @@ const reducers = {
   },
 
   addMessage: (state, { payload }) => {
-    const { message, preview, creatorId, customerId } = payload;
+    const { message, preview } = payload;
     const { messagesPreview } = state;
     let isNew = true;
-    messagesPreview.forEach(preview => {
+    messagesPreview.forEach(p => {
       if (
-        preview.creatorId === creatorId &&
-        preview.customerId === customerId
+        p.creatorId === preview.creatorId &&
+        p.customerId === preview.customerId
       ) {
-        preview.text = message.body;
-        preview.sender = message.sender;
-        preview.createdAt = message.createdAt;
+        p.text = message.body;
+        p.sender = message.sender;
+        p.createdAt = message.createdAt;
         isNew = false;
       }
     });
@@ -395,7 +395,7 @@ const reducers = {
       messagesPreview.push(preview);
     }
     state.messagesPreview = messagesPreview;
-    state.messages = [...state.messages, payload.message];
+    state.messages = [...state.messages, message];
   },
 
   backToDialogList: state => {
@@ -403,7 +403,7 @@ const reducers = {
   },
 
   goToExpandedDialog: (state, { payload }) => {
-    state.interlocutor = { ...state.interlocutor, ...payload.interlocutor };
+    state.interlocutor = payload.interlocutor;
     state.chatData = payload.conversationData;
     state.isShow = true;
     state.isExpanded = true;
