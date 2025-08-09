@@ -21,6 +21,10 @@ class Header extends React.Component {
     if (!this.props.userStore.data) {
       this.props.getUser();
     }
+
+    if (this.props.userStore.data && !this.intervalId) {
+      this.startInterval();
+    }
   }
   componentDidUpdate(prevProps) {
     if (!prevProps.userStore.data && this.props.userStore.data) {
@@ -31,11 +35,32 @@ class Header extends React.Component {
 
       this.props.updateCompletedEventsCount(countCompletedEvents(savedEvents));
     }
+
+    if (!this.intervalId) {
+      this.startInterval();
+    }
+
+    if (prevProps.userStore.data && !this.props.userStore.data) {
+      this.clearInterval();
+    }
   }
 
   componentWillUnmount() {
     if (this.intervalId) {
       clearInterval(this.intervalId);
+    }
+  }
+
+  startInterval() {
+    this.intervalId = setInterval(() => {
+      this.updateCompletedEventsCount();
+    }, 1000);
+  }
+
+  clearInterval() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
     }
   }
 
@@ -55,6 +80,7 @@ class Header extends React.Component {
     localStorage.removeItem('user');
     this.props.clearUserStore();
     this.props.clearEventsStore();
+    this.clearInterval();
     this.props.navigate('/login', { replace: true });
   };
 

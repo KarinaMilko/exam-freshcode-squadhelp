@@ -7,6 +7,7 @@ import {
   removeEvent,
   updateCompletedEventsCount,
 } from '../../store/slices/eventListSlice';
+import { countCompletedEvents } from './../../utils/functions';
 
 const { STATIC_IMAGES_PATH } = CONSTANTS;
 
@@ -20,12 +21,7 @@ function EventsList({ events, remove, updateCompletedEventsCount }) {
   }, [events, user]);
 
   useEffect(() => {
-    const countEvents = events.filter(e => {
-      const eventDate = new Date(`${e.date}T${e.time}`);
-      const startDate = new Date();
-      return eventDate < startDate;
-    }).length;
-
+    const countEvents = countCompletedEvents(events);
     updateCompletedEventsCount(countEvents);
   }, [events, updateCompletedEventsCount]);
 
