@@ -3,7 +3,12 @@ import styles from './Catalog.module.sass';
 
 const Catalog = props => {
   const { deleteCatalog, goToCatalog } = props;
-  const { catalogName, chats, id } = props.catalog;
+
+  if (!props.catalog) {
+    return null;
+  }
+
+  const { catalogName, chats = [], id } = props.catalog;
 
   return (
     <div
