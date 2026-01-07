@@ -1,5 +1,5 @@
 # 🇺🇦 Українська Версія
-## 🎓 Fullstack-JS-Exam-Project: Звіт про Рефакторинг та Розвиток
+## 🎓 exam-freshcode-squadhelp: Звіт про Рефакторинг та Розвиток
 
 Цей репозиторій є **практичним портфоліо**, яке слугує демонстрацією всіх ключових навичок та знань, здобутих протягом курсу. Код відображає успішне впровадження наскрізних рішень у повноцінний проєкт, включаючи налаштування **складної інфраструктури (Docker)**, реалізацію **фінансових транзакцій (CRUD)** та **стандартизацію API** відповідно до професійних вимог.
 
@@ -57,7 +57,7 @@
 ---
 
 # 🇬🇧 English Version
-## 🎓 Fullstack-JS-Exam-Project: Refactoring and Development Report
+## 🎓 exam-freshcode-squadhelp: Refactoring and Development Report
 
 This repository serves as a **practical portfolio**, demonstrating all key skills and knowledge acquired throughout the course. The code reflects the successful implementation of end-to-end solutions in a full-fledged project, including setting up a **complex infrastructure (Docker)**, implementing **financial transactions (CRUD)**, and **standardizing the API** according to professional requirements.
 
